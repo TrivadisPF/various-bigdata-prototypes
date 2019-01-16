@@ -146,7 +146,7 @@ python producer.py localhost:9092 http://localhost:8081 1547628077671 10 Peter M
 
 ### Test Case
 
-1. In a terminal window, start the stream processor with `expired-check` and `verbose` mode enabled:
+In a terminal window, start the stream processor with `expired-check` and `verbose` mode enabled:
 
 ```
 mvn exec:java -Dexec.args="--application-id person-pt-v1 --bootstrap-server localhost:9092 --source-topic person-before --target-topic person-after --schema-registry-url http://localhost:8081 --expired-check --verbose"
