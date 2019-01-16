@@ -1,0 +1,467 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
+  <component name="EclipseModuleManager">
+    <varelement var="file://$M2_REPO$/javax/ws/rs/javax.ws.rs-api/2.1.1/javax.ws.rs-api-2.1.1.jar" value="M2_REPO/javax/ws/rs/javax.ws.rs-api/2.1.1/javax.ws.rs-api-2.1.1.jar" />
+    <varelement var="file://$M2_REPO$/org/apache/kafka/kafka-clients/2.1.0/kafka-clients-2.1.0.jar" value="M2_REPO/org/apache/kafka/kafka-clients/2.1.0/kafka-clients-2.1.0.jar" />
+    <varelement var="file://$M2_REPO$/com/github/luben/zstd-jni/1.3.5-4/zstd-jni-1.3.5-4.jar" value="M2_REPO/com/github/luben/zstd-jni/1.3.5-4/zstd-jni-1.3.5-4.jar" />
+    <varelement var="file://$M2_REPO$/org/lz4/lz4-java/1.5.0/lz4-java-1.5.0.jar" value="M2_REPO/org/lz4/lz4-java/1.5.0/lz4-java-1.5.0.jar" />
+    <varelement var="file://$M2_REPO$/org/xerial/snappy/snappy-java/1.1.7.2/snappy-java-1.1.7.2.jar" value="M2_REPO/org/xerial/snappy/snappy-java/1.1.7.2/snappy-java-1.1.7.2.jar" />
+    <varelement var="file://$M2_REPO$/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar" value="M2_REPO/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar" />
+    <varelement var="file://$M2_REPO$/org/apache/kafka/kafka-streams/2.1.0/kafka-streams-2.1.0.jar" value="M2_REPO/org/apache/kafka/kafka-streams/2.1.0/kafka-streams-2.1.0.jar" />
+    <varelement var="file://$M2_REPO$/org/apache/kafka/connect-json/2.1.0/connect-json-2.1.0.jar" value="M2_REPO/org/apache/kafka/connect-json/2.1.0/connect-json-2.1.0.jar" />
+    <varelement var="file://$M2_REPO$/org/apache/kafka/connect-api/2.1.0/connect-api-2.1.0.jar" value="M2_REPO/org/apache/kafka/connect-api/2.1.0/connect-api-2.1.0.jar" />
+    <varelement var="file://$M2_REPO$/com/fasterxml/jackson/core/jackson-databind/2.9.7/jackson-databind-2.9.7.jar" value="M2_REPO/com/fasterxml/jackson/core/jackson-databind/2.9.7/jackson-databind-2.9.7.jar" />
+    <varelement var="file://$M2_REPO$/com/fasterxml/jackson/core/jackson-annotations/2.9.0/jackson-annotations-2.9.0.jar" value="M2_REPO/com/fasterxml/jackson/core/jackson-annotations/2.9.0/jackson-annotations-2.9.0.jar" />
+    <varelement var="file://$M2_REPO$/com/fasterxml/jackson/core/jackson-core/2.9.7/jackson-core-2.9.7.jar" value="M2_REPO/com/fasterxml/jackson/core/jackson-core/2.9.7/jackson-core-2.9.7.jar" />
+    <varelement var="file://$M2_REPO$/org/rocksdb/rocksdbjni/5.14.2/rocksdbjni-5.14.2.jar" value="M2_REPO/org/rocksdb/rocksdbjni/5.14.2/rocksdbjni-5.14.2.jar" />
+    <varelement var="file://$M2_REPO$/org/apache/commons/commons-lang3/3.7/commons-lang3-3.7.jar" value="M2_REPO/org/apache/commons/commons-lang3/3.7/commons-lang3-3.7.jar" />
+    <varelement var="file://$M2_REPO$/io/confluent/kafka-avro-serializer/5.1.0/kafka-avro-serializer-5.1.0.jar" value="M2_REPO/io/confluent/kafka-avro-serializer/5.1.0/kafka-avro-serializer-5.1.0.jar" />
+    <varelement var="file://$M2_REPO$/org/apache/avro/avro/1.8.2/avro-1.8.2.jar" value="M2_REPO/org/apache/avro/avro/1.8.2/avro-1.8.2.jar" />
+    <varelement var="file://$M2_REPO$/org/codehaus/jackson/jackson-core-asl/1.9.13/jackson-core-asl-1.9.13.jar" value="M2_REPO/org/codehaus/jackson/jackson-core-asl/1.9.13/jackson-core-asl-1.9.13.jar" />
+    <varelement var="file://$M2_REPO$/org/codehaus/jackson/jackson-mapper-asl/1.9.13/jackson-mapper-asl-1.9.13.jar" value="M2_REPO/org/codehaus/jackson/jackson-mapper-asl/1.9.13/jackson-mapper-asl-1.9.13.jar" />
+    <varelement var="file://$M2_REPO$/com/thoughtworks/paranamer/paranamer/2.7/paranamer-2.7.jar" value="M2_REPO/com/thoughtworks/paranamer/paranamer/2.7/paranamer-2.7.jar" />
+    <varelement var="file://$M2_REPO$/org/apache/commons/commons-compress/1.8.1/commons-compress-1.8.1.jar" value="M2_REPO/org/apache/commons/commons-compress/1.8.1/commons-compress-1.8.1.jar" />
+    <varelement var="file://$M2_REPO$/org/tukaani/xz/1.5/xz-1.5.jar" value="M2_REPO/org/tukaani/xz/1.5/xz-1.5.jar" />
+    <varelement var="file://$M2_REPO$/io/confluent/kafka-schema-registry-client/5.1.0/kafka-schema-registry-client-5.1.0.jar" value="M2_REPO/io/confluent/kafka-schema-registry-client/5.1.0/kafka-schema-registry-client-5.1.0.jar" />
+    <varelement var="file://$M2_REPO$/io/confluent/common-config/5.1.0/common-config-5.1.0.jar" value="M2_REPO/io/confluent/common-config/5.1.0/common-config-5.1.0.jar" />
+    <varelement var="file://$M2_REPO$/io/confluent/common-utils/5.1.0/common-utils-5.1.0.jar" value="M2_REPO/io/confluent/common-utils/5.1.0/common-utils-5.1.0.jar" />
+    <varelement var="file://$M2_REPO$/org/apache/zookeeper/zookeeper/3.4.13/zookeeper-3.4.13.jar" value="M2_REPO/org/apache/zookeeper/zookeeper/3.4.13/zookeeper-3.4.13.jar" />
+    <varelement var="file://$M2_REPO$/jline/jline/0.9.94/jline-0.9.94.jar" value="M2_REPO/jline/jline/0.9.94/jline-0.9.94.jar" />
+    <varelement var="file://$M2_REPO$/junit/junit/4.12/junit-4.12.jar" value="M2_REPO/junit/junit/4.12/junit-4.12.jar" />
+    <varelement var="file://$M2_REPO$/org/apache/yetus/audience-annotations/0.5.0/audience-annotations-0.5.0.jar" value="M2_REPO/org/apache/yetus/audience-annotations/0.5.0/audience-annotations-0.5.0.jar" />
+    <varelement var="file://$M2_REPO$/io/netty/netty/3.10.6.Final/netty-3.10.6.Final.jar" value="M2_REPO/io/netty/netty/3.10.6.Final/netty-3.10.6.Final.jar" />
+    <varelement var="file://$M2_REPO$/com/101tec/zkclient/0.10/zkclient-0.10.jar" value="M2_REPO/com/101tec/zkclient/0.10/zkclient-0.10.jar" />
+    <varelement var="file://$M2_REPO$/io/confluent/kafka-streams-avro-serde/5.1.0/kafka-streams-avro-serde-5.1.0.jar" value="M2_REPO/io/confluent/kafka-streams-avro-serde/5.1.0/kafka-streams-avro-serde-5.1.0.jar" />
+    <varelement var="file://$M2_REPO$/commons-cli/commons-cli/1.4/commons-cli-1.4.jar" value="M2_REPO/commons-cli/commons-cli/1.4/commons-cli-1.4.jar" />
+    <varelement var="file://$M2_REPO$/org/apache/kafka/kafka_2.11/2.1.0/kafka_2.11-2.1.0-test.jar" value="M2_REPO/org/apache/kafka/kafka_2.11/2.1.0/kafka_2.11-2.1.0-test.jar" />
+    <varelement var="file://$M2_REPO$/net/sf/jopt-simple/jopt-simple/5.0.4/jopt-simple-5.0.4.jar" value="M2_REPO/net/sf/jopt-simple/jopt-simple/5.0.4/jopt-simple-5.0.4.jar" />
+    <varelement var="file://$M2_REPO$/com/yammer/metrics/metrics-core/2.2.0/metrics-core-2.2.0.jar" value="M2_REPO/com/yammer/metrics/metrics-core/2.2.0/metrics-core-2.2.0.jar" />
+    <varelement var="file://$M2_REPO$/org/scala-lang/scala-library/2.11.12/scala-library-2.11.12.jar" value="M2_REPO/org/scala-lang/scala-library/2.11.12/scala-library-2.11.12.jar" />
+    <varelement var="file://$M2_REPO$/org/scala-lang/scala-reflect/2.11.12/scala-reflect-2.11.12.jar" value="M2_REPO/org/scala-lang/scala-reflect/2.11.12/scala-reflect-2.11.12.jar" />
+    <varelement var="file://$M2_REPO$/com/typesafe/scala-logging/scala-logging_2.11/3.9.0/scala-logging_2.11-3.9.0.jar" value="M2_REPO/com/typesafe/scala-logging/scala-logging_2.11/3.9.0/scala-logging_2.11-3.9.0.jar" />
+    <varelement var="file://$M2_REPO$/org/apache/kafka/kafka-clients/2.1.0/kafka-clients-2.1.0-test.jar" value="M2_REPO/org/apache/kafka/kafka-clients/2.1.0/kafka-clients-2.1.0-test.jar" />
+    <varelement var="file://$M2_REPO$/org/apache/kafka/kafka-streams/2.1.0/kafka-streams-2.1.0-test.jar" value="M2_REPO/org/apache/kafka/kafka-streams/2.1.0/kafka-streams-2.1.0-test.jar" />
+    <varelement var="file://$M2_REPO$/org/apache/kafka/kafka-streams-test-utils/2.1.0/kafka-streams-test-utils-2.1.0.jar" value="M2_REPO/org/apache/kafka/kafka-streams-test-utils/2.1.0/kafka-streams-test-utils-2.1.0.jar" />
+    <varelement var="file://$M2_REPO$/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar" value="M2_REPO/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar" />
+    <src_description expected_position="0">
+      <src_folder value="file://$MODULE_DIR$/src/test/java" expected_position="0" />
+      <src_folder value="file://$MODULE_DIR$/src/main/java" expected_position="1" />
+      <src_folder value="file://$MODULE_DIR$/src/main/resources" expected_position="2" />
+    </src_description>
+  </component>
+  <component name="MavenCustomPomFilePath">
+    <option name="mavenPomFileUrl" value="file://$MODULE_DIR$/dependency-reduced-pom.xml" />
+  </component>
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
+    <output url="file://$MODULE_DIR$/target/classes" />
+    <output-test url="file://$MODULE_DIR$/target/test-classes" />
+    <content url="file://$MODULE_DIR$/src/main/java">
+      <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
+    </content>
+    <content url="file://$MODULE_DIR$/src/main/resources">
+      <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
+    </content>
+    <content url="file://$MODULE_DIR$/src/test/java">
+      <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
+    </content>
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module-library">
+      <library name="javax.ws.rs-api-2.1.1.jar">
+        <CLASSES>
+          <root url="file://$M2_REPO$/javax/ws/rs/javax.ws.rs-api/2.1.1/javax.ws.rs-api-2.1.1.jar" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="module-library">
+      <library name="kafka-clients-2.1.0.jar">
+        <CLASSES>
+          <root url="file://$M2_REPO$/org/apache/kafka/kafka-clients/2.1.0/kafka-clients-2.1.0.jar" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="zstd-jni-1.3.5-4.jar">
+        <CLASSES>
+          <root url="file://$M2_REPO$/com/github/luben/zstd-jni/1.3.5-4/zstd-jni-1.3.5-4.jar" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="lz4-java-1.5.0.jar">
+        <CLASSES>
+          <root url="file://$M2_REPO$/org/lz4/lz4-java/1.5.0/lz4-java-1.5.0.jar" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="snappy-java-1.1.7.2.jar">
+        <CLASSES>
+          <root url="file://$M2_REPO$/org/xerial/snappy/snappy-java/1.1.7.2/snappy-java-1.1.7.2.jar" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="slf4j-api-1.7.25.jar">
+        <CLASSES>
+          <root url="file://$M2_REPO$/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="kafka-streams-2.1.0.jar">
+        <CLASSES>
+          <root url="file://$M2_REPO$/org/apache/kafka/kafka-streams/2.1.0/kafka-streams-2.1.0.jar" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="connect-json-2.1.0.jar">
+        <CLASSES>
+          <root url="file://$M2_REPO$/org/apache/kafka/connect-json/2.1.0/connect-json-2.1.0.jar" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="connect-api-2.1.0.jar">
+        <CLASSES>
+          <root url="file://$M2_REPO$/org/apache/kafka/connect-api/2.1.0/connect-api-2.1.0.jar" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="jackson-databind-2.9.7.jar">
+        <CLASSES>
+          <root url="file://$M2_REPO$/com/fasterxml/jackson/core/jackson-databind/2.9.7/jackson-databind-2.9.7.jar" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="jackson-annotations-2.9.0.jar">
+        <CLASSES>
+          <root url="file://$M2_REPO$/com/fasterxml/jackson/core/jackson-annotations/2.9.0/jackson-annotations-2.9.0.jar" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="jackson-core-2.9.7.jar">
+        <CLASSES>
+          <root url="file://$M2_REPO$/com/fasterxml/jackson/core/jackson-core/2.9.7/jackson-core-2.9.7.jar" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="rocksdbjni-5.14.2.jar">
+        <CLASSES>
+          <root url="file://$M2_REPO$/org/rocksdb/rocksdbjni/5.14.2/rocksdbjni-5.14.2.jar" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="commons-lang3-3.7.jar">
+        <CLASSES>
+          <root url="file://$M2_REPO$/org/apache/commons/commons-lang3/3.7/commons-lang3-3.7.jar" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="kafka-avro-serializer-5.1.0.jar">
+        <CLASSES>
+          <root url="file://$M2_REPO$/io/confluent/kafka-avro-serializer/5.1.0/kafka-avro-serializer-5.1.0.jar" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="avro-1.8.2.jar">
+        <CLASSES>
+          <root url="file://$M2_REPO$/org/apache/avro/avro/1.8.2/avro-1.8.2.jar" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="jackson-core-asl-1.9.13.jar">
+        <CLASSES>
+          <root url="file://$M2_REPO$/org/codehaus/jackson/jackson-core-asl/1.9.13/jackson-core-asl-1.9.13.jar" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="jackson-mapper-asl-1.9.13.jar">
+        <CLASSES>
+          <root url="file://$M2_REPO$/org/codehaus/jackson/jackson-mapper-asl/1.9.13/jackson-mapper-asl-1.9.13.jar" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="paranamer-2.7.jar">
+        <CLASSES>
+          <root url="file://$M2_REPO$/com/thoughtworks/paranamer/paranamer/2.7/paranamer-2.7.jar" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="commons-compress-1.8.1.jar">
+        <CLASSES>
+          <root url="file://$M2_REPO$/org/apache/commons/commons-compress/1.8.1/commons-compress-1.8.1.jar" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="xz-1.5.jar">
+        <CLASSES>
+          <root url="file://$M2_REPO$/org/tukaani/xz/1.5/xz-1.5.jar" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="kafka-schema-registry-client-5.1.0.jar">
+        <CLASSES>
+          <root url="file://$M2_REPO$/io/confluent/kafka-schema-registry-client/5.1.0/kafka-schema-registry-client-5.1.0.jar" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="common-config-5.1.0.jar">
+        <CLASSES>
+          <root url="file://$M2_REPO$/io/confluent/common-config/5.1.0/common-config-5.1.0.jar" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="common-utils-5.1.0.jar">
+        <CLASSES>
+          <root url="file://$M2_REPO$/io/confluent/common-utils/5.1.0/common-utils-5.1.0.jar" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="zookeeper-3.4.13.jar">
+        <CLASSES>
+          <root url="file://$M2_REPO$/org/apache/zookeeper/zookeeper/3.4.13/zookeeper-3.4.13.jar" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="jline-0.9.94.jar">
+        <CLASSES>
+          <root url="file://$M2_REPO$/jline/jline/0.9.94/jline-0.9.94.jar" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="junit-4.12.jar">
+        <CLASSES>
+          <root url="file://$M2_REPO$/junit/junit/4.12/junit-4.12.jar" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="audience-annotations-0.5.0.jar">
+        <CLASSES>
+          <root url="file://$M2_REPO$/org/apache/yetus/audience-annotations/0.5.0/audience-annotations-0.5.0.jar" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="netty-3.10.6.Final.jar">
+        <CLASSES>
+          <root url="file://$M2_REPO$/io/netty/netty/3.10.6.Final/netty-3.10.6.Final.jar" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="zkclient-0.10.jar">
+        <CLASSES>
+          <root url="file://$M2_REPO$/com/101tec/zkclient/0.10/zkclient-0.10.jar" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="kafka-streams-avro-serde-5.1.0.jar">
+        <CLASSES>
+          <root url="file://$M2_REPO$/io/confluent/kafka-streams-avro-serde/5.1.0/kafka-streams-avro-serde-5.1.0.jar" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="commons-cli-1.4.jar">
+        <CLASSES>
+          <root url="file://$M2_REPO$/commons-cli/commons-cli/1.4/commons-cli-1.4.jar" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="kafka_2.11-2.1.0-test.jar">
+        <CLASSES>
+          <root url="file://$M2_REPO$/org/apache/kafka/kafka_2.11/2.1.0/kafka_2.11-2.1.0-test.jar" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="jopt-simple-5.0.4.jar">
+        <CLASSES>
+          <root url="file://$M2_REPO$/net/sf/jopt-simple/jopt-simple/5.0.4/jopt-simple-5.0.4.jar" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="metrics-core-2.2.0.jar">
+        <CLASSES>
+          <root url="file://$M2_REPO$/com/yammer/metrics/metrics-core/2.2.0/metrics-core-2.2.0.jar" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="scala-library-2.11.12.jar">
+        <CLASSES>
+          <root url="file://$M2_REPO$/org/scala-lang/scala-library/2.11.12/scala-library-2.11.12.jar" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="scala-reflect-2.11.12.jar">
+        <CLASSES>
+          <root url="file://$M2_REPO$/org/scala-lang/scala-reflect/2.11.12/scala-reflect-2.11.12.jar" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="scala-logging_2.11-3.9.0.jar">
+        <CLASSES>
+          <root url="file://$M2_REPO$/com/typesafe/scala-logging/scala-logging_2.11/3.9.0/scala-logging_2.11-3.9.0.jar" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="kafka-clients-2.1.0-test.jar">
+        <CLASSES>
+          <root url="file://$M2_REPO$/org/apache/kafka/kafka-clients/2.1.0/kafka-clients-2.1.0-test.jar" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="kafka-streams-2.1.0-test.jar">
+        <CLASSES>
+          <root url="file://$M2_REPO$/org/apache/kafka/kafka-streams/2.1.0/kafka-streams-2.1.0-test.jar" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="kafka-streams-test-utils-2.1.0.jar">
+        <CLASSES>
+          <root url="file://$M2_REPO$/org/apache/kafka/kafka-streams-test-utils/2.1.0/kafka-streams-test-utils-2.1.0.jar" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="hamcrest-core-1.3.jar">
+        <CLASSES>
+          <root url="file://$M2_REPO$/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="library" scope="TEST" name="Maven: org.apache.kafka:kafka_2.11:test:2.1.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.apache.kafka:kafka-clients:2.1.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.9.7" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.9.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: com.fasterxml.jackson.core:jackson-core:2.9.7" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.slf4j:slf4j-api:1.7.25" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: com.101tec:zkclient:0.10" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.apache.zookeeper:zookeeper:3.4.13" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.apache.yetus:audience-annotations:0.5.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.apache.kafka:kafka-clients:test:2.1.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: com.github.luben:zstd-jni:1.3.5-4" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.lz4:lz4-java:1.5.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.xerial.snappy:snappy-java:1.1.7.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.apache.kafka:kafka-streams:test:2.1.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.apache.kafka:connect-json:2.1.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.apache.kafka:connect-api:2.1.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: javax.ws.rs:javax.ws.rs-api:2.1.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.rocksdb:rocksdbjni:5.14.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.12" level="project" />
+  </component>
+</module>
