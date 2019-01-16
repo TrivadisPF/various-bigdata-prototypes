@@ -202,7 +202,7 @@ The console output of the stream processor should show that an entry has been ma
 	
 ```
 ==> more actual' message forwared to sink topic .....
-retired message detected for key {"id": "50"} with timestamp 1547648365269 (newer value with timestamp 1547648365271 seen before)
+retired message detected for key {"id": "10"} with timestamp 1547648365269 (newer value with timestamp 1547648365271 seen before)
 ==> 'old' message removed.....
 ```
 The message should **NOT** appear in the sink topic `person-after`.
