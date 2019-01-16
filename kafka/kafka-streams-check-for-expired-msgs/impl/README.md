@@ -148,56 +148,63 @@ python producer.py localhost:9092 http://localhost:8081 1547628077671 10 Peter M
 
 1. In a terminal window, start the stream processor with `expired-check` and `verbose` mode enabled:
 
-	```
+```
 mvn exec:java -Dexec.args="--application-id person-pt-v1 --bootstrap-server localhost:9092 --source-topic person-before --target-topic person-after --schema-registry-url http://localhost:8081 --expired-check --verbose"
 ```
 
-2. In a new terminal window, start a console consumer on person-before
+In a new terminal window, start a console consumer on person-before
 
-	```
-	kafkacat -b localhost -t person-before -f "%T - %s"
-	```
+```
+kafkacat -b localhost -t person-before -f "%T - %s"
+```
 
-2. In a new terminal window, start a console consumer on person-after
+In a new terminal window, start a console consumer on person-after
 
-	```
-	kafkacat -b localhost -t person-after -f "%T - %s"
-	```
+```
+kafkacat -b localhost -t person-after -f "%T - %s"
+```
 
-2. Produce a first message with key `10` and timestamp `1547648365270`
+Produce a first message with key `10` and timestamp `1547648365270`
 
-	```
+```
 python producer.py localhost:9092 http://localhost:8081 1547648365270 10 Peter Muster
 ```	
-standard output of the stream processor should show that an entry has been made in the statestore 
 
-	```
+The console output of the stream processor should show that an entry has been made in the statestore: 
+
+```
 inserting key {"id": "10"} with timestamp 1547648365270 to state-store
 ==> new message forwared to sink topic .....
 ```
+The message should appear in sink topic `person-after`.
 	
-2. Produce a 2nd message with same key `10` but newer timestamp `1547648365271`
+Produce a 2nd message with same key `10` but newer timestamp `1547648365271`
 
-	```
+```
 python producer.py localhost:9092 http://localhost:8081 1547648365271 10 Peter Muster
 ```
-standard output of the stream processor should show that an entry has been made in the statestore 
+
+The console output of the stream processor should show that an entry has been made in the statestore:
 	
-	```
+```
 updating key {"id": "10"} with timestamp 1547648365271 in state-store (replacing previous timestamp 1547648365270)
 ==> more actual message forwared to sink topic .....
 ```
+The message should appear in the sink topic `person-after`.
 
-3. Produce a 3rd message with same key `10` but older timestamp `1547648365269`
+Produce a 3rd message with same key `10` but older timestamp `1547648365269`
 
-	```
+```
 python producer.py localhost:9092 http://localhost:8081 1547648365269 10 Peter Muster
 ```
-standard output of the stream processor should show that an entry has been made in the statestore 
+
+The console output of the stream processor should show that an entry has been made in the statestore:
 	
-	```
+```
 ==> more actual' message forwared to sink topic .....
 retired message detected for key {"id": "50"} with timestamp 1547648365269 (newer value with timestamp 1547648365271 seen before)
 ==> 'old' message removed.....
 ```
+The message should **NOT** appear in the sink topic `person-after`.
+
 	
