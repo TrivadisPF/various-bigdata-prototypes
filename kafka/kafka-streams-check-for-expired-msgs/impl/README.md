@@ -175,7 +175,7 @@ python producer.py localhost:9092 http://localhost:8081 1547648365270 10 Peter M
 	```
 inserting key {"id": "10"} with timestamp 1547648365270 to state-store
 ==> new message forwared to sink topic .....
-	```
+```
 	
 2. Produce a 2nd message with same key `10` but newer timestamp `1547648365271`
 
@@ -188,7 +188,7 @@ python producer.py localhost:9092 http://localhost:8081 1547648365271 10 Peter M
 	```
 updating key {"id": "10"} with timestamp 1547648365271 in state-store (replacing previous timestamp 1547648365270)
 ==> more actual message forwared to sink topic .....
-	```
+```
 
 3. Produce a 3rd message with same key `10` but older timestamp `1547648365269`
 
