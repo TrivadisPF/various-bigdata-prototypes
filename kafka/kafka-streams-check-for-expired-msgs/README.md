@@ -26,4 +26,4 @@ Situations we **do not have** to solve with this project:
 1. [EventDeduplicationLambdaIntegrationTest](https://www.javatips.net/api/examples-master/kafka-streams/src/test/java/io/confluent/examples/streams/EventDeduplicationLambdaIntegrationTest.java) by KafkaStreams Examples
 
 ## Implementation
-See [here](./impl/README) for the implementation.
+See [here](./impl/README.md) for the implementation.
