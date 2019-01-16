@@ -168,9 +168,8 @@ mvn exec:java -Dexec.args="--application-id person-pt-v1 --bootstrap-server loca
 
 	```
 python producer.py localhost:9092 http://localhost:8081 1547648365270 10 Peter Muster
-```
-
-	standard output of the stream processor should show that an entry has been made in the statestore 
+```	
+standard output of the stream processor should show that an entry has been made in the statestore 
 
 	```
 inserting key {"id": "10"} with timestamp 1547648365270 to state-store
@@ -182,8 +181,7 @@ inserting key {"id": "10"} with timestamp 1547648365270 to state-store
 	```
 python producer.py localhost:9092 http://localhost:8081 1547648365271 10 Peter Muster
 ```
-
-	standard output of the stream processor should show that an entry has been made in the statestore 
+standard output of the stream processor should show that an entry has been made in the statestore 
 	
 	```
 updating key {"id": "10"} with timestamp 1547648365271 in state-store (replacing previous timestamp 1547648365270)
@@ -195,8 +193,7 @@ updating key {"id": "10"} with timestamp 1547648365271 in state-store (replacing
 	```
 python producer.py localhost:9092 http://localhost:8081 1547648365269 10 Peter Muster
 ```
-
-	standard output of the stream processor should show that an entry has been made in the statestore 
+standard output of the stream processor should show that an entry has been made in the statestore 
 	
 	```
 ==> more actual' message forwared to sink topic .....
