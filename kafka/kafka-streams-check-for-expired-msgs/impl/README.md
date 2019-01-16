@@ -69,16 +69,18 @@ mvn package -Dmaven.test.skip=true
 ```
 
 ## Test Producer using Python
-A Python script has been created for testing the behaviour based on the environment created above. It acts as the producer using the topic `person-before`.
+A client for testing as been implmented in Python. It can be used for testing the behaviour based on the environment created above. It produces messages into the `person-before` topic, which should then be processed by the stream processor. 
+
+The python program can be found here: [`./scripts/producer.py`](./scripts/producer.py)
 
 ### Prepare Python environment
-To get the confluent python client, you first have to intall pip. 
+Before you can use the test client, you have to install the confluent python client. In order to do that, you first have to intall pip (if not yet done): 
 
 ```
 sudo apt install python-pip
 ```
 
-After that you can install the self-contained binaries of the Confluent Python client with avro support using
+Now you can install the self-contained binaries of the Confluent Python client with avro support using:
 
 ```
 pip install confluent-kafka
