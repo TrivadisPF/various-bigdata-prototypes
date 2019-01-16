@@ -37,7 +37,7 @@ public class KafkaStreamsPassthroughTest {
 		config.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "dummy:1234");
 		//config.put(AbstractKafkaAvroSerDeConfig.AUTO_REGISTER_SCHEMAS, false);
 		
-		testDriver = new TopologyTestDriver(sut.getTopology("sourceTopic", "targetTopic", "http://localhost:8081/", true), config);
+		testDriver = new TopologyTestDriver(sut.getTopology("sourceTopic", "targetTopic", "http://localhost:8081/", true, true), config);
 	}
 	
 	@Test

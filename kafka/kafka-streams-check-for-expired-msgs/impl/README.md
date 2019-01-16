@@ -27,10 +27,10 @@ After a short while, the environemnt should be up and ready. You can check the l
 docker-compose logs -f
 ```
 
-Apart from components mentioned above, also the Schema Registry UI and Kafka Manager have been started. You can reach them on
+Apart from components mentioned above, also the Schema Registry UI has been started. You can reach it on
 
   * Schema Registry UI: <http://localhost:8002>
-  * Kafka Manger: <http://localhost:9000>	
+	
 Tow topics `person-before` and `person-after` are automatically created using these commands:
 
 ```
@@ -48,8 +48,8 @@ The following options are available:
 
   * `-id` `--application-id`	ID of the stream processor application (mandatory)
   * `-b` `--bootsrap-sever`	Kafka broker(s) to connect to (mandatory)
-  * `-s` `--source-topic`	Kafka topic to consume the messages from (mandatory)
-  * `-t` `--target-topic`	Kafka topic to produce the messages to (mandatory)
+  * `-so` `--source-topic`	Kafka source topic to consume the messages from (mandatory)
+  * `-si` `--sink-topic`	Kafka sink topic to produce the messages to (mandatory)
   * `-sr` `--schema-registry`	URL to the confluent schema registry (mandatory)
   * `-e` `--expired-check`	flag signaling that message should be checked for expiration (optional)
   * `-v` `--verbose`	flag signaling that additional tracing output should be sent to stdout and stderr (opt
@@ -57,7 +57,15 @@ The following options are available:
 To run it from maven, you can execute
 
 ```
-mvn exec:java -Dexec.args="--application-id person-pt-v1 --bootstrap-server localhost:9092 --source-topic person-before --target-topic person-after --schema-registry-url http://localhost:8081 --expired-check --verbose"
+mvn exec:java -Dexec.args="--application-id person-pt-v1 --bootstrap-server localhost:9092 --source-topic person-before --sink-topic person-after --schema-registry-url http://localhost:8081 --expired-check --verbose"
+```
+
+### Buidling the project
+
+The project is setup as a maven project and you can build it using
+
+```
+mvn package -Dmaven.test.skip=true
 ```
 
 ## Test Producer using Python
@@ -135,6 +143,7 @@ python producer.py localhost:9092 http://localhost:8081 1547628077671 10 Peter M
 ```
 
 ### Test Case
+
 1. In a terminal window, start the stream processor with `expired-check` and `verbose` mode enabled:
 
 	```
@@ -153,13 +162,43 @@ mvn exec:java -Dexec.args="--application-id person-pt-v1 --bootstrap-server loca
 	kafkacat -b localhost -t person-after -f "%T - %s"
 	```
 
-2. Produce a first message at timestamp 1547628077671
+2. Produce a first message with key `10` and timestamp `1547648365270`
 
 	```
-python producer.py localhost:9092 http://localhost:8081 1547628077671 10 Peter Muster
+python producer.py localhost:9092 http://localhost:8081 1547648365270 10 Peter Muster
 	```
 
-	A message on standard output of stream processor should show that 
+	standard output of the stream processor should show that an entry has been made in the statestore 
 
-2. 
+	```
+inserting key {"id": "10"} with timestamp 1547648365270 to state-store
+==> new message forwared to sink topic .....
+	```
+	
+2. Produce a 2nd message with same key `10` but newer timestamp `1547648365271`
 
+	```
+python producer.py localhost:9092 http://localhost:8081 1547648365271 10 Peter Muster
+	```
+
+	standard output of the stream processor should show that an entry has been made in the statestore 
+	
+	```
+updating key {"id": "10"} with timestamp 1547648365271 in state-store (replacing previous timestamp 1547648365270)
+==> more actual message forwared to sink topic .....
+	```
+
+3. Produce a 3rd message with same key `10` but older timestamp `1547648365269`
+
+	```
+python producer.py localhost:9092 http://localhost:8081 1547648365269 10 Peter Muster
+	```
+
+	standard output of the stream processor should show that an entry has been made in the statestore 
+	
+	```
+==> more actual' message forwared to sink topic .....
+retired message detected for key {"id": "50"} with timestamp 1547648365269 (newer value with timestamp 1547648365271 seen before)
+==> 'old' message removed.....
+	```
+	

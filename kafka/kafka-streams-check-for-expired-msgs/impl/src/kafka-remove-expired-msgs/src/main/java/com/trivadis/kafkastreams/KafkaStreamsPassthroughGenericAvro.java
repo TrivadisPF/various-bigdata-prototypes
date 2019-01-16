@@ -84,13 +84,22 @@ public class KafkaStreamsPassthroughGenericAvro {
 					// one or more
 					// words.
 					if (stateStore.get(key) == null || ctx.timestamp() > stateStore.get(key)) {
-						if (isVerbose)
-							System.out.println("adding key " + key + " with timestamp " + ctx.timestamp() + " with stateStore " + stateStore.get(key));
+						if (isVerbose) {
+							if (stateStore.get(key) == null) {
+								System.out.println("inserting key " + key + " with timestamp " + ctx.timestamp() + " to state-store");
+								System.out.println("==> new message forwared to sink topic .....");
+							} else {
+								System.out.println("updating key " + key + " with timestamp " + ctx.timestamp() + " in state-store (replacing previous timestamp " + stateStore.get(key) + ")");
+								System.out.println("==> more actual' message forwared to sink topic .....");
+							}
+						}
 						stateStore.put(key, ctx.timestamp());
 						return KeyValue.pair(key, value);
 					} else {
-						if (isVerbose)
-							System.out.println("old value for key " + key + " with timestamp " + ctx.timestamp() + " with stateStore " + stateStore.get(key));
+						if (isVerbose) {
+							System.out.println("retired message detected for key " + key + " with timestamp " + ctx.timestamp() + " (newer value with timestamp " + stateStore.get(key) + " seen before)");
+							System.out.println("==> 'old' message removed.....");
+						}
 						return KeyValue.pair(key, null);
 					}
 				}
@@ -208,7 +217,7 @@ public class KafkaStreamsPassthroughGenericAvro {
 		String applicationId = null;
 		String bootstrapServer = null;
 		String sourceTopic = null;
-		String targetTopic = null;
+		String sinkTopic = null;
 		String schemaRegistryUrl = null;
 		
 		boolean isExpiredCheck = false;
@@ -221,8 +230,8 @@ public class KafkaStreamsPassthroughGenericAvro {
 		Options options = new Options();
 		options.addOption("id", "application-id", true, "REQUIRED: The application id.");
 		options.addOption("b", "bootstrap-server", true, "REQUIRED: The server(s) to connect to.");
-		options.addOption("s", "source-topic", true, "REQUIRED: The topic to consume from.");
-		options.addOption("t", "target-topic", true, "REQUIRED: The topic to write to.");
+		options.addOption("so", "source-topic", true, "REQUIRED: The topic to consume from.");
+		options.addOption("si", "sink-topic", true, "REQUIRED: The topic to write to.");
 		options.addOption("sr", "schema-registry-url", true,
 				"REQUIRED: the schema registry to connect to for the Avro schemas.");
 		options.addOption("e", "expired-check", false, "OPTIONAL: Flag for  Defaults to false.");
@@ -241,8 +250,8 @@ public class KafkaStreamsPassthroughGenericAvro {
 			if (line.hasOption("source-topic")) {
 				sourceTopic = line.getOptionValue("source-topic");
 			}
-			if (line.hasOption("target-topic")) {
-				targetTopic = line.getOptionValue("target-topic");
+			if (line.hasOption("sink-topic")) {
+				sinkTopic = line.getOptionValue("sink-topic");
 			}
 			if (line.hasOption("schema-registry-url")) {
 				schemaRegistryUrl = line.getOptionValue("schema-registry-url");
@@ -256,7 +265,7 @@ public class KafkaStreamsPassthroughGenericAvro {
 			}
 
 			KafkaStreamsPassthroughGenericAvro passthrough = new KafkaStreamsPassthroughGenericAvro();
-			passthrough.run(applicationId, bootstrapServer, sourceTopic, targetTopic, schemaRegistryUrl, isExpiredCheck, isVerbose);
+			passthrough.run(applicationId, bootstrapServer, sourceTopic, sinkTopic, schemaRegistryUrl, isExpiredCheck, isVerbose);
 		} catch (ParseException exp) {
 			HelpFormatter formatter = new HelpFormatter();
 			formatter.printHelp("kafka-passthrough", exp.getMessage(), options, null, true);
