@@ -45,16 +45,16 @@ services:
       CONFLUENT_SUPPORT_CUSTOMER_ID: 'anonymous'
     restart: always
 
-  schema_registry:
+  schema-registry:
     image: confluentinc/cp-schema-registry:5.1.0
-    hostname: schema_registry
+    hostname: schema-registry
     depends_on:
       - zookeeper
       - broker-1
     ports:
       - "8081:8081"
     environment:
-      SCHEMA_REGISTRY_HOST_NAME: schema_registry
+      SCHEMA_REGISTRY_HOST_NAME: schema-registry
       SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: 'zookeeper:2181'
       SCHEMA_REGISTRY_ACCESS_CONTROL_ALLOW_ORIGIN: '*'
       SCHEMA_REGISTRY_ACCESS_CONTROL_ALLOW_METHODS: 'GET,POST,PUT,OPTIONS'
@@ -93,10 +93,11 @@ services:
     hostname: schema-registry-ui
     depends_on:
       - broker-1
-      - schema_registry
+      - schema-registry
     ports:
       - "8002:8000"
     environment:
       SCHEMAREGISTRY_URL: 'http://${PUBLIC_IP}:8081'
     restart: always
+
 
