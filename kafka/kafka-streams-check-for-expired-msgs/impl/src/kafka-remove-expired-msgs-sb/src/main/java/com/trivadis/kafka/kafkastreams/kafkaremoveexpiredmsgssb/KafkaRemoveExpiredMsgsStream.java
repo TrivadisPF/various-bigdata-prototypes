@@ -167,10 +167,10 @@ public class KafkaRemoveExpiredMsgsStream {
 						if (isVerbose) {
 							if (stateStore.get(key) == null) {
 								System.out.println("inserting key " + key + " with timestamp " + ctx.timestamp() + " to state-store");
-								System.out.println("==> new message forwared to sink topic .....");
+								System.out.println("==> new message forwared to sink topic .....");
 							} else {
 								System.out.println("updating key " + key + " with timestamp " + ctx.timestamp() + " in state-store (replacing previous timestamp " + stateStore.get(key) + ")");
-								System.out.println("==> more actual message forwared to sink topic .....");
+								System.out.println("==> more actual message forwared to sink topic .....");
 							}
 						}
 						stateStore.put(key, ctx.timestamp());
@@ -178,7 +178,7 @@ public class KafkaRemoveExpiredMsgsStream {
 					} else {
 						if (isVerbose) {
 							System.out.println("retired message detected for key " + key + " with timestamp " + ctx.timestamp() + " (newer value with timestamp " + stateStore.get(key) + " seen before)");
-							System.out.println("==> 'old' message removed.....");
+							System.out.println("==> 'old' message removed.....");
 						}
 						return KeyValue.pair(key, null);
 					}
