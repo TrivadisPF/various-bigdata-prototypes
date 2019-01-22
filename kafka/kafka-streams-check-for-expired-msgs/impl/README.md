@@ -100,6 +100,39 @@ To run the Spring Boot application, execute
 java -jar target/kafka-remove-expired-msgs-sb-0.0.1-SNAPSHOT.jar
 ```
 
+#### Dockerizing Spring Boot application
+
+To build the docker container 
+
+```
+./mvnw install dockerfile:build
+```
+
+To run it from docker
+
+```
+docker run -e KAFKA_BOOTSTRAP-SERVERS='192.168.73.85:9092' -e KAFKA_SCHEMA-REGISTRY-URL='http://192.168.73.85:8081' -e KAFKA-STREAMS_APPLICATIONID='stream-person' -e KAFKA-STREAMS_TOPIC_SOURCE='person-before' -e KAFKA-STREAMS_TOPIC_SINK='person-after' gschmutz/kafka-remove-expired-msgs-sb
+```
+
+or using the `docker-compose.yml` with `docker-compose up -d` 
+
+```
+version: '2'
+services:
+  myapp:
+    image: gschmutz/kafka-remove-expired-msgs-sb
+    container_name: myapp
+    environment:
+      - KAFKA_BOOTSTRAP-SERVERS=192.168.73.85:9092
+      - KAFKA_SCHEMA-REGISTRY-URL=http://192.168.73.85:8081
+      - KAFKA-STREAMS_APPLICATIONID=stream-person
+      - KAFKA-STREAMS_TOPIC_SOURCE=person-before
+      - KAFKA-STREAMS_TOPIC_SINK=person-after
+      - KAFKA-STREAMS_EXPIRED_CHECK=true
+      - KAFKA-STREAMS_VERBOSE=true
+    ports:
+      - 8080:8080
+```
 
 ### Buidling the project
 
