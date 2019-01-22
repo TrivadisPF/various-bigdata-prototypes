@@ -42,6 +42,13 @@ kafka-topics --zookeeper zookeeper:2181 --create --topic person-after --replicat
 
 This stream processor is implementing a generic pass-through behaviour for Kafka messages where both the key and the value are serialized avro objects. When starting the processor, the source and target topic has to be specified, as well as the Kafka cluster to connect to. 
 
+There are two implmentations:
+
+  * `kafka-remove-expired-msgs` - KafkaStreams standalone application
+  * `kafka-remove-expired-msgs-sb` - KafkaStreams application embedded within a Spring Boot application
+
+### Kafka Streams Standalone Application
+
 It can be run with or without the "expire" behaviour, using the configuration parameter described below. 
 
 The following options are available:
@@ -60,9 +67,43 @@ To run it from maven, you can execute
 mvn exec:java -Dexec.args="--application-id person-pt-v1 --bootstrap-server localhost:9092 --source-topic person-before --sink-topic person-after --schema-registry-url http://localhost:8081 --expired-check --verbose"
 ```
 
+### Spring Boot application
+
+The configuration of both the Kafka environment as well as the behaviour of the KafkaStreams application can be done in the `application.yml` file:
+
+```
+kafka:
+  bootstrap-servers: localhost:9092
+  schema-registry-url: http://localhost:8081
+  
+kafka-streams:  
+  applicationId: test
+  verbose: true
+  expired-check: true
+
+  topic:
+    source: person-before
+    sink: person-after
+
+spring:
+  application:
+    name: spring-boot-kafkastream
+  main:
+    allow-bean-definition-overriding: true    
+    
+debug: false
+```
+
+To run the Spring Boot application, execute
+
+```
+java -jar target/kafka-remove-expired-msgs-sb-0.0.1-SNAPSHOT.jar
+```
+
+
 ### Buidling the project
 
-The project is setup as a maven project and you can build it using
+Both projects are setup as maven projects and can be build using
 
 ```
 mvn package -Dmaven.test.skip=true
