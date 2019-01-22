@@ -11,7 +11,5 @@ services:
       - KAFKA-STREAMS_TOPIC_SINK=person-after
       - KAFKA-STREAMS_EXPIRED_CHECK=true
       - KAFKA-STREAMS_VERBOSE=true
-    volumes:
-      - ${PWD}/tmp:/tmp  
     ports:
       - 8080:8080
