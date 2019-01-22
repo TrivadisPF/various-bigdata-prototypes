@@ -90,7 +90,7 @@ public class KafkaStreamsPassthroughGenericAvro {
 								System.out.println("==> new message forwared to sink topic .....");
 							} else {
 								System.out.println("updating key " + key + " with timestamp " + ctx.timestamp() + " in state-store (replacing previous timestamp " + stateStore.get(key) + ")");
-								System.out.println("==> more actual' message forwared to sink topic .....");
+								System.out.println("==> more actual message forwared to sink topic .....");
 							}
 						}
 						stateStore.put(key, ctx.timestamp());

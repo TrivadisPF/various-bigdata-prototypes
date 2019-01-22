@@ -1,0 +1,20 @@
+kafka:
+  bootstrap-servers: localhost:9092
+  schema-registry-url: http://localhost:8081
+  
+kafka-streams:  
+  applicationId: test
+  verbose: true
+  expired-check: true
+
+  topic:
+    source: person-before
+    sink: person-after
+
+spring:
+  application:
+    name: spring-boot-kafkastream
+  main:
+    allow-bean-definition-overriding: true    
+    
+debug: false

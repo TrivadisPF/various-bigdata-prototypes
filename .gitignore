@@ -4,3 +4,5 @@
 
 **/.idea
 **/target/**
+kafka/kafka-streams-check-for-expired-msgs/impl/src/kafka-remove-expired-msgs-sb/.mvn/**
+kafka/kafka-streams-check-for-expired-msgs/impl/src/kafka-remove-expired-msgs/.settings/**
