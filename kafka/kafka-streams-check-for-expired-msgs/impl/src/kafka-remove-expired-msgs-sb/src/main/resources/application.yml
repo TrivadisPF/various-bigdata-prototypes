@@ -13,7 +13,7 @@ kafka-streams:
 
 spring:
   application:
-    name: spring-boot-kafkastream
+    name: test
   main:
     allow-bean-definition-overriding: true    
     
