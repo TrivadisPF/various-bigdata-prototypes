@@ -11,7 +11,7 @@ version: '3'
 
 services:
   zookeeper:
-    image: confluentinc/cp-zookeeper:5.0.0
+    image: confluentinc/cp-zookeeper:5.1.0
     hostname: zookeeper
     ports:
       - "2181:2181"
@@ -21,7 +21,7 @@ services:
     restart: always
 
   broker-1:
-    image: confluentinc/cp-enterprise-kafka:5.0.0
+    image: confluentinc/cp-enterprise-kafka:5.1.0
     hostname: broker-1
     depends_on:
       - zookeeper
@@ -46,7 +46,7 @@ services:
     restart: always
 
   schema_registry:
-    image: confluentinc/cp-schema-registry:5.0.0
+    image: confluentinc/cp-schema-registry:5.1.0
     hostname: schema_registry
     depends_on:
       - zookeeper
@@ -62,7 +62,7 @@ services:
     restart: always
     
   kafka-client:
-    image: confluentinc/cp-kafka:5.0.0
+    image: confluentinc/cp-kafka:5.1.0
     hostname: kafka-client
     container_name: kafka-client
     depends_on:
