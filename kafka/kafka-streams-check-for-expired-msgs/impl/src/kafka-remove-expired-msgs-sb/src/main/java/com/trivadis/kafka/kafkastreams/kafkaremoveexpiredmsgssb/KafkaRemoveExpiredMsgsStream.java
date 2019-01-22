@@ -81,14 +81,17 @@ public class KafkaRemoveExpiredMsgsStream {
         return new KafkaStreamsConfiguration(props);
     }
 
-//    @Bean("app2StreamBuilder")
-//    public StreamsBuilderFactoryBean streamBuilderFactoryBean(KafkaStreamsConfiguration streamsConfig) {
-//      return new StreamsBuilderFactoryBean(streamsConfig);
-//    }
-
     @Bean
     public KStream<?, ?> kafkaStream(StreamsBuilder kStreamBuilder) {
-		StoreBuilder<KeyValueStore<GenericRecord, Long>> dedupStore = null;
+		if (isVerbose) {
+			System.out.println("Starting Passthrough from source topic " + sourceTopic + " to target topic " + targetTopic);
+			if (isExpiredCheck) {
+				System.out.println("with check for expired messages .....");
+			}
+		}
+
+    	
+    	StoreBuilder<KeyValueStore<GenericRecord, Long>> dedupStore = null;
 
 		// Create a state store manually.
 		final Map<String, String> serdeConfig = Collections.singletonMap("schema.registry.url", schemaRegistryUrl);
@@ -96,7 +99,7 @@ public class KafkaRemoveExpiredMsgsStream {
         final Serde<GenericRecord> avroSerde = new GenericAvroSerde();
         avroSerde.configure(serdeConfig, false); // `false` for record values
 
-        // if the exireCheck is enabled, the corresponding statestore needs to be created and added to the topology
+        // if the exireCheck is enabled, the corresponding state store needs to be created and added to the topology
 		if (isExpiredCheck) {
 	        dedupStore = Stores
 					.keyValueStoreBuilder(Stores.persistentKeyValueStore("DedupStore"), avroSerde, Serdes.Long())
