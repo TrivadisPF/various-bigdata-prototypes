@@ -87,7 +87,25 @@ services:
       KAFKA_ADVERTISED_LISTENERS: ignored
     ports:
       - "7073:7073"
+   
+  prometheus:
+    image: prom/prometheus
+    hostname: prometheus
+    volumes:
+      - ./prometheus/:/etc/prometheus/
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    ports:
+      - "9090:9090"
+    restart: always
 
+  grafana:
+    image: grafana/grafana
+    hostname: grafana
+    ports:
+      - "3000:3000"
+    restart: always
+    
   schema-registry-ui:
     image: landoop/schema-registry-ui
     hostname: schema-registry-ui
