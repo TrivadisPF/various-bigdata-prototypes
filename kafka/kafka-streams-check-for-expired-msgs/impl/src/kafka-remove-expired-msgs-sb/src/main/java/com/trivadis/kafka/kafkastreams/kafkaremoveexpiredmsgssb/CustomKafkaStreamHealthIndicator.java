@@ -9,7 +9,7 @@ import org.springframework.kafka.config.StreamsBuilderFactoryBean;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CustomKafkaHealthIndicator extends AbstractHealthIndicator {
+public class CustomKafkaStreamHealthIndicator extends AbstractHealthIndicator {
 	
 	@Autowired
 	private StreamsBuilderFactoryBean myKStreamBuilderFactoryBean;
@@ -17,9 +17,7 @@ public class CustomKafkaHealthIndicator extends AbstractHealthIndicator {
 	@Override
 	protected void doHealthCheck(Builder builder) throws Exception {
 		builder.up()
-			.withDetail("status", myKStreamBuilderFactoryBean.getKafkaStreams().state().toString())
-        	.withDetail("app", "Alive and Kicking")
-        	.withDetail("error", "Nothing! I'm good.");		
+			.withDetail("status", myKStreamBuilderFactoryBean.getKafkaStreams().state().toString());
 	}
 
 	
