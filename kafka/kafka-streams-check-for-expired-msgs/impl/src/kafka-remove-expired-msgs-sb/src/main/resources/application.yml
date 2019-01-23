@@ -18,3 +18,23 @@ spring:
     allow-bean-definition-overriding: true    
     
 debug: false
+
+info:
+  app:
+    name: "@project.name@"
+    description: "@project.description@"
+    version: "@project.version@"
+    encoding: "@project.build.sourceEncoding@"
+    java.version: "@java.version@"
+
+management:
+  server:port: 8080
+  endpoint:
+    enabled-by-default: true
+    health:
+      show-details: always
+    metrics:enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"
