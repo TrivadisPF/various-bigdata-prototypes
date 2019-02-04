@@ -11,7 +11,7 @@
   * Trading data available from <https://iextrading.com/developer/>
   * Java API: <https://github.com/WojciechZankowski/iextrading4j>
 
-* Working with OpenSky Data (<https://opensky-network.org/>, <https://opensky-network.org/network/explorer>)
+* Working with OpenSky Flight Data (<https://opensky-network.org/>, <https://opensky-network.org/network/explorer>)
   * Public API available: <https://opensky-network.org/apidoc/rest.html> 
   * Metadata: <https://opensky-network.org/datasets/metadata/>
   * Rest API: `curl -s "https://opensky-network.org/api/states/all" | python -m json.tool>`
@@ -73,7 +73,8 @@
 
 * Implementing Kafka Connect and/or StreamSets Sink for DataStax Graph
   * based on idea from Armasuisse W&T project
-  *  
+  * store data as efficiently as possible in the graph
+  * 1 message : many nodes 
 
 * Streamsets with Snowflake
   * <https://streamsets.com/blog/data-collecting-for-snowflake/>
