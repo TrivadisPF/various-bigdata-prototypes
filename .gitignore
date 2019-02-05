@@ -7,3 +7,4 @@
 kafka/kafka-streams-check-for-expired-msgs/impl/src/kafka-remove-expired-msgs-sb/.mvn/**
 kafka/kafka-streams-check-for-expired-msgs/impl/src/kafka-remove-expired-msgs/.settings/**
 kafka/kafka-streams-check-for-expired-msgs/impl/docker/prometheus/data/**
+kafka/kafka-streams-check-for-expired-msgs/impl/src/kafka-remove-expired-msgs/.settings/org.eclipse.jdt.core.prefs
