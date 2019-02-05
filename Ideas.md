@@ -89,12 +89,13 @@
   * with Zerocode: <https://github.com/authorjapps/zerocode>  
   * with Citrus Framework: <https://citrusframework.org/> 
  
-## "Kafka as a Database"
+## "Kafka as a Database" 
 
-* Using SQL to query from Kafka Topic
-  * Starburst Data (Presto): <https://www.starburstdata.com>
-  * Presto: <https://prestosql.io/docs/current/connector/kafka.html>
-  * Apache Drill: <https://drill.apache.org/docs/kafka-storage-plugin/>
+* Using Kafka as a Database ([project](kafka/kafka-as-a-database/README.md))
+  * SQL to query from Kafka Topic
+     * Starburst Data (Presto): <https://www.starburstdata.com>
+     * Presto: <https://prestosql.io/docs/current/connector/kafka.html>
+     * Apache Drill: <https://drill.apache.org/docs/kafka-storage-plugin/>
  
 ## Data Streaming
 
