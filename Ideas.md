@@ -55,8 +55,6 @@
     
 ## Data Sinks
 
-* Working with Prometheus and Grafana for both KSQL and Kafka Streams
-
 * Working with DataStax Kafka Connector
   * Blog: <https://www.datastax.com/2018/12/introducing-the-datastax-apache-kafka-connector>
   * Documentation: <https://github.com/datastax/kafka-examples>
@@ -70,6 +68,7 @@
 
 * Working with Neo4J
   * Kafka Connect Neo4J: <https://www.confluent.io/connector/kafka-connect-neo4j/>
+  * StreamSets and Neo4J: <https://neo4j.com/graphconnect-2018/session/ingesting-data-neo4j-mdm-streamsets>
 
 * Implementing Kafka Connect and/or StreamSets Sink for DataStax Graph
   * based on idea from Armasuisse W&T project
@@ -106,19 +105,62 @@
 * Implement Test with multiple message types per topic
   * <https://www.confluent.io/blog/put-several-event-types-kafka-topic/> 
   * <https://www.confluent.io/blog/put-several-event-types-kafka-topic/> 
+  * Maven Plugin for Starting Kafka Broker: <https://github.com/arturmkrtchyan/kafka-maven-plugin>
 
 ## Devops
 
 * Implement a Docker-Compose Stack Builder
   * Similar to Big Data Europe: <https://github.com/big-data-europe/app-stack-builder>, <https://cdn-images-1.medium.com/max/857/0*XqrlO-yBrWJhjzs9.png>
 
+* Kafka and Continous Integration / Deployment
+  * Maven Plugin for Kafka Topics: <https://github.com/Jean-Eudes/kafka-maven-plugin>
+
 * Stream Data Integration and Continous Integration / Deployment
   * How can StreamSets integrate with CI / CD
   * How can Kafka Connect integrate with CI / CD 
      * starting a Kafka Connect Connector instance through a Docker container 
      * possibly wrap it inside a Spring Boot application
+     * Kafka Connect Java REST API Client: <https://github.com/SourceLabOrg/kafka-connect-client>
 
-## Use Cases
+* Kafka Topic Managment
+  * Test [Kafkawize](https://github.com/kafkawize/kafkawize), a Self-Service Kafka Topic Management Portal and if useful add it to the streaming platform
+
+* Kafka and Ansible
+
+* (BigData) and Kubernetes
+  * Use [Strimizi](https://github.com/strimzi/strimzi-kafka-operator), the RedHat Kafka Operator to setup a Kafka environment
+  * Use Cassandra Operator
+
+* Monitoring with Prometheus and Grafana 
+
+## Potential Use Cases
 * Twitter
 * NYC Taxi
 * Flight Tracker
+
+## Assignments
+
+* Beatrix
+  * Kafka as a Database
+
+* Michael
+  * Sinks with Cassandra and Elasticsearch 
+
+* Markus
+  * Simulator auf Basis von CSV
+
+* Dennis
+  * Druid + Apache Superset
+
+* Aron
+  * Trading Source
+  * Sink Cassandra (DataStax Cassandra)
+
+* Markus 
+  * Monitoring von Kafka (mit Michael Mühlbayer und Gergely)
+  * Kafka and Ansible (Confluent)
+
+* Yves
+  * Sink InfluxDB    
+
+     
