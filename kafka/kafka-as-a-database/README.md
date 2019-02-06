@@ -42,6 +42,7 @@ We could also use KSQL and always start with offset 0 (at the beginning of the t
 1. Starburst Data (Presto): <https://www.starburstdata.com>
 2. Presto: <https://prestosql.io/docs/current/connector/kafka.html>
 3. Apache Drill: <https://drill.apache.org/docs/kafka-storage-plugin/> 
+4. Dremio: <https://www.dremio.com/> (Kafka not yet supported)
 
 
 

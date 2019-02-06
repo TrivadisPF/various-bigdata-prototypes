@@ -18,7 +18,7 @@
     
 ## Data Source Simulator
 
-* Simulating repeatable, time-based data to Kafka
+* Simulating repeatable, time-based data to Kafka ([project](streaming-sources/stream-simulator/README.md))
   * Generating data to Kafka based on timestamp with different data types
   * using an Excel sheet as input, holding the input
   * possibly to merge multiple excel sheets by time
@@ -96,7 +96,8 @@
      * Starburst Data (Presto): <https://www.starburstdata.com>
      * Presto: <https://prestosql.io/docs/current/connector/kafka.html>
      * Apache Drill: <https://drill.apache.org/docs/kafka-storage-plugin/>
- 
+     * Dremio: <https://www.dremio.com/> - does not yet support Kafka, but it's on the roadmap
+      
 ## Data Streaming
 
 * End-to-End Sample with Timestamp and Custom Headers
