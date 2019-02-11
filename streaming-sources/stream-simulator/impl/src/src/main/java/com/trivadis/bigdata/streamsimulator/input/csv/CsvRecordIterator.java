@@ -2,6 +2,7 @@ package com.trivadis.bigdata.streamsimulator.input.csv;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -31,9 +32,9 @@ public class CsvRecordIterator implements Iterator<Map<String, String>> {
         // skip empty input lines
         do {
             record = recordIterator.next();
-        } while (record.length == 0);
+        } while (record.length == 0 || record.length == 1 && record[0].isEmpty());
 
-        Map<String, String> mapped = new HashMap<>();
+        Map<String, String> mapped = new LinkedHashMap<>();
 
         for (int i = 0; i < header.length; i++) {
             mapped.put(header[i], record.length > i ? record[i] : "");

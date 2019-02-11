@@ -21,7 +21,7 @@ public class KafkaProducer {
     private long sendCount;
 
     @Autowired
-    private KafkaTemplate<String, String> kafkaTemplate;
+    private KafkaTemplate<String, Object> kafkaTemplate;
 
     /**
      * FIXME use generic message object to introduce other message types TODO
@@ -29,7 +29,7 @@ public class KafkaProducer {
      * 
      * @param message Message to publish
      */
-    public void sendMessage(String message) {
+    public void sendMessage(Object message) {
         logger.debug("Producing message: {}", message);
 
         kafkaTemplate.send(TOPIC, message);

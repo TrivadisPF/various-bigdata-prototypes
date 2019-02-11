@@ -52,7 +52,7 @@ public class StreamSimulatorApplication implements ApplicationRunner {
 
     private void process(InputSource inputSource) {
         inputSource.forEach(record -> {
-            producer.sendMessage(record.toString());
+            producer.sendMessage(record);
         });
     }
 
