@@ -127,6 +127,8 @@
 * Kafka Topic Managment
   * Test [Kafkawize](https://github.com/kafkawize/kafkawize), a Self-Service Kafka Topic Management Portal and if useful add it to the streaming platform
 
+## Management & Monitoring
+
 * Kafka and Ansible
 
 * (BigData) and Kubernetes
@@ -134,6 +136,14 @@
   * Use Cassandra Operator
 
 * Monitoring with Prometheus and Grafana 
+
+* Try Kafka Cruise Control
+  * Github: <https://github.com/linkedin/cruise-control> 
+  * [Introducing Kafka Cruise Control Frontend](https://engineering.linkedin.com/blog/2019/02/introducing-kafka-cruise-control-frontend)
+
+* Try Kafka Security Manager
+  * Github: <https://github.com/simplesteph/kafka-security-manager>
+  
 
 ## Potential Use Cases
 * Twitter
