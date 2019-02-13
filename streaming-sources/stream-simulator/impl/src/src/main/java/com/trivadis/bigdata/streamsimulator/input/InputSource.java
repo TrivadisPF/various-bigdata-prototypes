@@ -6,8 +6,7 @@ import java.util.Map;
 /**
  * Common interface for an input source
  * 
- * TODO don't limit to Map type, should be at least a JSON object or something
- * generic
+ * FIXME use Spring Integration Message concept
  * 
  * @author mzehnder
  */
