@@ -9,6 +9,7 @@ import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.jms.JmsSendingMessageHandler;
 import org.springframework.integration.json.ObjectToJsonTransformer;
 import org.springframework.jms.core.JmsTemplate;
+import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
 
 /**
@@ -30,9 +31,8 @@ public class ActiveMqConfig {
     }
 
     @Bean
-    public IntegrationFlow activeMqFlow() {
-        // TODO move hard coded channel name to application configuration
-        return IntegrationFlows.from("inboundChannel")
+    public IntegrationFlow activeMqFlow(MessageChannel inboundChannel) {
+        return IntegrationFlows.from(inboundChannel)
                 .transform(new ObjectToJsonTransformer())
                 .handle(jmsOutbound())
                 .get();

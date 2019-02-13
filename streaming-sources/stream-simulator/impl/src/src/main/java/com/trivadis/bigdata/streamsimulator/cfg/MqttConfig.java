@@ -10,6 +10,7 @@ import org.springframework.integration.json.ObjectToJsonTransformer;
 import org.springframework.integration.mqtt.core.DefaultMqttPahoClientFactory;
 import org.springframework.integration.mqtt.core.MqttPahoClientFactory;
 import org.springframework.integration.mqtt.outbound.MqttPahoMessageHandler;
+import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
 
 /**
@@ -41,9 +42,8 @@ public class MqttConfig {
     }
 
     @Bean
-    public IntegrationFlow mqttFlow() {
-        // TODO move hard coded channel name to application configuration
-        return IntegrationFlows.from("inboundChannel")
+    public IntegrationFlow mqttFlow(MessageChannel inboundChannel) {
+        return IntegrationFlows.from(inboundChannel)
                 .transform(new ObjectToJsonTransformer())
           .handle(mqttOutbound())
           .get();

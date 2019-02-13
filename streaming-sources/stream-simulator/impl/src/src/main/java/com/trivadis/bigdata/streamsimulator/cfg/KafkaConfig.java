@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlows;
+import org.springframework.messaging.MessageChannel;
 
 import com.trivadis.bigdata.streamsimulator.output.KafkaProducer;
 
@@ -25,9 +26,8 @@ public class KafkaConfig {
     }
     
     @Bean
-    public IntegrationFlow kafkaFlow() {
-        // TODO move hard coded channel name to application configuration
-        return IntegrationFlows.from("inboundChannel")
+    public IntegrationFlow kafkaFlow(MessageChannel inboundChannel) {
+        return IntegrationFlows.from(inboundChannel)
           .handle(kafkaProducer())
           .get();
     }
