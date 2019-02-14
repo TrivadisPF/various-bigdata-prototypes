@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "simulator")
 public class ApplicationProperties {
+    private boolean throttling = false;
     private Source source;
 
     public static class Source {
@@ -33,6 +34,10 @@ public class ApplicationProperties {
         private char quoteChar = '"';
         private char escapeChar = '\\';
         private int skipLines = 0;
+        private boolean skipEmptyLines = true;
+        private boolean firstLineIsHeader = true;
+        private String[] staticHeader = new String[0];
+        private int startIndex = 0;
         private boolean ignoreLeadingWhiteSpace = false;
         private boolean ignoreQuotations = false;
 
@@ -98,6 +103,38 @@ public class ApplicationProperties {
             this.ignoreQuotations = ignoreQuotations;
         }
 
+        public boolean isSkipEmptyLines() {
+            return skipEmptyLines;
+        }
+
+        public void setSkipEmptyLines(boolean skipEmptyLines) {
+            this.skipEmptyLines = skipEmptyLines;
+        }
+
+        public boolean isFirstLineIsHeader() {
+            return firstLineIsHeader;
+        }
+
+        public void setFirstLineIsHeader(boolean firstLineIsHeader) {
+            this.firstLineIsHeader = firstLineIsHeader;
+        }
+
+        public String[] getStaticHeader() {
+            return staticHeader;
+        }
+
+        public void setStaticHeader(String[] staticHeader) {
+            this.staticHeader = staticHeader;
+        }
+
+        public int getStartIndex() {
+            return startIndex;
+        }
+
+        public void setStartIndex(int startIndex) {
+            this.startIndex = startIndex;
+        }
+
     }
 
     public Source getSource() {
@@ -106,6 +143,14 @@ public class ApplicationProperties {
 
     public void setSource(Source source) {
         this.source = source;
+    }
+
+    public boolean isThrottling() {
+        return throttling;
+    }
+
+    public void setThrottling(boolean throttling) {
+        this.throttling = throttling;
     }
 
 }

@@ -11,12 +11,14 @@ import java.util.Map;
  * @author mzehnder
  */
 public class CsvRecordIterator implements Iterator<Map<String, String>> {
-    private String[] header;
-    private Iterator<String[]> recordIterator;
+    private final String[] header;
+    private final Iterator<String[]> recordIterator;
+    private final boolean skipEmptyLines;
 
-    public CsvRecordIterator(Iterator<String[]> recordIterator, String[] header) {
+    public CsvRecordIterator(Iterator<String[]> recordIterator, String[] header, boolean skipEmptyLines) {
         this.recordIterator = recordIterator;
-        this.header = header;
+        this.header = header == null ? new String[0] : header;
+        this.skipEmptyLines = skipEmptyLines;
     }
 
     @Override
@@ -31,12 +33,18 @@ public class CsvRecordIterator implements Iterator<Map<String, String>> {
         // skip empty input lines
         do {
             record = recordIterator.next();
-        } while (record.length == 0 || record.length == 1 && record[0].isEmpty());
+        } while (skipEmptyLines && (record.length == 0 || record.length == 1 && record[0].isEmpty()));
 
         Map<String, String> mapped = new LinkedHashMap<>();
 
-        for (int i = 0; i < header.length; i++) {
-            mapped.put(header[i], record.length > i ? record[i] : "");
+        if (header.length > 0) {
+            for (int i = 0; i < header.length; i++) {
+                mapped.put(header[i], record.length > i ? record[i] : "");
+            }
+        } else {
+            for (int i = 0; i < record.length; i++) {
+                mapped.put(String.format("column_%03d", i + 1), record[i]);
+            }
         }
 
         return mapped;

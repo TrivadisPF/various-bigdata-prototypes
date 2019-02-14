@@ -8,6 +8,9 @@ import java.nio.file.Paths;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.opencsv.CSVParser;
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
@@ -23,6 +26,7 @@ import com.trivadis.bigdata.streamsimulator.input.InputSource;
  * @author mzehnder
  */
 public class CsvSource implements InputSource {
+    private static final Logger logger = LoggerFactory.getLogger(CsvSource.class);
 
     private CSVReader csvReader;
     private String[] header;
@@ -43,8 +47,21 @@ public class CsvSource implements InputSource {
                 .withCSVParser(parser)
                 .build();
 
-        header = csvReader.readNext();
-        iterator = new CsvRecordIterator(csvReader.iterator(), header);
+        // read header from file or use static header
+        if (cfg.isFirstLineIsHeader()) {
+            header = csvReader.readNext();
+            logger.debug("Read CSV header: {}", (Object)header);
+        } else if (cfg.getStaticHeader().length > 0) {
+            header = cfg.getStaticHeader();
+            logger.debug("Using static header: {}", (Object)header);
+        }
+
+        if (cfg.getStartIndex() > 0) {
+            logger.info("Fast-forwarding to record #{}...", cfg.getStartIndex());
+            csvReader.skip(cfg.getStartIndex());
+        }
+
+        iterator = new CsvRecordIterator(csvReader.iterator(), header, cfg.isSkipEmptyLines());
     }
 
     public String[] getHeader() {

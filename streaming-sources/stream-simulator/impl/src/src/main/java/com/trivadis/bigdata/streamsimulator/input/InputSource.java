@@ -10,6 +10,7 @@ import java.util.Map;
  * 
  * @author mzehnder
  */
+@Deprecated
 public interface InputSource extends Closeable, Iterable<Map<String, String>> {
 
 }

@@ -32,10 +32,8 @@ public class ApplicationConfig {
 
     @Bean
     @ConditionalOnProperty(name = "csv")
-    public InputSource csvInputSource(@Value("${csv}") String csvFileName) throws IOException {
-        URI inputURI = URI.create(csvFileName);
-
-        return new CsvSource(inputURI, cfg.getSource().getCsv());
+    public InputSource csvInputSource(@Value("${csv}") URI csvFileName) throws IOException {
+        return new CsvSource(csvFileName, cfg.getSource().getCsv());
     }
 
 }
