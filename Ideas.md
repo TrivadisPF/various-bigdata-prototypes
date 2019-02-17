@@ -137,9 +137,10 @@
 
 * Monitoring with Prometheus and Grafana 
 
-* Try Kafka Cruise Control
+* Try Kafka Cruise Control and LinkedIn Burrow
   * Github: <https://github.com/linkedin/cruise-control> 
   * [Introducing Kafka Cruise Control Frontend](https://engineering.linkedin.com/blog/2019/02/introducing-kafka-cruise-control-frontend)
+  * Github: <https://github.com/linkedin/burrow> 
 
 * Try Kafka Security Manager
   * Github: <https://github.com/simplesteph/kafka-security-manager>
