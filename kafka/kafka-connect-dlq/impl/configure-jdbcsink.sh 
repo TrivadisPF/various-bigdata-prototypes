@@ -1,0 +1,34 @@
+#!/bin/bash
+
+echo "removing JDBC Sink Connector"
+
+curl -X "DELETE" "$DOCKER_HOST_IP:8083/connectors/jdbc-sink"
+
+echo "creating JDBC Sink Connector"
+
+curl -X "POST" "$DOCKER_HOST_IP:8083/connectors" \
+     -H "Content-Type: application/json" \
+     --data '{
+  "name": "jdbc-sink",
+  "config": {  
+      "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
+      "tasks.max": "2",
+      "topics": "testcomp",
+      "connection.url": "jdbc:postgresql://db/sample?user=sample&password=sample",
+      "auto.create": "true",
+    "insert.mode":"upsert",
+    "pk.fields":"id",
+    "pk.mode":"record_value",      
+    "key.converter":"org.apache.kafka.connect.storage.StringConverter",
+    "key.converter.schemas.enable":"false",  
+    "value.converter":"org.apache.kafka.connect.json.JsonConverter",
+    "value.converter.schemas.enable":"true",
+    "errors.retry.timeout": "30000",
+    "errors.retry.delay.max.ms":"3000",
+    "errors.tolerance": "all",
+	"errors.log.enable": "true",
+	"errors.log.include.messages": "true",
+	"errors.deadletterqueue.topic.name": "dlq",
+	"errors.deadletterqueue.context.headers.enable" : "true"      
+    }
+}'
