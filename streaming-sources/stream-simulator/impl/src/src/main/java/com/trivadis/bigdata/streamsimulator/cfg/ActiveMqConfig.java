@@ -13,8 +13,7 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
 
 /**
- * ActiveMQ specific configuration. Activated by application property
- * simulater.output=activemq
+ * ActiveMQ specific configuration. Activated by application property simulater.output=activemq
  * 
  * @author mzehnder
  */
@@ -31,8 +30,8 @@ public class ActiveMqConfig {
     }
 
     @Bean
-    public IntegrationFlow activeMqFlow(MessageChannel inboundChannel) {
-        return IntegrationFlows.from(inboundChannel)
+    public IntegrationFlow activeMqFlow(MessageChannel outboundChannel) {
+        return IntegrationFlows.from(outboundChannel)
                 .transform(new ObjectToJsonTransformer())
                 .handle(jmsOutbound())
                 .get();

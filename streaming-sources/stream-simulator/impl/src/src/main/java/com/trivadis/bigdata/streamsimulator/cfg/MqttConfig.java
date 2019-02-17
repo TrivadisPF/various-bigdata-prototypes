@@ -42,8 +42,8 @@ public class MqttConfig {
     }
 
     @Bean
-    public IntegrationFlow mqttFlow(MessageChannel inboundChannel) {
-        return IntegrationFlows.from(inboundChannel)
+    public IntegrationFlow mqttFlow(MessageChannel outboundChannel) {
+        return IntegrationFlows.from(outboundChannel)
                 .transform(new ObjectToJsonTransformer())
           .handle(mqttOutbound())
           .get();

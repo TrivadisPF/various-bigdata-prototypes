@@ -1,9 +1,11 @@
 package com.trivadis.bigdata.streamsimulator.cfg;
 
-import java.nio.charset.Charset;
+import java.io.File;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
+
+import com.trivadis.bigdata.streamsimulator.input.csv.CsvProperties;
 
 /**
  * Application specific configuration properties
@@ -13,128 +15,50 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "simulator")
 public class ApplicationProperties {
-    private boolean throttling = false;
+    private File inputDirectory;
+    private Throttling throttling;
     private Source source;
 
-    public static class Source {
-        private Csv csv;
+    public static class Throttling {
+        private boolean enabled = false;
+        private long fixedDelay = 1000;
+        private long maxMessagesPerPoll = 1;
 
-        public Csv getCsv() {
-            return csv;
+        public boolean isEnabled() {
+            return enabled;
         }
 
-        public void setCsv(Csv csv) {
-            this.csv = csv;
+        public void setEnabled(boolean enabled) {
+            this.enabled = enabled;
+        }
+
+        public long getFixedDelay() {
+            return fixedDelay;
+        }
+
+        public void setFixedDelay(long fixedDelay) {
+            this.fixedDelay = fixedDelay;
+        }
+
+        public long getMaxMessagesPerPoll() {
+            return maxMessagesPerPoll;
+        }
+
+        public void setMaxMessagesPerPoll(long maxMessagesPerPoll) {
+            this.maxMessagesPerPoll = maxMessagesPerPoll;
         }
     }
 
-    public static class Csv {
-        private Charset charset = Charset.forName("UTF-8");
-        private char separator = ',';
-        private char quoteChar = '"';
-        private char escapeChar = '\\';
-        private int skipLines = 0;
-        private boolean skipEmptyLines = true;
-        private boolean firstLineIsHeader = true;
-        private String[] staticHeader = new String[0];
-        private int startIndex = 0;
-        private boolean ignoreLeadingWhiteSpace = false;
-        private boolean ignoreQuotations = false;
+    public static class Source {
+        private CsvProperties csv;
 
-        public Charset getCharset() {
-            return charset;
+        public CsvProperties getCsv() {
+            return csv;
         }
 
-        public void setCharset(Charset charset) {
-            this.charset = charset;
+        public void setCsv(CsvProperties csv) {
+            this.csv = csv;
         }
-
-        public char getSeparator() {
-            return separator;
-        }
-
-        public void setSeparator(String separator) {
-            if (separator.length() == 1) {
-                this.separator = separator.charAt(0);
-            }
-        }
-
-        public char getQuoteChar() {
-            return quoteChar;
-        }
-
-        public void setQuoteChar(String quoteChar) {
-            if (quoteChar.length() == 1) {
-                this.quoteChar = quoteChar.charAt(0);
-            }
-        }
-
-        public char getEscapeChar() {
-            return escapeChar;
-        }
-
-        public void setEscapeChar(String escapeChar) {
-            if (escapeChar.length() == 1) {
-                this.escapeChar = escapeChar.charAt(0);
-            }
-        }
-
-        public int getSkipLines() {
-            return skipLines;
-        }
-
-        public void setSkipLines(int skipLines) {
-            this.skipLines = skipLines;
-        }
-
-        public boolean isIgnoreLeadingWhiteSpace() {
-            return ignoreLeadingWhiteSpace;
-        }
-
-        public void setIgnoreLeadingWhiteSpace(boolean ignoreLeadingWhiteSpace) {
-            this.ignoreLeadingWhiteSpace = ignoreLeadingWhiteSpace;
-        }
-
-        public boolean isIgnoreQuotations() {
-            return ignoreQuotations;
-        }
-
-        public void setIgnoreQuotations(boolean ignoreQuotations) {
-            this.ignoreQuotations = ignoreQuotations;
-        }
-
-        public boolean isSkipEmptyLines() {
-            return skipEmptyLines;
-        }
-
-        public void setSkipEmptyLines(boolean skipEmptyLines) {
-            this.skipEmptyLines = skipEmptyLines;
-        }
-
-        public boolean isFirstLineIsHeader() {
-            return firstLineIsHeader;
-        }
-
-        public void setFirstLineIsHeader(boolean firstLineIsHeader) {
-            this.firstLineIsHeader = firstLineIsHeader;
-        }
-
-        public String[] getStaticHeader() {
-            return staticHeader;
-        }
-
-        public void setStaticHeader(String[] staticHeader) {
-            this.staticHeader = staticHeader;
-        }
-
-        public int getStartIndex() {
-            return startIndex;
-        }
-
-        public void setStartIndex(int startIndex) {
-            this.startIndex = startIndex;
-        }
-
     }
 
     public Source getSource() {
@@ -145,11 +69,19 @@ public class ApplicationProperties {
         this.source = source;
     }
 
-    public boolean isThrottling() {
+    public File getInputDirectory() {
+        return inputDirectory;
+    }
+
+    public void setInputDirectory(File inputDirectory) {
+        this.inputDirectory = inputDirectory;
+    }
+
+    public Throttling getThrottling() {
         return throttling;
     }
 
-    public void setThrottling(boolean throttling) {
+    public void setThrottling(Throttling throttling) {
         this.throttling = throttling;
     }
 
