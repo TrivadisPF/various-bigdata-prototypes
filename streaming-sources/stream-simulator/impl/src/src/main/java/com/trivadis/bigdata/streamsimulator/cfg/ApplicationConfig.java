@@ -1,6 +1,10 @@
 package com.trivadis.bigdata.streamsimulator.cfg;
 
 import java.io.File;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +27,7 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.handler.annotation.Header;
 
 import com.trivadis.bigdata.streamsimulator.input.csv.CsvFileMessageSplitter;
+import com.trivadis.bigdata.streamsimulator.transform.TransformDates;
 
 /**
  * Common application configuration of message channels and flows.
@@ -104,11 +109,22 @@ public class ApplicationConfig {
      */
     @Bean
     public IntegrationFlow inputFilesFlow() {
+        // TODO hard coded POC: make configurable
+        LocalDate referenceDate = LocalDate.of(2018, 6, 1);
+        String dateFieldNameRegex = ".*datetime.*";
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        Period adjustPeriod = Period.between(referenceDate, LocalDate.now());
+        Duration adjustDuration = Duration.ofSeconds(0l);
+
         return addThrottling(IntegrationFlows
                 .from(fileInputChannel())
                 .log(LoggingHandler.Level.INFO)
                 // TODO add router for different file types - at the moment we can only handle CSV files
-                .split(csvFileMessageSplitter()))
+                .split(csvFileMessageSplitter())
+                // TODO make TransformDates optional and support multiple different date fields (date / dateTime / time
+                // zones)
+                .transform(new TransformDates(adjustPeriod, adjustDuration, dateFieldNameRegex, format)))
                         .channel(outboundChannel())
                         .get();
     }
