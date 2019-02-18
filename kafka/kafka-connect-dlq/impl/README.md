@@ -1,11 +1,14 @@
-# Kafka Connect JDBC Sink Error Handling
+# Kafka Connect DLQ Feature Tests with JDBC Sink 
 
 ## Setup
 
 Create a topic with `cleanup.policy` set to `compact`:
 
 ```
-docker exec -ti broker-1 kafka-topics --create --zookeeper zookeeper-1:2181 --topic person --replication-factor 3 --partitions 3 --config cleanup.policy=compact
+docker exec -ti broker-1 kafka-topics --create \
+--zookeeper zookeeper-1:2181 --topic person \
+--replication-factor 3 --partitions 3 \
+--config cleanup.policy=compact
 ```
 
 Create the JDBC connector:
