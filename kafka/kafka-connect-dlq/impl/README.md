@@ -1,4 +1,4 @@
-# Kafka Connect DLQ Feature Tests with JDBC Sink 
+# Kafka Connect Error Handling with JDBC Sink 
 
 ## Setup
 
