@@ -153,27 +153,6 @@
 
 ## Assignments
 
-* Beatrix
-  * Kafka as a Database
-
-* Michael
-  * Sinks with Cassandra and Elasticsearch 
-
-* Markus
-  * Simulator auf Basis von CSV
-
-* Dennis
-  * Druid + Apache Superset
-
-* Aron
-  * Trading Source
-  * Sink Cassandra (DataStax Cassandra)
-
-* Markus 
-  * Monitoring von Kafka (mit Michael Mühlbayer und Gergely)
-  * Kafka and Ansible (Confluent)
-
-* Yves
-  * Sink InfluxDB    
+have been moved to Trialog: https://trialog.trivadis.com/trialog/docs/DOC-24984
 
      
