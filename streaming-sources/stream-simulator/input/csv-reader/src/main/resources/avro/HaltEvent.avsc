@@ -1,0 +1,74 @@
+{
+  "type" : "record",
+  "namespace" : "ch.trivadis.init.avro.v1",
+  "name" : "HaltEvent",
+  "description" : "Init Halt Event",
+  "fields" : [
+    { "type" : ["string", "null"],
+      "name" : "vehicleCode"
+    },
+    { "type" : "long",
+      "name" : "odometer"
+    },
+    { "type" : "long",
+      "name" : "actualArrivalTime"
+    },
+    { "type" : "long",
+      "name" : "nominalArrivalTime"
+    },
+    { "type" : "long",
+      "name" : "actualDepartureTime"
+    },
+    { "type" : "long",
+      "name" : "nominalDepartureTime"
+    },
+    { "type" : ["string", "null"],
+      "name" : "stopCode"
+    },
+    { "type" : "long",
+      "name" : "positionNo"
+    },
+    { "type" : "long",
+      "name" : "scheduledDistance"
+    },
+    { "type" : "long",
+      "name" : "doorCriteria"
+    },
+    { "type" : "long",
+      "name" : "locationType"
+    },
+    { "type" : "long",
+      "name" : "stopType"
+    },
+    { "type" : "long",
+      "name" : "lastStopFlag"
+    },
+    { "type" : "double",
+      "name" : "actualGPSLongitude"
+    },
+    { "type" : "double",
+      "name" : "actualGPSLatitude"
+    },
+    { "type" : "int",
+      "name" : "patternIndex"
+    },
+    { "type" : ["string", "null"],
+      "name" : "patternPostition"
+    },
+    { "type" : "int",
+      "name" : "doorOpenTime"
+    },
+    { "type" : ["string", "null"],
+      "name" : "pointCode"
+    },
+    { "type" : ["string", "null"],
+      "name" : "pointRole"
+    },
+    { "type" : ["string", "null"],
+      "name" : "action"
+    },
+    { "type" : ["string", "null"],
+      "name" : "planningType"
+    }
+ ]
+}
