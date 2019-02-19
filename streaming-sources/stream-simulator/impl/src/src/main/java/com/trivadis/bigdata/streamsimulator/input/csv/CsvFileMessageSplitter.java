@@ -9,6 +9,7 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,7 @@ import com.opencsv.CSVParser;
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
+import com.trivadis.bigdata.streamsimulator.transform.HeaderProvider;
 
 /**
  * The {@link AbstractMessageSplitter} implementation to split a CSV {@link File} Message payload to individual records.
@@ -36,13 +38,12 @@ import com.opencsv.CSVReaderBuilder;
 public class CsvFileMessageSplitter extends AbstractMessageSplitter {
     private static final Logger log = LoggerFactory.getLogger(CsvFileMessageSplitter.class);
 
-    private CsvProperties csvCfg;
+    private final CsvProperties csvCfg;
+    private final HeaderProvider<Map<String, String>> headerProvider;
 
-    public CsvFileMessageSplitter() {
-    }
-
-    public CsvFileMessageSplitter(CsvProperties csvCfg) {
+    public CsvFileMessageSplitter(CsvProperties csvCfg, HeaderProvider<Map<String, String>> headerProvider) {
         this.csvCfg = csvCfg;
+        this.headerProvider = headerProvider;
     }
 
     @Override
@@ -99,20 +100,12 @@ public class CsvFileMessageSplitter extends AbstractMessageSplitter {
                 csvReader.skip(csvCfg.getStartIndex());
             }
 
-            return new CsvMessageIterator(csvReader.iterator(), header, csvCfg.isSkipEmptyLines());
+            return new CsvMessageIterator(csvReader.iterator(), header, csvCfg.isSkipEmptyLines(), headerProvider);
         } catch (IOException e) {
             String msg = "Unable to read file: " + e.getMessage();
             log.error(msg);
             throw new MessageHandlingException(message, msg, e);
         }
-    }
-
-    public CsvProperties getCsvCfg() {
-        return csvCfg;
-    }
-
-    public void setCsvCfg(CsvProperties csvCfg) {
-        this.csvCfg = csvCfg;
     }
 
 }

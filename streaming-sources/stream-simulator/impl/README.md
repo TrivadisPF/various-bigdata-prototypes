@@ -7,9 +7,12 @@ Tasks and milestones:
 
 - [x] Maven project structure with Spring Boot application shell
 - [x] Sending static test data in a simple format (e.g. CSV) to a Kafka topic
-- [ ] Throttling of message sending (x msg/sec)
-- [ ] Configurable speedup and slowdown based on timestamp in input data
+- [x] Throttling of message sending (x msg/sec)
+- [x] Configurable speedup and slowdown based on timestamp in input data
+
       (e.g. 1h in input data relates to 1m for sending data)
+
+- [ ] Speedup and slowdown with processing queue to avoid reading all messages into memory
 - [ ] Multiple topics
 - [ ] Docker image
 - [ ] Avro support
@@ -28,16 +31,15 @@ This project page will be updated with detailed information after the first proo
 ## Technology stack
 
 - Java 8
-- Spring Boot 2.1
-- Kafka 2.1
+- [Spring Boot 2.1](https://spring.io/projects/spring-boot)
+- [Spring Integeration](https://spring.io/projects/spring-integration)
+- [Kafka 2.1](https://kafka.apache.org/)
+- [Docker CE](https://www.docker.com/)
 - Maven 3.6
-- Docker CE
 
 ### Framework evaluation
 The following tools and framworks are still evaluated:
 
-- [Spring Integeration](https://spring.io/projects/spring-integration)
-  Most likely a good fit for all extended features like dynamic message transformation with SpEL
 - [Bucket4j - rate-limiting library based on token-bucket algorithm](https://github.com/vladimir-bukhtoyarov/bucket4j)
 - Ringbuffer like the [LMAX Disruptor](http://lmax-exchange.github.io/disruptor/)
   [LMAX Architecture article by Martin Fowler](https://martinfowler.com/articles/lmax.html)
