@@ -1,0 +1,82 @@
+version: '3.1'
+
+services:
+  dse-seed_node:
+    image: "datastax/dse-server"
+    container_name: 'dse-seed_node'
+    hostname: dse-seed_node
+    environment:
+      - DS_LICENSE=accept
+    cap_add:
+      - IPC_LOCK
+    ulimits:
+      memlock: -1
+    networks: 
+      - tvd_dockernet
+
+  dse-node:
+    image: "datastax/dse-server"
+    container_name: 'dse-node'
+    hostname: dse-node
+    environment:
+      - DS_LICENSE=accept
+      - SEEDS=dse-seed_node
+    links:
+      - dse-seed_node
+    cap_add:
+      - IPC_LOCK
+    ulimits:
+      memlock: -1
+    expose:
+      - "9042"
+    ports:
+      - 9042:9042
+    networks: 
+      - tvd_dockernet
+
+  studio:
+    image: "datastax/dse-studio"
+    container_name: 'dse-studio'
+    hostname: dse-studio
+    environment:
+      - DS_LICENSE=accept
+    links:
+      - dse-node
+    ports:
+      - 9091:9091
+    networks: 
+      - tvd_dockernet
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    container_name: zookeeper
+    hostname: zookeeper
+    ports:
+      - "2181:2181"
+    networks: 
+      - tvd_dockernet
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+      ZOO_MY_ID: 1
+      ZOO_PORT: 2181
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    container_name: kafka
+    hostname: kafka
+    ports:
+      - "9092:9092"
+    networks: 
+      - tvd_dockernet
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://127.0.0.1:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_CREATE_TOPICS: "test:1:1"
+
+networks: 
+  tvd_dockernet:
