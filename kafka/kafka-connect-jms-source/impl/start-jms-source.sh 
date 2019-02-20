@@ -1,0 +1,18 @@
+#!/bin/bash
+
+echo "creating JMS Source Connector"
+
+curl -X "POST" "$DOCKER_HOST_IP:8083/connectors" \
+     -H "Content-Type: application/json" \
+     --data '{
+    "name": "jms-source",
+    "config": {
+        "name": "jms-source",
+        "connector.class": "com.datamountaineer.streamreactor.connect.jms.source.JMSSourceConnector",
+        "connect.jms.initial.context.factory": "org.apache.activemq.jndi.ActiveMQInitialContextFactory",
+        "tasks.max": "1",
+        "connect.jms.connection.factory": "ConnectionFactory",
+        "connect.jms.url": "tcp://activemq:61616",
+        "connect.jms.kcql": "INSERT INTO jms-queue SELECT * FROM jms_queue WITHTYPE QUEUE"
+    }
+}'
