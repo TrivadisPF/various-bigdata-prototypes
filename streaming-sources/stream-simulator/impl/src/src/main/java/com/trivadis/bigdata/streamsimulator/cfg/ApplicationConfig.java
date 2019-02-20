@@ -1,10 +1,6 @@
 package com.trivadis.bigdata.streamsimulator.cfg;
 
 import java.io.File;
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.Period;
-import java.time.format.DateTimeFormatter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +22,10 @@ import org.springframework.integration.handler.LoggingHandler;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.handler.annotation.Header;
 
+import com.trivadis.bigdata.streamsimulator.cfg.ApplicationProperties.Speedup;
 import com.trivadis.bigdata.streamsimulator.input.csv.CsvFileMessageSplitter;
+import com.trivadis.bigdata.streamsimulator.msg.MsgHeader;
+import com.trivadis.bigdata.streamsimulator.transform.CsvDelayHeaderProvider;
 import com.trivadis.bigdata.streamsimulator.transform.TransformDates;
 
 /**
@@ -109,46 +108,72 @@ public class ApplicationConfig {
      */
     @Bean
     public IntegrationFlow inputFilesFlow() {
-        // TODO hard coded POC: make configurable
-        LocalDate referenceDate = LocalDate.of(2018, 6, 1);
-        String dateFieldNameRegex = ".*datetime.*";
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-        Period adjustPeriod = Period.between(referenceDate, LocalDate.now());
-        Duration adjustDuration = Duration.ofSeconds(0l);
-
-        return addThrottling(IntegrationFlows
+        IntegrationFlowBuilder builder = IntegrationFlows
                 .from(fileInputChannel())
                 .log(LoggingHandler.Level.INFO)
                 // TODO add router for different file types - at the moment we can only handle CSV files
-                .split(csvFileMessageSplitter())
-                // TODO make TransformDates optional and support multiple different date fields (date / dateTime / time
-                // zones)
-                .transform(new TransformDates(adjustPeriod, adjustDuration, dateFieldNameRegex, format)))
-                        .channel(outboundChannel())
-                        .get();
+                .split(csvFileMessageSplitter(cfg.getReferenceTimestamp(), cfg.getSpeedup()));
+
+        builder = addMessageDateFieldTransformer(builder);
+        builder = addMessageTimeFlux(builder);
+        builder = addThrottling(builder);
+
+        return builder
+                .channel(outboundChannel())
+                .get();
     }
 
     @Bean
-    public CsvFileMessageSplitter csvFileMessageSplitter() {
-        return new CsvFileMessageSplitter(cfg.getSource().getCsv());
+    public CsvFileMessageSplitter csvFileMessageSplitter(long referenceTimestamp, Speedup speedup) {
+        CsvDelayHeaderProvider headerProvider = speedup.isEnabled()
+                ? new CsvDelayHeaderProvider(referenceTimestamp, speedup)
+                : null;
+        return new CsvFileMessageSplitter(cfg.getSource().getCsv(), headerProvider);
+    }
+
+    IntegrationFlowBuilder addMessageDateFieldTransformer(IntegrationFlowBuilder builder) {
+        if (!cfg.getAdjustDates().isEnabled()) {
+            return builder;
+        }
+
+        // TODO support multiple different date fields (date / dateTime / time zones)
+        return builder.transform(new TransformDates(cfg.getAdjustDuration(), cfg.getAdjustDates()));
+    }
+
+    IntegrationFlowBuilder addMessageTimeFlux(IntegrationFlowBuilder builder) {
+        if (!cfg.getSpeedup().isEnabled()) {
+            return builder;
+        }
+
+        if (cfg.getSpeedup().isSimpleMode()) {
+            logger.warn("Using simple in-memory delayer, all messages will be loaded into memory!");
+            return builder
+                    .delay("delayer.messageGroupId", d -> d.delayExpression("headers['" + MsgHeader.DELAY + "']"));
+
+        } else {
+            logger.error("FIXME Only simple speedup handling with reading all messages into memory is implemented.");
+            System.exit(1);
+        }
+        return builder;
     }
 
     // quick and dirty throttling test
     // TODO shutdown poller after last msg, otherwise application keeps running (use an Advice?)
     IntegrationFlowBuilder addThrottling(IntegrationFlowBuilder builder) {
-        if (cfg.getThrottling().isEnabled()) {
-            logger.info("Enabled throttling with max: {} msg / {} ms", cfg.getThrottling().getMaxMessagesPerPoll(),
-                    cfg.getThrottling().getFixedDelay());
-
-            return builder
-                    .channel(new QueueChannel(100))
-                    .bridge(e -> e.poller(Pollers.fixedDelay(cfg.getThrottling().getFixedDelay())
-                            .maxMessagesPerPoll(cfg.getThrottling().getMaxMessagesPerPoll()))
-                            .id("throttling-poller")
-                            .role("input-poller-group"));
+        if (!cfg.getThrottling().isEnabled()) {
+            return builder;
         }
-        return builder;
+
+        logger.info("Enabled throttling with max: {} msg / {} ms", cfg.getThrottling().getMaxMessagesPerPoll(),
+                cfg.getThrottling().getFixedDelay());
+
+        return builder
+                .channel(new QueueChannel(cfg.getThrottling().getMaxMessagesPerPoll() * 2))
+                .bridge(e -> e.poller(Pollers.fixedDelay(cfg.getThrottling().getFixedDelay())
+                        .maxMessagesPerPoll(cfg.getThrottling().getMaxMessagesPerPoll()))
+                        .id("throttling-poller")
+                        .role("input-poller-group"));
     }
 
     @Bean

@@ -3,11 +3,12 @@ package com.trivadis.bigdata.streamsimulator.transform;
 import java.text.ParseException;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import com.trivadis.bigdata.streamsimulator.cfg.ApplicationProperties.AdjustDates;
 
 /**
  * Adjust date values in a map by a given date and time offset.
@@ -16,16 +17,13 @@ import java.util.regex.Pattern;
  */
 public class TransformDates {
     private final Pattern fieldNamePattern;
-    private final Period adjustPeriod;
     private final Duration adjustDuration;
     private final DateTimeFormatter formatter;
 
-    public TransformDates(Period adjustPeriod, Duration adjustDuration, String fieldNameRegex,
-            DateTimeFormatter formatter) {
-        this.adjustPeriod = adjustPeriod;
+    public TransformDates(Duration adjustDuration, AdjustDates adjustment) {
         this.adjustDuration = adjustDuration;
-        this.fieldNamePattern = Pattern.compile(fieldNameRegex);
-        this.formatter = formatter;
+        this.fieldNamePattern = Pattern.compile(adjustment.getDateFieldNameRegex());
+        this.formatter = DateTimeFormatter.ofPattern(adjustment.getDateFieldPattern());
     }
 
     /**
@@ -41,7 +39,7 @@ public class TransformDates {
         for (String key : dataMap.keySet()) {
             if (m.reset(key).matches()) {
                 LocalDateTime date = LocalDateTime.parse(dataMap.get(key), formatter);
-                dataMap.put(key, date.plus(adjustPeriod).plus(adjustDuration).format(formatter));
+                dataMap.put(key, date.plus(adjustDuration).format(formatter));
             }
         }
         return dataMap;

@@ -6,10 +6,11 @@ This project will implement a solution for consistently and repeatedly simulate 
 What we **need** to solve with this project:
 
 * simulator should produce messages based on time
+* input files can be of any size and must be streamed (i.e. not being read completely into memory)
 
 What we **do not have** to solve with this project:
 
-* -
+* graphical configuration frontend
 
 ## High-Level overview
 
