@@ -85,22 +85,22 @@ On the **Response** tab select the **Send Response to Origin** checkbox.
 5. A commit message will be sent to the `__consumer_offsets` topic (and shown in the console consumer).
 
 	```
-[sdc-test-c1,sdc-test-1,0]::OffsetAndMetadata(offset=1, leaderEpoch=Optional.empty, metadata=, commitTimestamp=1550679310699, expireTimestamp=None)
-```
+	[sdc-test-c1,sdc-test-1,0]::OffsetAndMetadata(offset=1, leaderEpoch=Optional.empty, metadata=, commitTimestamp=1550679310699, expireTimestamp=None)
+	```
 
 **Test what happens when the HTTP server is not reachable**
 
 1. For simulating an outage of the HTTP server, let's stop the container
 
 	```
-docker stop httpserver
-```
+	docker stop httpserver
+	```
 
 2. Produce another test messsage to the Kafka topic:
 
 	```
-echo '{ "f1":"v1" }' | kafkacat -b localhost -t sdc-test-1
-```
+	echo '{ "f1":"v1" }' | kafkacat -b localhost -t sdc-test-1
+	```
 
 3. Immediately the pipeline will get stopped automatically, due to the HTTP server not being reachable.
 	
@@ -113,8 +113,8 @@ echo '{ "f1":"v1" }' | kafkacat -b localhost -t sdc-test-1
 6. Let's produce another test messsage to the Kafka topic while the pipeline is stopped:
 
 	```
-echo '{ "f1":"v1" }' | kafkacat -b localhost -t sdc-test-1
-```
+	echo '{ "f1":"v1" }' | kafkacat -b localhost -t sdc-test-1
+	```
 
 	It will just be queued in the topic and processed when restarting the pipeline.
 
@@ -123,16 +123,16 @@ echo '{ "f1":"v1" }' | kafkacat -b localhost -t sdc-test-1
 1. Restart the HTTP server
 
 	```
-docker start httpserver
-```
+	docker start httpserver
+	```
 
 2. Start the pipeline and you should see that 2 records are processed.
 
 3. Also watch the `__consumer_offsets` topic consumer to see that two offset commits have been sent, one for each partition (due to not producing with a key).  
 
 	```
-[sdc-test-c1,sdc-test-1,1]::OffsetAndMetadata(offset=1, leaderEpoch=Optional.empty, metadata=, commitTimestamp=1550679901226, expireTimestamp=None)
-[sdc-test-c1,sdc-test-1,0]::OffsetAndMetadata(offset=2, leaderEpoch=Optional.empty, metadata=, commitTimestamp=1550679901226, expireTimestamp=None)
+	[sdc-test-c1,sdc-test-1,1]::OffsetAndMetadata(offset=1, leaderEpoch=Optional.empty, metadata=, commitTimestamp=1550679901226, expireTimestamp=None)
+	[sdc-test-c1,sdc-test-1,0]::OffsetAndMetadata(offset=2, leaderEpoch=Optional.empty, metadata=, commitTimestamp=1550679901226, expireTimestamp=None)
 	```
 
 The test showed that we have not been losing a message due to the outage of the HTTP Server. 	
