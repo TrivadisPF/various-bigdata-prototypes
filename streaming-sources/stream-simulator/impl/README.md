@@ -10,9 +10,9 @@ Tasks and milestones:
 - [x] Throttling of message sending (x msg/sec)
 - [x] Configurable speedup and slowdown based on timestamp in input data
 
-      (e.g. 1h in input data relates to 1m for sending data)
+    (e.g. 1h in input data relates to 1m for sending data)
 
-- [ ] Speedup and slowdown with processing queue to avoid reading all messages into memory
+- [x] Speedup and slowdown with processing queue to avoid reading all messages into memory
 - [ ] Multiple topics
 - [ ] Docker image
 - [ ] Avro support
