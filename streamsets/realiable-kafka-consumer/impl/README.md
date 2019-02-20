@@ -69,16 +69,16 @@ On the **Response** tab select the **Send Response to Origin** checkbox.
 2. In a separte terminal window, stat a consumer on the `__consumer_offsets` topic.
 
 	```
-docker exec -ti broker-1 kafka-console-consumer \
---formatter "kafka.coordinator.group.GroupMetadataManager\$OffsetsMessageFormatter" \
---bootstrap-server broker-1:9092 --topic __consumer_offsets 
-```
+	docker exec -ti broker-1 kafka-console-consumer \
+	--formatter "kafka.coordinator.group.GroupMetadataManager\$OffsetsMessageFormatter" \
+	--bootstrap-server broker-1:9092 --topic __consumer_offsets 
+	```
 
 3. Using Kafkacat, let's produce a test messsage to the Kafka topic when the HTTP server is running:
 
 	```
-echo '{ "f1":"v1" }' | kafkacat -b localhost -t sdc-test-1
-```
+	echo '{ "f1":"v1" }' | kafkacat -b localhost -t sdc-test-1
+	```
 
 4. The log of httpserver should show that it got invoked and in StreamSets you should see 1 Input and 1 Output record. 
 
