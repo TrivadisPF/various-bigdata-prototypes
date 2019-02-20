@@ -50,6 +50,8 @@ In this version we are implementing the destintion in such a way, that it stops 
 
 ### Implementation Details
 
+This version is implemented in the 1-Kafka_to_HTTP pipeline, available as a StreamSets export in the `streamsets/1-Kafka_to_HTTP.json` file. 
+
 On the **General** tab of the `HTTP Client` destination, make sure to select `Stop Pipeline` for the **On Record Error** drop down listbox. This will make sure that the pipeline is stopped immediately after an error occurs:
 
 ![Alt Image Text](./images/http-client-general.png "Kafka to HTTP")
