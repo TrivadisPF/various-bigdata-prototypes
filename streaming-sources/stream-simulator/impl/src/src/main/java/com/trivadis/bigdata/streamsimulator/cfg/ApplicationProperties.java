@@ -64,6 +64,7 @@ public class ApplicationProperties {
         private boolean simpleMode = true;
         private String referenceFieldName;
         private String referenceFieldNamePattern;
+        private int maxDelayedMessages = 1000;
 
         public boolean isEnabled() {
             return enabled;
@@ -103,6 +104,14 @@ public class ApplicationProperties {
 
         public void setReferenceFieldNamePattern(String referenceFieldNamePattern) {
             this.referenceFieldNamePattern = referenceFieldNamePattern;
+        }
+
+        public int getMaxDelayedMessages() {
+            return maxDelayedMessages;
+        }
+
+        public void setMaxDelayedMessages(int count) {
+            this.maxDelayedMessages = count;
         }
     }
 
@@ -190,10 +199,6 @@ public class ApplicationProperties {
 
     public LocalDateTime getReferenceDate() {
         return referenceDate;
-    }
-
-    public void setReferenceDate(LocalDateTime referenceDate) {
-        this.referenceDate = referenceDate;
     }
 
     public void setReferenceDate(String referenceDate) {
