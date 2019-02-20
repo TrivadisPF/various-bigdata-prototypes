@@ -168,10 +168,13 @@ This is the default implementation. The payload is taken as is: an array of byte
 # Running on AWS Lightstail
 
 ```
-# Install Docker and Docker Compose
+# Install Docker 
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable edge"
 apt-get install -y docker-ce
+sudo usermod -a -G docker $USER
+
+# Install Docker Compose
 curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
 ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
@@ -182,9 +185,17 @@ apt-get install -y wget
 # Prepare Environment
 export PUBLIC_IP=$(curl ipinfo.io/ip)
 export DOCKER_HOST_IP=$(ip addr show eth0 | grep "inet\b" | awk '{print $2}' | cut -d/ -f1)
-git clone https://github.com/TrivadisBDS/modern-data-analytics-stack.git
-cd modern-data-analytics-stack/docker
+mkdir analyticsplatform
+cd analyticsplatform
+wget https://raw.githubusercontent.com/TrivadisBDS/various-bigdata-prototypes/master/kafka/kafka-connect-jms-source/impl/docker/docker-compose.yml
+
+# Setup Kafka Connect JMS Connector
 mkdir kafka-connect
+cd kafka-connect
+wget https://github.com/Landoop/stream-reactor/releases/download/1.2.1/kafka-connect-jms-1.2.1-2.1.0-all.tar.gz
+mkdir kafka-connect-jms-1.2.1-2.1.0
+tar -zxvf kafka-connect-jms-1.2.1-2.1.0-all.tar.gz -C kafka-connect-jms-1.2.1-2.1.0
+rm kafka-connect-jms-1.2.1-2.1.0-all.tar.gz
 
 # Startup Environment
 docker-compose up
