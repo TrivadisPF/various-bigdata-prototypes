@@ -182,6 +182,9 @@ ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 # Install wget
 apt-get install -y wget
 
+# Install kafkacat
+apt-get install -y kafkacat
+
 # Prepare Environment
 export PUBLIC_IP=$(curl ipinfo.io/ip)
 export DOCKER_HOST_IP=$(ip addr show eth0 | grep "inet\b" | awk '{print $2}' | cut -d/ -f1)
