@@ -6,12 +6,12 @@
 
 	<groupId>com.trivadis</groupId>
 	<version>1.0.0</version>
-	<artifactId>truck-movement-simulator</artifactId>
+	<artifactId>iot-truck-simulator</artifactId>
 
     <properties>
         <hadoop.miniclusters.version>0.0.15-SNAPSHOT</hadoop.miniclusters.version>
         <scala.version>2.11</scala.version>
-        <kafka.version>2.0.0</kafka.version>
+        <kafka.version>2.1.0</kafka.version>
       	<avro.version>1.8.2</avro.version>        
         <akka.version>2.3.16</akka.version>
         <jpmml.version>1.0.22</jpmml.version>
@@ -182,7 +182,7 @@
 						<image>openjdk:8-jre-alpine</image>
 					</from>
 					<to>
-            			<image>registry.hub.docker.com/gschmutz/iot-truck-simulator</image>
+            			<image>registry.hub.docker.com/trivadisbds/iot-truck-simulator</image>
 						<auth>
 							<username>gschmutz</username>
 						</auth>
