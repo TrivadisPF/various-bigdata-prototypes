@@ -24,7 +24,7 @@ import org.springframework.messaging.handler.annotation.Header;
 
 import com.trivadis.bigdata.streamsimulator.cfg.ApplicationProperties.Speedup;
 import com.trivadis.bigdata.streamsimulator.input.csv.CsvFileMessageSplitter;
-import com.trivadis.bigdata.streamsimulator.msg.MsgHeader;
+import com.trivadis.bigdata.streamsimulator.msg.MessageDelayer;
 import com.trivadis.bigdata.streamsimulator.transform.CsvDelayHeaderProvider;
 import com.trivadis.bigdata.streamsimulator.transform.TransformDates;
 
@@ -115,9 +115,9 @@ public class ApplicationConfig {
                 // TODO add router for different file types - at the moment we can only handle CSV files
                 .split(csvFileMessageSplitter(cfg.getReferenceTimestamp(), cfg.getSpeedup()));
 
-        builder = addMessageDateFieldTransformer(builder);
-        builder = addMessageTimeFlux(builder);
-        builder = addThrottling(builder);
+        addMessageDateFieldTransformer(builder);
+        new MessageDelayer(cfg.getSpeedup()).build(builder);
+        addThrottling(builder);
 
         return builder
                 .channel(outboundChannel())
@@ -139,23 +139,6 @@ public class ApplicationConfig {
 
         // TODO support multiple different date fields (date / dateTime / time zones)
         return builder.transform(new TransformDates(cfg.getAdjustDuration(), cfg.getAdjustDates()));
-    }
-
-    IntegrationFlowBuilder addMessageTimeFlux(IntegrationFlowBuilder builder) {
-        if (!cfg.getSpeedup().isEnabled()) {
-            return builder;
-        }
-
-        if (cfg.getSpeedup().isSimpleMode()) {
-            logger.warn("Using simple in-memory delayer, all messages will be loaded into memory!");
-            return builder
-                    .delay("delayer.messageGroupId", d -> d.delayExpression("headers['" + MsgHeader.DELAY + "']"));
-
-        } else {
-            logger.error("FIXME Only simple speedup handling with reading all messages into memory is implemented.");
-            System.exit(1);
-        }
-        return builder;
     }
 
     // quick and dirty throttling test
