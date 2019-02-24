@@ -12,11 +12,12 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import com.trivadis.bigdata.streamsimulator.input.csv.CsvProperties;
+import com.trivadis.bigdata.streamsimulator.input.excel.ExcelProperties;
 
 /**
  * Application specific configuration properties
  * 
- * @author mzehnder
+ * @author Markus Zehnder
  */
 @Component
 @ConfigurationProperties(prefix = "simulator")
@@ -146,7 +147,8 @@ public class ApplicationProperties {
     }
 
     public static class Source {
-        private CsvProperties csv;
+        private CsvProperties csv = new CsvProperties();
+        private ExcelProperties excel = new ExcelProperties();
 
         public CsvProperties getCsv() {
             return csv;
@@ -154,6 +156,14 @@ public class ApplicationProperties {
 
         public void setCsv(CsvProperties csv) {
             this.csv = csv;
+        }
+
+        public ExcelProperties getExcel() {
+            return excel;
+        }
+
+        public void setExcel(ExcelProperties excel) {
+            this.excel = excel;
         }
     }
 

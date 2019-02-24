@@ -6,7 +6,7 @@ import java.nio.charset.StandardCharsets;
 /**
  * CSV configuration.
  * 
- * @author mzehnder
+ * @author Markus Zehnder
  */
 public  class CsvProperties {
     private Charset charset = StandardCharsets.UTF_8;

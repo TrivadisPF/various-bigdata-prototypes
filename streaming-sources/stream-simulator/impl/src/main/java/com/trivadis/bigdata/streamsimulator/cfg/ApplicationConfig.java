@@ -1,6 +1,7 @@
 package com.trivadis.bigdata.streamsimulator.cfg;
 
 import java.io.File;
+import java.util.Collections;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,23 +20,29 @@ import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.dsl.Pollers;
 import org.springframework.integration.file.dsl.Files;
 import org.springframework.integration.handler.LoggingHandler;
+import org.springframework.integration.router.HeaderValueRouter;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.handler.annotation.Header;
 
 import com.trivadis.bigdata.streamsimulator.cfg.ApplicationProperties.Speedup;
 import com.trivadis.bigdata.streamsimulator.input.csv.CsvFileMessageSplitter;
+import com.trivadis.bigdata.streamsimulator.input.excel.ExcelFileMessageSplitter;
 import com.trivadis.bigdata.streamsimulator.msg.MessageDelayer;
-import com.trivadis.bigdata.streamsimulator.transform.CsvDelayHeaderProvider;
+import com.trivadis.bigdata.streamsimulator.transform.MapMsgDelayHeaderProvider;
 import com.trivadis.bigdata.streamsimulator.transform.TransformDates;
 
 /**
  * Common application configuration of message channels and flows.
  * 
- * @author mzehnder
+ * @author Markus Zehnder
  */
 @Configuration
 public class ApplicationConfig {
     private static final Logger logger = LoggerFactory.getLogger(ApplicationConfig.class);
+
+    public static final String FILETYPE_EXCEL = "XSL";
+    public static final String FILETYPE_CSV = "CSV";
+
 
     /**
      * Unfortunately we still have to use String identifiers for channel identifications, e.g. in @Gateway annotations,
@@ -45,17 +52,48 @@ public class ApplicationConfig {
 
     private final static String INPUT_FILE_POLLER_NAME = "input-file-poller";
 
+    private final static String CSV_INPUT_CHANNEL_NAME = "csvInputChannel";
+    private final static String XSL_INPUT_CHANNEL_NAME = "xslInputChannel";
+
+    private final static String FILE_RECORD_CHANNEL_NAME = "fileRecordChannel";
+
+    private final static String HEADER_FILETYPE = "filetype";
+
     @Autowired
     private ApplicationProperties cfg;
 
     @Autowired
-    ApplicationContext applicationContext;
+    private ApplicationContext applicationContext;
 
     /**
-     * Inbound channel for all input files to process in the simulator.
+     * @return Inbound channel for all input files to process in the simulator.
      */
     @Bean(FILE_INPUT_CHANNEL_NAME)
     public MessageChannel fileInputChannel() {
+        return new DirectChannel();
+    }
+
+    /**
+     * @return Specific message channel for CSV input file processing.
+     */
+    @Bean(CSV_INPUT_CHANNEL_NAME)
+    public MessageChannel csvInputChannel() {
+        return new DirectChannel();
+    }
+
+    /**
+     * @return Specific message channel for Excel input file processing.
+     */
+    @Bean(XSL_INPUT_CHANNEL_NAME)
+    public MessageChannel excelInputChannel() {
+        return new DirectChannel();
+    }
+
+    /**
+     * @return Message channel for all read records from the input files.
+     */
+    @Bean(FILE_RECORD_CHANNEL_NAME)
+    public MessageChannel fileRecordChannel() {
         return new DirectChannel();
     }
 
@@ -77,7 +115,7 @@ public class ApplicationConfig {
     public interface InputFile {
 
         @Gateway(requestChannel = FILE_INPUT_CHANNEL_NAME)
-        void process(File file, @Header("filetype") String fileType);
+        void process(File file, @Header(HEADER_FILETYPE) String fileType);
     }
 
     /**
@@ -85,6 +123,7 @@ public class ApplicationConfig {
      */
     @Bean
     public IntegrationFlow inputFilePollerFlow() {
+        // TODO include Excel files, enhance header with specific file type
         return IntegrationFlows
                 .from(Files.inboundAdapter(cfg.getInputDirectory())
                         .patternFilter("*.csv"),
@@ -92,6 +131,7 @@ public class ApplicationConfig {
                                 .id(INPUT_FILE_POLLER_NAME)
                                 .autoStartup(false)
                                 .role("input-poller-group")) // TODO figure out role concept
+                .enrichHeaders(Collections.singletonMap(HEADER_FILETYPE, FILETYPE_CSV))
                 .channel(fileInputChannel())
 
 // testing shutdown after initial poll
@@ -108,12 +148,24 @@ public class ApplicationConfig {
      */
     @Bean
     public IntegrationFlow inputFilesFlow() {
-
-        IntegrationFlowBuilder builder = IntegrationFlows
+        return IntegrationFlows
                 .from(fileInputChannel())
                 .log(LoggingHandler.Level.INFO)
-                // TODO add router for different file types - at the moment we can only handle CSV files
-                .split(csvFileMessageSplitter(cfg.getReferenceTimestamp(), cfg.getSpeedup()));
+                .route(inputFileTypeRouter())
+                .get();
+    }
+
+    public HeaderValueRouter inputFileTypeRouter() {
+        HeaderValueRouter router = new HeaderValueRouter(HEADER_FILETYPE);
+        router.setChannelMapping(FILETYPE_CSV, CSV_INPUT_CHANNEL_NAME); // too bad channel can only be configured by name...
+        router.setChannelMapping(FILETYPE_EXCEL, XSL_INPUT_CHANNEL_NAME);
+        return router;
+    }
+
+    @Bean
+    public IntegrationFlow fileRecordsFlow() {
+        IntegrationFlowBuilder builder = IntegrationFlows
+                .from(fileRecordChannel());
 
         addMessageDateFieldTransformer(builder);
         new MessageDelayer(cfg.getSpeedup()).build(builder);
@@ -124,12 +176,38 @@ public class ApplicationConfig {
                 .get();
     }
 
-    @Bean
     public CsvFileMessageSplitter csvFileMessageSplitter(long referenceTimestamp, Speedup speedup) {
-        CsvDelayHeaderProvider headerProvider = speedup.isEnabled()
-                ? new CsvDelayHeaderProvider(referenceTimestamp, speedup)
+        MapMsgDelayHeaderProvider headerProvider = speedup.isEnabled()
+                ? new MapMsgDelayHeaderProvider(referenceTimestamp, speedup)
                 : null;
         return new CsvFileMessageSplitter(cfg.getSource().getCsv(), headerProvider);
+    }
+
+    public ExcelFileMessageSplitter excelFileMessageSplitter(long referenceTimestamp, Speedup speedup) {
+        MapMsgDelayHeaderProvider headerProvider = speedup.isEnabled()
+                ? new MapMsgDelayHeaderProvider(referenceTimestamp, speedup)
+                : null;
+        return new ExcelFileMessageSplitter(cfg.getSource().getExcel(), headerProvider);
+    }
+
+    @Bean
+    public IntegrationFlow csvToRecordsFlow() {
+        IntegrationFlowBuilder builder = IntegrationFlows
+                .from(csvInputChannel())
+                .split(csvFileMessageSplitter(cfg.getReferenceTimestamp(), cfg.getSpeedup()))
+                .channel(fileRecordChannel());
+
+        return builder.get();
+    }
+
+    @Bean
+    public IntegrationFlow excelToRecordsFlow() {
+        IntegrationFlowBuilder builder = IntegrationFlows
+                .from(excelInputChannel())
+                .split(excelFileMessageSplitter(cfg.getReferenceTimestamp(), cfg.getSpeedup()))
+                .channel(fileRecordChannel());
+
+        return builder.get();
     }
 
     IntegrationFlowBuilder addMessageDateFieldTransformer(IntegrationFlowBuilder builder) {

@@ -11,7 +11,7 @@ import org.springframework.messaging.MessagingException;
 /**
  * Kafak message handler
  * 
- * @author mzehnder
+ * @author Markus Zehnder
  */
 public class KafkaProducer implements MessageHandler {
 

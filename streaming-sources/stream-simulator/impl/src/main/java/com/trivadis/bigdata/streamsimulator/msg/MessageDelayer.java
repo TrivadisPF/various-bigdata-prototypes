@@ -14,7 +14,7 @@ import com.trivadis.bigdata.streamsimulator.msg.MsgHeader;
 /**
  * Custom delay handler, uses a pending delayed message counter to block inbound message handler.
  * 
- * @author mzehnder
+ * @author Markus Zehnder
  */
 public class MessageDelayer {
     private static final Logger logger = LoggerFactory.getLogger(MessageDelayer.class);

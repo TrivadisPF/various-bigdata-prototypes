@@ -10,13 +10,17 @@ Tasks and milestones:
 - [x] Throttling of message sending (x msg/sec)
 - [x] Configurable speedup and slowdown based on timestamp in input data
 
-    (e.g. 1h in input data relates to 1m for sending data)
+    E.g. 1 hour in input data relates to 1 minute in simulator
 
 - [x] Speedup and slowdown with processing queue to avoid reading all messages into memory
 - [ ] Multiple topics
-- [ ] Docker image
 - [ ] Avro support
-- [ ] Various input data formats (CSV, XML, Excel, generic files)
+- [ ] Various input data formats
+  - [x] CSV
+  - [x] Excel
+  - [ ] XML
+  - [ ] generic files
+- [ ] Docker image
 - [ ] ...
 
 Optional features:

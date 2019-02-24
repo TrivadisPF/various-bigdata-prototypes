@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 /**
  * MQTT specific configuration properties
  * 
- * @author mzehnder
+ * @author Markus Zehnder
  */
 @Component
 @ConfigurationProperties(prefix = "simulator.mqtt.producer")

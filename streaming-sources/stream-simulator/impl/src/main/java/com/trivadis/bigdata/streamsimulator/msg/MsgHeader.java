@@ -3,7 +3,7 @@ package com.trivadis.bigdata.streamsimulator.msg;
 /**
  * Message header constants.
  *
- * @author mzehnder
+ * @author Markus Zehnder
  */
 public abstract class MsgHeader {
 

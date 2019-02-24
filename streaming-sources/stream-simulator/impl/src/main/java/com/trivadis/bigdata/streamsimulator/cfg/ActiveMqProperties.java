@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 /**
  * ActiveMQ specific configuration properties
  * 
- * @author mzehnder
+ * @author Markus Zehnder
  */
 @Component
 @ConfigurationProperties(prefix = "simulator.activemq.producer")

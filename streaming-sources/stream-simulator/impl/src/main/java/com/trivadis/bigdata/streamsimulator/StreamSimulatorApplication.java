@@ -17,7 +17,7 @@ import com.trivadis.bigdata.streamsimulator.cfg.ApplicationConfig.InputFile;
 /**
  * POC: simple message sender application prototype
  * 
- * @author mzehnder
+ * @author Markus Zehnder
  */
 @SpringBootApplication
 public class StreamSimulatorApplication implements ApplicationRunner {
@@ -43,6 +43,7 @@ public class StreamSimulatorApplication implements ApplicationRunner {
             System.out.println();
             System.out.println("INPUT options:");
             System.out.println("  --csv                        CSV input file");
+            System.out.println("  --xsl                        Excel input file");
             System.out.println("  --simulator.input-directory  scan directory for *.csv");
             System.out.println();
             System.out.println("Examples:");
@@ -52,7 +53,9 @@ public class StreamSimulatorApplication implements ApplicationRunner {
         }
 
         if (args.containsOption("csv")) {
-            inputFile.process(new File(args.getOptionValues("csv").get(0)), "CSV");
+            inputFile.process(new File(args.getOptionValues("csv").get(0)), ApplicationConfig.FILETYPE_CSV);
+        } else if (args.containsOption("xsl")) {
+            inputFile.process(new File(args.getOptionValues("xsl").get(0)), ApplicationConfig.FILETYPE_EXCEL);
         } else {
             appConfig.startInputFilePolling();
             // appConfig.stopInputFilePolling(); // also closes input file reader!

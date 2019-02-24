@@ -14,7 +14,7 @@ import com.trivadis.bigdata.streamsimulator.output.KafkaProducer;
  * Kafka specific configuration. Activated by application property
  * simulater.output=kafka
  * 
- * @author mzehnder
+ * @author Markus Zehnder
  */
 @Configuration
 @ConditionalOnProperty(name = "simulator.output", havingValue = "kafka")

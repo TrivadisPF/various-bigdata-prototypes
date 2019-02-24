@@ -21,6 +21,9 @@ import com.opencsv.CSVParser;
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
+import com.trivadis.bigdata.streamsimulator.input.ColumnNameProvider;
+import com.trivadis.bigdata.streamsimulator.input.StaticColumnNameProvider;
+import com.trivadis.bigdata.streamsimulator.input.StringArrayToMapConverter;
 import com.trivadis.bigdata.streamsimulator.transform.HeaderProvider;
 
 /**
@@ -33,7 +36,7 @@ import com.trivadis.bigdata.streamsimulator.transform.HeaderProvider;
  * 
  * TODO implement file markers as in org.springframework.integration.file.splitter.FileSplitter?
  * 
- * @author mzehnder
+ * @author Markus Zehnder
  */
 public class CsvFileMessageSplitter extends AbstractMessageSplitter {
     private static final Logger log = LoggerFactory.getLogger(CsvFileMessageSplitter.class);
@@ -94,13 +97,16 @@ public class CsvFileMessageSplitter extends AbstractMessageSplitter {
                 header = csvCfg.getStaticHeader();
                 log.debug("Using static header: {}", (Object) header);
             }
+            ColumnNameProvider<?> columnNameProvider = new StaticColumnNameProvider<>(header);
 
             if (csvCfg.getStartIndex() > 0) {
                 log.info("Fast-forwarding to record #{}...", csvCfg.getStartIndex());
                 csvReader.skip(csvCfg.getStartIndex());
             }
 
-            return new CsvMessageIterator(csvReader.iterator(), header, csvCfg.isSkipEmptyLines(), headerProvider);
+            StringArrayToMapConverter converter = new StringArrayToMapConverter(columnNameProvider);
+            return new CsvMessageIterator<Map<String, String>>(csvReader.iterator(), converter,
+                    csvCfg.isSkipEmptyLines(), headerProvider);
         } catch (IOException e) {
             String msg = "Unable to read file: " + e.getMessage();
             log.error(msg);

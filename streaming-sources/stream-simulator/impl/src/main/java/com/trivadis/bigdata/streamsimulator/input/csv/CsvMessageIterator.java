@@ -1,35 +1,47 @@
 package com.trivadis.bigdata.streamsimulator.input.csv;
 
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.messaging.Message;
 
 import com.trivadis.bigdata.streamsimulator.transform.HeaderProvider;
 
 /**
- * Wrapper Iterator to map the header fields to the current read CSV record data into a Spring {@link Message} object.
+ * Spring integration message {@link Iterator} to wrap the CSV records into a Spring {@link Message} object.<br>
+ * The returned CSV record from the CSV record iterator is converted to a message payload data object by the given
+ * {@link Converter}.
  * 
- * @author mzehnder
+ * @author Markus Zehnder
  */
-public class CsvMessageIterator implements Iterator<Message<Map<String, String>>> {
+public class CsvMessageIterator<T> implements Iterator<Message<T>> {
     private static final Logger logger = LoggerFactory.getLogger(CsvMessageIterator.class);
 
-    private final String[] header;
     private final Iterator<String[]> recordIterator;
+    private final Converter<String[], T> recordConverter;
     private final boolean skipEmptyLines;
-    private final HeaderProvider<Map<String, String>> headerProvider;
+    private final HeaderProvider<T> headerProvider;
 
     private long readCount;
 
-    public CsvMessageIterator(Iterator<String[]> recordIterator, String[] header, boolean skipEmptyLines,
-            HeaderProvider<Map<String, String>> headerProvider) {
+    /**
+     * Creates a new CsvMessageIterator.
+     * 
+     * @param recordIterator  the CSV record iterator which returns individual records of the input CSV file
+     * @param recordConverter the CSV record converter to the desired Spring message payload object
+     * @param skipEmptyLines  true = skip empty records returned from the CSV iterator
+     * @param headerProvider  the optional provider to set additional Spring message header fields based on the message
+     *                        payload
+     */
+    public CsvMessageIterator(Iterator<String[]> recordIterator, Converter<String[], T> recordConverter,
+            boolean skipEmptyLines,
+            HeaderProvider<T> headerProvider) {
         this.recordIterator = recordIterator;
-        this.header = header == null ? new String[0] : header;
+        this.recordConverter = recordConverter;
         this.skipEmptyLines = skipEmptyLines;
         this.headerProvider = headerProvider;
     }
@@ -40,7 +52,7 @@ public class CsvMessageIterator implements Iterator<Message<Map<String, String>>
     }
 
     @Override
-    public Message<Map<String, String>> next() {
+    public Message<T> next() {
 
         String[] record;
         // skip empty input lines
@@ -48,17 +60,7 @@ public class CsvMessageIterator implements Iterator<Message<Map<String, String>>
             record = recordIterator.next();
         } while (skipEmptyLines && (record.length == 0 || record.length == 1 && record[0].isEmpty()));
 
-        Map<String, String> mapped = new LinkedHashMap<>(header.length > 0 ? header.length : 16);
-
-        if (header.length > 0) {
-            for (int i = 0; i < header.length; i++) {
-                mapped.put(header[i], record.length > i ? record[i] : "");
-            }
-        } else {
-            for (int i = 0; i < record.length; i++) {
-                mapped.put(String.format("column_%03d", i + 1), record[i]);
-            }
-        }
+        T mapped = recordConverter.convert(record);
 
         readCount++;
 

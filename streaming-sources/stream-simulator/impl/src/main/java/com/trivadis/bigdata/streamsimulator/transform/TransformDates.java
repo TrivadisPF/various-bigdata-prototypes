@@ -13,7 +13,7 @@ import com.trivadis.bigdata.streamsimulator.cfg.ApplicationProperties.AdjustDate
 /**
  * Adjust date values in a map by a given date and time offset.
  * 
- * @author mzehnder
+ * @author Markus Zehnder
  */
 public class TransformDates {
     private final Pattern fieldNamePattern;

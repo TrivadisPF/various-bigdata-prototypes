@@ -15,7 +15,7 @@ import org.springframework.messaging.MessageHandler;
 /**
  * ActiveMQ specific configuration. Activated by application property simulater.output=activemq
  * 
- * @author mzehnder
+ * @author Markus Zehnder
  */
 @Configuration
 @ConditionalOnProperty(name = "simulator.output", havingValue = "activemq")

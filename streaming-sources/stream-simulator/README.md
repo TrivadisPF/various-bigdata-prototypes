@@ -11,6 +11,9 @@ What we **need** to solve with this project:
 What we **do not have** to solve with this project:
 
 * graphical configuration frontend
+* high performance message loader
+
+    The simulator should be reasonable fast, but the priority is not on speed but configurability
 
 ## High-Level overview
 

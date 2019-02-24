@@ -5,7 +5,7 @@ import java.util.Map;
 /**
  * Service interface to derive headers from a given payload.
  * 
- * @author mzehnder
+ * @author Markus Zehnder
  *
  * @param <T> payload type
  */

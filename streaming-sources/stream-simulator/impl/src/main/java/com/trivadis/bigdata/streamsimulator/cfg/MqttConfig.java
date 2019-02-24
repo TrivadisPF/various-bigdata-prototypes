@@ -17,7 +17,7 @@ import org.springframework.messaging.MessageHandler;
  * MQTT specific configuration. Activated by application property
  * simulater.output=mqtt
  * 
- * @author mzehnder
+ * @author Markus Zehnder
  */
 @Configuration
 @ConditionalOnProperty(name = "simulator.output", havingValue = "mqtt")
