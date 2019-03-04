@@ -3,7 +3,7 @@ Various small PoC and Prototypes in the context Data Analytics, Big Data, Stream
 
 ## Finished
 
-* Kafka Connect Sink Error Handling ([Proposal](kafka/kafka-connect-dlq#kafka-connect-dead-letter-functionality) / [Implemenatation](kafka/kafka-connect-dlq/impl/README.md))
+* Kafka Connect Sink Error Handling ([Proposal](kafka/kafka-connect-error-handling) / [Implemenatation](kafka/kafka-connect-error-handling/impl/README.md))
 * Removing old (expired) messages from a stream of data ([Proposal](kafka/kafka-streams-check-for-expired-msgs) / [Implemenation](kafka/kafka-streams-check-for-expired-msgs/impl/README.md))
 * 
 
