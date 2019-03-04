@@ -45,4 +45,3 @@ Data in the backup will live in sync with the topics, both on level of partition
 3. [OVO Live Kafka Backu](https://github.com/ovotech/ovo-live-kafka-backup) by Ovotech
 4. [Kafka Archiver](https://github.com/UnityTech/kafka-archiver) by Unity Tech
 
-3. 
