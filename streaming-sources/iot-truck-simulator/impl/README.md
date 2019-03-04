@@ -1,12 +1,12 @@
 # IoT Truck Simulator
 
-## Building from the source
+## Building from source
 
 ```
 mvn package -Dmaven.test.skip=true
 ```
 
-To publish it to Docker Hub
+To publish it to Docker Hub (using Maven support by [Jib](https://github.com/GoogleContainerTools/jib/tree/master/jib-maven-plugin#quickstart))
 
 ```
 export PASSWORD=xxxxx
@@ -64,5 +64,11 @@ mvn exec:java -Dexec.args="-s KAFKA -h broker-1 -p 9092 -f CSV -m SPLIT"
 Write a single message to MQTT in CSV format
 
 ```
-docker run --network analyticsplatform_default gschmutz/iot-truck-simulator '-s' 'MQTT' '-h' 'mosquitto-1' '-p' '1883' '-f' 'CSV'
+docker run --network analyticsplatform_default trivadisbds/iot-truck-simulator '-s' 'MQTT' '-h' 'mosquitto-1' '-p' '1883' '-f' 'CSV'
+```
+
+Write a single message to KAFKA in CSV format
+
+```
+docker run --network analyticsplatform_default trivadisbds/iot-truck-simulator '-s' 'KAFKA' '-h' 'broker-1' '-p' '9092' '-f' 'CSV'
 ```
