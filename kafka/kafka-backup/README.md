@@ -42,3 +42,7 @@ Data in the backup will live in sync with the topics, both on level of partition
 
 1. [Surviving Data Loss](https://jobs.zalando.com/tech/blog/backing-up-kafka-zookeeper/index.html?gh_src=4n3gxh1) by Zalando
 2. [Kafka Connect S3](https://github.com/spredfast/kafka-connect-s3) by Spredfast
+3. [OVO Live Kafka Backu](https://github.com/ovotech/ovo-live-kafka-backup) by Ovotech
+4. [Kafka Archiver](https://github.com/UnityTech/kafka-archiver) by Unity Tech
+
+3. 
