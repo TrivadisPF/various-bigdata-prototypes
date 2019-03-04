@@ -129,6 +129,10 @@
 
 ## Management & Monitoring
 
+* Kafka Backup ([project](kafka/kafka-backup/README.md))
+  * implement a solution for backing-up data from Kafka into an external storage (such as S3)
+  * implement a solution for restroing data from the external backup into Kafka topics so that message ordering is preserved
+  
 * Kafka and Ansible
 
 * (BigData) and Kubernetes
