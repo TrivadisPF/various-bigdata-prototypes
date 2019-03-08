@@ -198,14 +198,14 @@ root
 
 	```
 	net.jpountz.lz4:lz4
-```
+	```
 
 3. Now create a new Zeppelin notebook and load the `confluent-spark-avro-assembly-1.2.jar` library. We can not do it throught a dependency on the interpreter, as it is not available in a public Maven repository.  
 
 	```
 	%spark.dep
 	z.load("/opt/zeppelin/confluent-spark-avro-assembly-1.2.jar")
-```
+	```
 
 Now just add the code from above and execute it. 
 
