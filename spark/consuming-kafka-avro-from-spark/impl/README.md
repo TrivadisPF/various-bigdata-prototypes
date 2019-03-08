@@ -216,27 +216,26 @@ You can also import the complete notebook from [./zeppelin/Consume Kafka Avro fr
 1. copy the `confluent-spark-avro-assembly-1.2.jar` downloaded above into the `spark-master` container
 
 	```
-docker cp confluent-spark-avro-assembly-1.2.jar spark-master:/tmp
-```
+	docker cp confluent-spark-avro-assembly-1.2.jar spark-master:/tmp
+	```
 
 2. Add the spark-sql-kafka library to the `--packages`
 
 	```
---packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.3.2
-```
+	--packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.3.2
+	```
 
 	There is a problem with a conflict of the lz4 library, therefore it has to be excluded using the `--exclude-packages`
 
 	```
---exclude-packages net.jpountz.lz4:lz4
-```
-
+	--exclude-packages net.jpountz.lz4:lz4
+	```
 
 3. Add the confluent-spark-avro-assembly-1.2.jar library to the `--jars`
 
 	```
---jars /tmp/confluent-spark-avro-assembly-1.2.jar
-```
+	--jars /tmp/confluent-spark-avro-assembly-1.2.jar
+	```
 
 
 So the complete call from witin the spark-master container would be
