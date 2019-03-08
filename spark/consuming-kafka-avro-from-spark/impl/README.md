@@ -182,7 +182,7 @@ root
 
 	```
 	docker cp confluent-spark-avro-assembly-1.2.jar zeppelin:/opt/zeppelin
-```
+	```
 
 2. In Zeppelin add the following dependency to the Spark interpreter
 
@@ -192,7 +192,7 @@ root
 
 	```
 	org.apache.spark:spark-sql-kafka-0-10_2.11:2.3.2
-```
+	```
 
 	There is a problem with a conflict of the lz4 library, therefore it has to be excluded 
 
@@ -222,13 +222,13 @@ docker cp confluent-spark-avro-assembly-1.2.jar spark-master:/tmp
 Add the spark-sql-kafka library to the `--packages`
 
 ```
-	--packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.3.2
+--packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.3.2
 ```
 
 There is a problem with a conflict of the lz4 library, therefore it has to be excluded using the `--exclude-packages`
 
 ```
-	--exclude-packages net.jpountz.lz4:lz4
+--exclude-packages net.jpountz.lz4:lz4
 ```
 
 Add the confluent-spark-avro-assembly-1.2.jar library to the `--jars`
