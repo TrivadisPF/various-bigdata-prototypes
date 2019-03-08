@@ -181,7 +181,7 @@ root
 1. copy the `confluent-spark-avro-assembly-1.2.jar` downloaded above into the `zeppelin` container
 
 	```
-docker cp confluent-spark-avro-assembly-1.2.jar zeppelin:/opt/zeppelin
+	docker cp confluent-spark-avro-assembly-1.2.jar zeppelin:/opt/zeppelin
 ```
 
 2. In Zeppelin add the following dependency to the Spark interpreter
@@ -191,20 +191,20 @@ docker cp confluent-spark-avro-assembly-1.2.jar zeppelin:/opt/zeppelin
 	This is the implementation of the Spark Structured Streaming Kafka support (it also works for Spark Batch). Make sure that you adapt the version according to your Spark version
 
 	```
-org.apache.spark:spark-sql-kafka-0-10_2.11:2.3.2
+	org.apache.spark:spark-sql-kafka-0-10_2.11:2.3.2
 ```
 
 	There is a problem with a conflict of the lz4 library, therefore it has to be excluded 
 
 	```
-net.jpountz.lz4:lz4
+	net.jpountz.lz4:lz4
 ```
 
 3. Now create a new Zeppelin notebook and load the `confluent-spark-avro-assembly-1.2.jar` library. We can not do it throught a dependency on the interpreter, as it is not available in a public Maven repository.  
 
 	```
-%spark.dep
-z.load("/opt/zeppelin/confluent-spark-avro-assembly-1.2.jar")
+	%spark.dep
+	z.load("/opt/zeppelin/confluent-spark-avro-assembly-1.2.jar")
 ```
 
 Now just add the code from above and execute it. 
@@ -213,29 +213,29 @@ You can also import the complete notebook from [./zeppelin/Consume Kafka Avro fr
 
 ## Test it using Spark Shell (not yet tested)
 
-1. copy the `confluent-spark-avro-assembly-1.2.jar` downloaded above into the `spark-master` container
+Copy the `confluent-spark-avro-assembly-1.2.jar` downloaded above into the `spark-master` container
 
-	```
-	docker cp confluent-spark-avro-assembly-1.2.jar spark-master:/tmp
+```
+docker cp confluent-spark-avro-assembly-1.2.jar spark-master:/tmp
 ```
 
-2. Add the spark-sql-kafka library to the `--packages`
+Add the spark-sql-kafka library to the `--packages`
 
-	```
+```
 	--packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.3.2
 ```
 
-	There is a problem with a conflict of the lz4 library, therefore it has to be excluded using the `--exclude-packages`
+There is a problem with a conflict of the lz4 library, therefore it has to be excluded using the `--exclude-packages`
 
-	```
+```
 	--exclude-packages net.jpountz.lz4:lz4
-	```
+```
 
-3. Add the confluent-spark-avro-assembly-1.2.jar library to the `--jars`
+Add the confluent-spark-avro-assembly-1.2.jar library to the `--jars`
 
-	```
-	--jars /tmp/confluent-spark-avro-assembly-1.2.jar
-	```
+```
+--jars /tmp/confluent-spark-avro-assembly-1.2.jar
+```
 
 
 So the complete call from witin the spark-master container would be
