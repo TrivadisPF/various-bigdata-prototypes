@@ -12,6 +12,7 @@ Various small PoC and Prototypes in the context Data Analytics, Big Data, Stream
 * Backup of Kafka Data ([Proposal](kafka/kafka-backup) / Implementation) 
 * "Kafka as a Database" ([Proposal](kafka/kafka-as-a-database) / Implementation) 
 * Streaming Message Simulator ([Proposal](streaming-sources/stream-simulator) / Implementation) 
+* Consuming Kafka Avro Messages from Spark [Proposal](spark/consuming-kafka-avro-from-spark) / [Implementation](spark/consuming-kafka-avro-from-spark/impl/README.md))
 
 ## Open
 
