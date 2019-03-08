@@ -217,13 +217,13 @@ You can also import the complete notebook from [./zeppelin/Consume Kafka Avro fr
 
 	```
 	docker cp confluent-spark-avro-assembly-1.2.jar spark-master:/tmp
-	```
+```
 
 2. Add the spark-sql-kafka library to the `--packages`
 
 	```
 	--packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.3.2
-	```
+```
 
 	There is a problem with a conflict of the lz4 library, therefore it has to be excluded using the `--exclude-packages`
 
