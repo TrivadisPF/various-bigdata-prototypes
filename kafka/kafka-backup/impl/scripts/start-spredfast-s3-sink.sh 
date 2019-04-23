@@ -10,11 +10,15 @@ curl -X "POST" "$DOCKER_HOST_IP:8083/connectors" \
       "connector.class": "com.spredfast.kafka.connect.s3.sink.S3SinkConnector",
       "format.include.keys": "true",
       "topics": "truck_position",
-      "tasks.max": "1",
-      "format": "binary",
+      "tasks.max": "2",
       "s3.bucket": "gschmutz-kafka-spredfast-1",
+      "s3.prefix": "test",
+      "s3.endpoint": "",
+      "compressed_block_size": "",
+      "format": "binary",
       "value.converter": "com.spredfast.kafka.connect.s3.AlreadyBytesConverter",
       "key.converter": "com.spredfast.kafka.connect.s3.AlreadyBytesConverter",
-      "local.buffer.dir": "/tmp"
+      "local.buffer.dir": "/tmp",
+      "task.shutdown.graceful.timeout.ms": "30000"
   }
 }'
