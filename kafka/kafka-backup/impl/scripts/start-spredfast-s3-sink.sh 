@@ -2,6 +2,8 @@
 
 echo "creating Spreadfast S3 Sink Connector"
 
+# compressed_block_size does not seem to work ....
+#
 curl -X "POST" "$DOCKER_HOST_IP:8083/connectors" \
      -H "Content-Type: application/json" \
      --data '{
@@ -13,8 +15,8 @@ curl -X "POST" "$DOCKER_HOST_IP:8083/connectors" \
       "tasks.max": "2",
       "s3.bucket": "gschmutz-kafka-spredfast-1",
       "s3.prefix": "test",
-      "s3.endpoint": "",
-      "compressed_block_size": "",
+      "s3.endpoint": "s3.eu-central-1.amazonaws.com",
+      "compressed_block_size": "67108864",
       "format": "binary",
       "value.converter": "com.spredfast.kafka.connect.s3.AlreadyBytesConverter",
       "key.converter": "com.spredfast.kafka.connect.s3.AlreadyBytesConverter",
