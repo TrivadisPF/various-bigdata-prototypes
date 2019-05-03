@@ -6,6 +6,7 @@ This project documents the implementation of the backup of Kafka topics.
 
   * Kafka Connect to be used for the restore as well
     * this will automatically help in parallelization of the restore
+    * maybe a bit harder to use upon restore due to the fact that is in connect (plain java app would be simpler)
   * Kafka Connect should be used for the backup 
     * this is the most natural choice in the Kafka ecosystem for constantly writing out data from topics
   * there are two possible Kafka Connectors available for use
@@ -18,4 +19,4 @@ This project documents the implementation of the backup of Kafka topics.
       * does allow binary data, but does not support Offset, Timestamp, Headers  
     * Spredfast S3 
       * both Writer and Reader implementation
-      *       
+      * have to fork it and maintain it       
