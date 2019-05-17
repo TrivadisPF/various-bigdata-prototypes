@@ -20,7 +20,7 @@ def main(argv):
 	   "fields" : [
 		 {
 		   "name" : "id",
-		   "type" : "string"
+		   "type" : "int"
 		 },
 		 {
 		   "name" : "firstName",
@@ -50,7 +50,7 @@ def main(argv):
 
 	value_schema = avro.loads(value_schema_str)
 	key_schema = avro.loads(key_schema_str)
-	value = {"id":id, "firstName": firstName, "lastName": lastName}
+	value = {"id":int(id), "firstName": firstName, "lastName": lastName}
 	key = {"id": id}
 
 	avroProducer = AvroProducer({
