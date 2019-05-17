@@ -1,9 +1,8 @@
 package com.trivadis.bigdata.streamsimulator.input.excel;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.trivadis.bigdata.streamsimulator.input.ColumnNameProvider;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * {@code ColumnNameProvider} implementation which returns the column names from the given row number in a
@@ -11,8 +10,8 @@ import com.trivadis.bigdata.streamsimulator.input.ColumnNameProvider;
  * 
  * @author Markus Zehnder
  */
+@Slf4j
 public class RowNumberColumnNameProvider implements ColumnNameProvider<RowSet> {
-    private static final Logger log = LoggerFactory.getLogger(RowNumberColumnNameProvider.class);
 
     private int headerRowNumber = 0;
     private String[] columnNames;

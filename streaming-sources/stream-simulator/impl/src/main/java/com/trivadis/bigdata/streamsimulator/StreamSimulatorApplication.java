@@ -3,8 +3,6 @@ package com.trivadis.bigdata.streamsimulator;
 import java.io.File;
 import java.util.Arrays;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -14,14 +12,16 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import com.trivadis.bigdata.streamsimulator.cfg.ApplicationConfig;
 import com.trivadis.bigdata.streamsimulator.cfg.ApplicationConfig.InputFile;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * POC: simple message sender application prototype
  * 
  * @author Markus Zehnder
  */
 @SpringBootApplication
+@Slf4j
 public class StreamSimulatorApplication implements ApplicationRunner {
-    private static final Logger logger = LoggerFactory.getLogger(StreamSimulatorApplication.class);
 
     @Autowired
     private InputFile inputFile;
@@ -35,7 +35,7 @@ public class StreamSimulatorApplication implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        logger.debug("Application started with command-line arguments: {}", Arrays.toString(args.getSourceArgs()));
+        log.debug("Application started with command-line arguments: {}", Arrays.toString(args.getSourceArgs()));
 
         // TODO use https://commons.apache.org/proper/commons-cli/ for more powerful cli parsing & help messages
         if (args.containsOption("help")) {

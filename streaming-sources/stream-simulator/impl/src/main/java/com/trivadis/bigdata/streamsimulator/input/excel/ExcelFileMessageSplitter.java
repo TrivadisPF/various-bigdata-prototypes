@@ -3,18 +3,17 @@ package com.trivadis.bigdata.streamsimulator.input.excel;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.core.convert.converter.Converter;
 import org.springframework.integration.splitter.AbstractMessageSplitter;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHandlingException;
 
+import com.trivadis.bigdata.streamsimulator.input.ColumnNameAwareConverter;
 import com.trivadis.bigdata.streamsimulator.input.ColumnNameProvider;
 import com.trivadis.bigdata.streamsimulator.input.StaticColumnNameProvider;
 import com.trivadis.bigdata.streamsimulator.transform.HeaderProvider;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * The {@link AbstractMessageSplitter} implementation to split an Excel {@link File} Message payload to individual
@@ -27,14 +26,17 @@ import com.trivadis.bigdata.streamsimulator.transform.HeaderProvider;
  * 
  * @author Markus Zehnder
  */
-public class ExcelFileMessageSplitter extends AbstractMessageSplitter {
-    private static final Logger log = LoggerFactory.getLogger(ExcelFileMessageSplitter.class);
+@Slf4j
+public class ExcelFileMessageSplitter<T> extends AbstractMessageSplitter {
 
     private final ExcelProperties excelCfg;
-    private final HeaderProvider<Map<String, String>> headerProvider;
+    private final ColumnNameAwareConverter<RowSet, T> messageConverter;
+    private final HeaderProvider<T> headerProvider;
 
-    public ExcelFileMessageSplitter(ExcelProperties excelCfg, HeaderProvider<Map<String, String>> headerProvider) {
+    public ExcelFileMessageSplitter(ExcelProperties excelCfg, ColumnNameAwareConverter<RowSet, T> messageConverter,
+            HeaderProvider<T> headerProvider) {
         this.excelCfg = excelCfg;
+        this.messageConverter = messageConverter;
         this.headerProvider = headerProvider;
     }
 
@@ -67,9 +69,9 @@ public class ExcelFileMessageSplitter extends AbstractMessageSplitter {
                 log.debug("Using static header: {}", (Object) columnNameProvider.getColumnNames());
             }
 
-            Converter<RowSet, Map<String, String>> rowMapper = new RowSetToMapConverter(columnNameProvider);
+            messageConverter.setColumnNameProvider(columnNameProvider);
 
-            final ExcelReader<Map<String, String>> excelReader = new ExcelReader<>(inputFile, rowMapper,
+            final ExcelReader<T> excelReader = new ExcelReader<>(inputFile, messageConverter,
                     columnNameProvider);
             excelReader.open();
 
@@ -78,8 +80,9 @@ public class ExcelFileMessageSplitter extends AbstractMessageSplitter {
                 excelReader.skip(excelCfg.getStartIndex());
             }
 
-            return new ExcelMessageIterator<Map<String, String>>(excelReader.iterator(), excelCfg.isSkipEmptyLines(),
+            return new ExcelMessageIterator<T>(excelReader.iterator(), excelCfg.isSkipEmptyLines(),
                     headerProvider);
+
         } catch (IOException e) {
             String msg = "Unable to read file: " + e.getMessage();
             log.error(msg);

@@ -9,10 +9,7 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.integration.splitter.AbstractMessageSplitter;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHandlingException;
@@ -21,10 +18,12 @@ import com.opencsv.CSVParser;
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
+import com.trivadis.bigdata.streamsimulator.input.ColumnNameAwareConverter;
 import com.trivadis.bigdata.streamsimulator.input.ColumnNameProvider;
 import com.trivadis.bigdata.streamsimulator.input.StaticColumnNameProvider;
-import com.trivadis.bigdata.streamsimulator.input.StringArrayToMapConverter;
 import com.trivadis.bigdata.streamsimulator.transform.HeaderProvider;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * The {@link AbstractMessageSplitter} implementation to split a CSV {@link File} Message payload to individual records.
@@ -38,14 +37,17 @@ import com.trivadis.bigdata.streamsimulator.transform.HeaderProvider;
  * 
  * @author Markus Zehnder
  */
-public class CsvFileMessageSplitter extends AbstractMessageSplitter {
-    private static final Logger log = LoggerFactory.getLogger(CsvFileMessageSplitter.class);
+@Slf4j
+public class CsvFileMessageSplitter<T> extends AbstractMessageSplitter {
 
     private final CsvProperties csvCfg;
-    private final HeaderProvider<Map<String, String>> headerProvider;
+    private final ColumnNameAwareConverter<String[], T> messageConverter;
+    private final HeaderProvider<T> headerProvider;
 
-    public CsvFileMessageSplitter(CsvProperties csvCfg, HeaderProvider<Map<String, String>> headerProvider) {
+    public CsvFileMessageSplitter(CsvProperties csvCfg, ColumnNameAwareConverter<String[], T> messageConverter,
+            HeaderProvider<T> headerProvider) {
         this.csvCfg = csvCfg;
+        this.messageConverter = messageConverter;
         this.headerProvider = headerProvider;
     }
 
@@ -97,15 +99,15 @@ public class CsvFileMessageSplitter extends AbstractMessageSplitter {
                 header = csvCfg.getStaticHeader();
                 log.debug("Using static header: {}", (Object) header);
             }
-            ColumnNameProvider<?> columnNameProvider = new StaticColumnNameProvider<>(header);
+            ColumnNameProvider<String[]> columnNameProvider = new StaticColumnNameProvider<>(header);
 
             if (csvCfg.getStartIndex() > 0) {
                 log.info("Fast-forwarding to record #{}...", csvCfg.getStartIndex());
                 csvReader.skip(csvCfg.getStartIndex());
             }
 
-            StringArrayToMapConverter converter = new StringArrayToMapConverter(columnNameProvider);
-            return new CsvMessageIterator<Map<String, String>>(csvReader.iterator(), converter,
+            messageConverter.setColumnNameProvider(columnNameProvider);
+            return new CsvMessageIterator<T>(csvReader.iterator(), messageConverter,
                     csvCfg.isSkipEmptyLines(), headerProvider);
         } catch (IOException e) {
             String msg = "Unable to read file: " + e.getMessage();

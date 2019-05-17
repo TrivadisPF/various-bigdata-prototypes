@@ -11,9 +11,10 @@ import org.springframework.core.convert.converter.Converter;
  * 
  * @author Markus Zehnder
  */
-public class StringArrayToMapConverter implements Converter<String[], Map<String, String>> {
+public class StringArrayToMapConverter extends ColumnNameAwareConverter<String[], Map<String, String>> {
 
-    private final ColumnNameProvider<?> columnNameProvider;
+    public StringArrayToMapConverter() {
+    }
 
     public StringArrayToMapConverter(ColumnNameProvider<?> columnNameProvider) {
         this.columnNameProvider = columnNameProvider;
