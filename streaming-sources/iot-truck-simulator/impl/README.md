@@ -31,6 +31,8 @@ The simulator accepts the following arguments:
 -mt 	JMS Message Type (only if JMS is used) 
 		- TEXT = produce a JMS TextMessage		- MAP = produce a JMS MapMessage
 		- MAP = produce a JMS BytesMessage
+-d 		Delay in milliseconds between sending a message for each truck in the fleet
+-fs 	Size of the truck fleet
 ```
 
 It can either be run through Maven or as a Docker container. 
