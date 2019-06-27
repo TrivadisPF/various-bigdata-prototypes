@@ -11,7 +11,8 @@
     <properties>
         <hadoop.miniclusters.version>0.0.15-SNAPSHOT</hadoop.miniclusters.version>
         <scala.version>2.11</scala.version>
-        <kafka.version>2.1.0</kafka.version>
+        <kafka.version>2.2.0</kafka.version>
+        <activemq.version>5.7.0</activemq.version>
       	<avro.version>1.8.2</avro.version>        
         <akka.version>2.3.16</akka.version>
         <jpmml.version>1.0.22</jpmml.version>
@@ -38,6 +39,13 @@
     		<artifactId>kafka-clients</artifactId>
     		<version>${kafka.version}</version>
 		</dependency>
+        
+        <!-- ActiveMQ -->
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-core</artifactId>
+            <version>${activemq.version}</version>
+        </dependency>
         
         <dependency>
             <groupId>com.typesafe.akka</groupId>
@@ -182,7 +190,7 @@
 						<image>openjdk:8-jre-alpine</image>
 					</from>
 					<to>
-            			<image>registry.hub.docker.com/trivadisbds/iot-truck-simulator</image>
+            			<image>registry.hub.docker.com/trivadis/iot-truck-simulator</image>
 						<auth>
 							<username>gschmutz</username>
 						</auth>

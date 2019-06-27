@@ -9,7 +9,7 @@ mvn package -Dmaven.test.skip=true
 To publish it to Docker Hub (using Maven support by [Jib](https://github.com/GoogleContainerTools/jib/tree/master/jib-maven-plugin#quickstart))
 
 ```
-export PASSWORD=xxxxx
+export PASSWORD="xxxxx"
 mvn compile package -Dmaven.test.skip=true jib:build -Djib.to.auth.password=$PASSWORD
 ```
 
@@ -28,31 +28,34 @@ The simulator accepts the following arguments:
 -t 		Precision of timestamp
 		- SEC = seconds (default)
 		- MS = milliseconds
+-mt 	JMS Message Type (only if JMS is used) 
+		- TEXT = produce a JMS TextMessage		- MAP = produce a JMS MapMessage
+		- MAP = produce a JMS BytesMessage
 ```
 
-It can either be run through mavan or as a docker container. 
+It can either be run through Maven or as a Docker container. 
 
 ### Run it as a Java Program
 
-Write a single message to MQTT in CSV format
+Write a all in on messages to MQTT in CSV format
 
 ```
 mvn exec:java -Dexec.args="-s MQTT -h mosquitto-1 -p 1883 -f CSV"
 ```
 
-Write a single message to KAFKA in CSV format
+Write all in one messages to KAFKA in CSV format
 
 ```
 mvn exec:java -Dexec.args="-s KAFKA -h broker-1 -p 9092 -f CSV"
 ```
 
-Write two messages to KAFKA in CSV format
+Write separate messages to KAFKA in CSV format
 
 ```
 mvn exec:java -Dexec.args="-s KAFKA -h broker-1 -p 9092 -f CSV -m SPLIT"
 ```
 
-Write two messages to KAFKA in CSV format
+Write separate messages to KAFKA in CSV format
 
 ```
 mvn exec:java -Dexec.args="-s KAFKA -h broker-1 -p 9092 -f CSV -m SPLIT"
@@ -61,14 +64,20 @@ mvn exec:java -Dexec.args="-s KAFKA -h broker-1 -p 9092 -f CSV -m SPLIT"
 
 ### Run it as a docker container
 
-Write a single message to MQTT in CSV format
+Write a all in on messages to MQTT in CSV format
 
 ```
-docker run --network analyticsplatform_default trivadisbds/iot-truck-simulator '-s' 'MQTT' '-h' 'mosquitto-1' '-p' '1883' '-f' 'CSV'
+docker run --network docker_default trivadis/iot-truck-simulator '-s' 'MQTT' '-h' 'mosquitto-1' '-p' '1883' '-f' 'CSV'
 ```
 
-Write a single message to KAFKA in CSV format
+Write a all in on messages to KAFKA in CSV format
 
 ```
-docker run --network analyticsplatform_default trivadisbds/iot-truck-simulator '-s' 'KAFKA' '-h' 'broker-1' '-p' '9092' '-f' 'CSV'
+docker run --network docker_default trivadis/iot-truck-simulator '-s' 'KAFKA' '-h' 'broker-1' '-p' '9092' '-f' 'CSV'
+```
+
+Write a all in on messages to JMS (ActiveMQ) in CSV format
+
+```
+docker run --network docker_default trivadis/iot-truck-simulator '-s' 'JMS' '-h' 'activemq' '-p' '61616' '-f' 'CSV'
 ```

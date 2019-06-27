@@ -38,6 +38,10 @@ public class Lab {
 	public static final String TIME_RESOLUTION_NAME_SHORT_FLAG = "-t";
 	public static final String TIME_RESOLUTION_NAME_LONG_FLAG = "--timeres";
 
+	public static final String MESSAGE_TYPE_SHORT_FLAG = "-mt";
+	public static final String MESSAGE_TYPE_LONG_FLAG = "--messageType";
+
+	
 	public static final String HELP_SHORT_FLAG_1 = "-?";
 	public static final String HELP_LONG_FLAG = "--help";
 
@@ -47,7 +51,8 @@ public class Lab {
 	public static final String STDOUT = "stdout";
 	public static final String KAFKA = "kafka";
 	public static final String MQTT = "mqtt";
-	
+	public static final String JMS = "jms";
+
 	public static final String CSV = "csv";
 	public static final String JSON = "json";
 	public static final String AVRO = "avro";
@@ -58,11 +63,16 @@ public class Lab {
 	public static final String TIME_RESOLUTION_MS = "millisec";
 	public static final String TIME_RESOLUTION_S = "sec";
 
+	public static final String TEXT = "text";
+	public static final String MAP = "map";
+	public static final String BYTES = "bytes";
+
 	public static String host = "";
 	public static String format = CSV;
 	public static String port = "";
 	public static String mode = COMBINE;
 	public static String timeResolution = TIME_RESOLUTION_S;
+	public static String messageType = TEXT;
 	
 	static {
 		try {
@@ -117,6 +127,11 @@ public class Lab {
 				timeResolution = null;
 				timeResolution = nextArg(argv, flag).toLowerCase();
 				break;				
+			case MESSAGE_TYPE_SHORT_FLAG:
+			case MESSAGE_TYPE_LONG_FLAG:
+				messageType = null;
+				messageType = nextArg(argv, flag).toLowerCase();
+				break;				
 			case HELP_SHORT_FLAG_1:
 			case HELP_LONG_FLAG:
 				usage();
@@ -134,11 +149,15 @@ public class Lab {
 			sensorEventsParam.setEventCollectorClassName("com.hortonworks.solution.KafkaSensorEventCollector");
 		} else if (sink.equals(MQTT)) {
 			sensorEventsParam.setEventCollectorClassName("com.hortonworks.solution.MQTTSensorEventCollector");
+		} else if (sink.equals(JMS)) {
+			sensorEventsParam.setEventCollectorClassName("com.hortonworks.solution.ActiveMQSensorEventCollector");
 		} else if (sink.equals(STDOUT)) {
 			sensorEventsParam.setEventCollectorClassName("com.hortonworks.solution.StdOutSensorEventCollector");
+		} else {
+			throw new IllegalArgumentException("sink needs to be one of KAFKA, MQTT, JMS or STDOUT, but was " + sink);
 		}
 		sensorEventsParam.setNumberOfEvents(1000);
-		sensorEventsParam.setDelayBetweenEvents(2000);
+		sensorEventsParam.setDelayBetweenEvents(4000);
 		System.out.println(Lab.class.getResource("/" + "routes/midwest").getPath());
 		sensorEventsParam.setRouteDirectory(Lab.class.getResource("/" + "routes/midwest").getPath());
 //		sensorEventsParam.setRouteDirectory("/Users/gus/workspace/git/gschmutz/various-demos/iot-truck-simulator/src/main/resources/routes/midwest");

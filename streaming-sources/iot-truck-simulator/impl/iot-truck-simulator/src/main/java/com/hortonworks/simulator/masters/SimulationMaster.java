@@ -25,7 +25,7 @@ public class SimulationMaster extends UntypedActor {
 			ActorRef listener, int numberOfEvents, long demoId, int messageDelay) {
 		logger.info("Starting simulation with " + numberOfEventEmitters
 				+ " of " + eventEmitterClass + " Event Emitters -- "
-				+ eventEmitterClass.toString());
+				+ eventEmitterClass.toString() + " Message Delay " + messageDelay);
 		this.listener = listener;
 		this.numberOfEventEmitters = numberOfEventEmitters;
 		this.eventEmitterClass = eventEmitterClass;
