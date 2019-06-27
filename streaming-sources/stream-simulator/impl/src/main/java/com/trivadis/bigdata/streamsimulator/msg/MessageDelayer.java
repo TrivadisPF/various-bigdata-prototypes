@@ -4,20 +4,19 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.integration.dsl.IntegrationFlowBuilder;
 
 import com.trivadis.bigdata.streamsimulator.cfg.ApplicationProperties.Speedup;
-import com.trivadis.bigdata.streamsimulator.msg.MsgHeader;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Custom delay handler, uses a pending delayed message counter to block inbound message handler.
  * 
  * @author Markus Zehnder
  */
+@Slf4j
 public class MessageDelayer {
-    private static final Logger logger = LoggerFactory.getLogger(MessageDelayer.class);
 
     private final Speedup cfg;
     private long delayedMsgCheckMillis = 100;
@@ -29,18 +28,18 @@ public class MessageDelayer {
 
     public IntegrationFlowBuilder build(IntegrationFlowBuilder builder) {
         if (!cfg.isEnabled()) {
-            logger.debug("Delayer is disabled");
+            log.debug("Delayer is disabled");
             return builder;
         }
 
         if (cfg.isSimpleMode()) {
             // use built-in Spring Integration logic
-            logger.warn("Using simple in-memory delayer, all messages will be loaded into memory!");
+            log.warn("Using simple in-memory delayer, all messages will be loaded into memory!");
             return builder.delay("delayer.messageGroupId",
                     d -> d.delayExpression("headers['" + MsgHeader.DELAY + "']"));
         }
 
-        logger.info("Creating message delayer with max delayed msg count: {}", cfg.getMaxDelayedMessages());
+        log.info("Creating message delayer with max delayed msg count: {}", cfg.getMaxDelayedMessages());
         return builder.delay("delayer.messageGroupId", d -> d.delayExpression("headers['" + MsgHeader.DELAY + "']")
                 .advice(newInboundMsgAdvice()).delayedAdvice(delayedMsgSendAdvice()));
     }

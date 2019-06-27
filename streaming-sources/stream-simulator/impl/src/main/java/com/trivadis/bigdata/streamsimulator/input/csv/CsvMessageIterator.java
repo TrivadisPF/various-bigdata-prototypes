@@ -3,13 +3,13 @@ package com.trivadis.bigdata.streamsimulator.input.csv;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.messaging.Message;
 
 import com.trivadis.bigdata.streamsimulator.transform.HeaderProvider;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Spring integration message {@link Iterator} to wrap the CSV records into a Spring {@link Message} object.<br>
@@ -18,8 +18,8 @@ import com.trivadis.bigdata.streamsimulator.transform.HeaderProvider;
  * 
  * @author Markus Zehnder
  */
+@Slf4j
 public class CsvMessageIterator<T> implements Iterator<Message<T>> {
-    private static final Logger logger = LoggerFactory.getLogger(CsvMessageIterator.class);
 
     private final Iterator<String[]> recordIterator;
     private final Converter<String[], T> recordConverter;
@@ -65,7 +65,7 @@ public class CsvMessageIterator<T> implements Iterator<Message<T>> {
         readCount++;
 
         if (readCount % 1000 == 0) {
-            logger.info("Read {} CSV messages", readCount);
+            log.info("Read {} CSV messages", readCount);
         }
 
         Map<String, ?> headersToCopy = null;

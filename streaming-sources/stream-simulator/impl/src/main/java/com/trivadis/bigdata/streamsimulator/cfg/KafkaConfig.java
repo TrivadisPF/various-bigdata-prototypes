@@ -11,8 +11,8 @@ import org.springframework.messaging.MessageChannel;
 import com.trivadis.bigdata.streamsimulator.output.KafkaProducer;
 
 /**
- * Kafka specific configuration. Activated by application property
- * simulater.output=kafka
+ * Kafka specific configuration.<br>
+ * Activated by application property simulater.output=kafka
  * 
  * @author Markus Zehnder
  */
@@ -21,19 +21,19 @@ import com.trivadis.bigdata.streamsimulator.output.KafkaProducer;
 public class KafkaConfig {
 
     @Autowired
-    ApplicationProperties cfg;
+    KafkaProperties cfg;
 
     @Bean
     public KafkaProducer kafkaProducer() {
         KafkaProducer producer = new KafkaProducer();
         return producer;
     }
- 
+
     @Bean
     public IntegrationFlow kafkaFlow(MessageChannel outboundChannel) {
-        return  IntegrationFlows.from(outboundChannel)
-            .handle(kafkaProducer())
-            .get();
+        return IntegrationFlows.from(outboundChannel)
+                .handle(kafkaProducer())
+                .get();
     }
 
 }

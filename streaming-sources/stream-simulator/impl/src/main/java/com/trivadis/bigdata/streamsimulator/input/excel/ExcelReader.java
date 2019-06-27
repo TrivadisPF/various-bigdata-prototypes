@@ -25,12 +25,12 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.util.Assert;
 
 import com.trivadis.bigdata.streamsimulator.input.ColumnNameProvider;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Excel file reader using Apache POI. It will read the Excel file sheet for sheet and row for row.
@@ -43,8 +43,8 @@ import com.trivadis.bigdata.streamsimulator.input.ColumnNameProvider;
  * @see <a href="https://github.com/mdeinum/spring-batch-extensions">Inspired by Spring Batch Extension fork by
  *      mdeinum</a>
  */
+@Slf4j
 public class ExcelReader<T> implements Closeable, Iterable<T> {
-    private static final Logger logger = LoggerFactory.getLogger(ExcelReader.class);
 
     private final File file;
     private Workbook workbook;
@@ -80,8 +80,8 @@ public class ExcelReader<T> implements Closeable, Iterable<T> {
 
         openSheet();
         noInput = false;
-        if (logger.isDebugEnabled()) {
-            logger.debug("Opened workbook [{}] with {} sheets.", file.getName(), workbook.getNumberOfSheets());
+        if (log.isDebugEnabled()) {
+            log.debug("Opened workbook [{}] with {} sheets.", file.getName(), workbook.getNumberOfSheets());
         }
     }
 
@@ -132,8 +132,8 @@ public class ExcelReader<T> implements Closeable, Iterable<T> {
         } else {
             currentSheet++;
             if (currentSheet >= workbook.getNumberOfSheets()) {
-                if (logger.isDebugEnabled()) {
-                    logger.debug("No more sheets in '{}'", file.getName());
+                if (log.isDebugEnabled()) {
+                    log.debug("No more sheets in '{}'", file.getName());
                 }
                 return null;
             } else {
@@ -169,15 +169,15 @@ public class ExcelReader<T> implements Closeable, Iterable<T> {
         rs = new RowSet(sheet);
         columnNameProvider.init(rs);
 
-        if (logger.isDebugEnabled()) {
-            logger.debug("Opening sheet {}", sheet.getSheetName());
+        if (log.isDebugEnabled()) {
+            log.debug("Opening sheet {}", sheet.getSheetName());
         }
 
         for (int i = 0; i < linesToSkip; i++) {
             rs.next();
         }
-        if (logger.isDebugEnabled()) {
-            logger.debug("Openend sheet {} with {} rows.", sheet.getSheetName(), rs.getNumberOfRows());
+        if (log.isDebugEnabled()) {
+            log.debug("Openend sheet {} with {} rows.", sheet.getSheetName(), rs.getNumberOfRows());
         }
     }
 

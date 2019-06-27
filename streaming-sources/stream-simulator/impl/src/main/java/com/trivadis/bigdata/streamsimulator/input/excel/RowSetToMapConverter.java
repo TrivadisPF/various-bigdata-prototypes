@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.springframework.core.convert.converter.Converter;
 
+import com.trivadis.bigdata.streamsimulator.input.ColumnNameAwareConverter;
 import com.trivadis.bigdata.streamsimulator.input.ColumnNameProvider;
 import com.trivadis.bigdata.streamsimulator.input.StringArrayToMapConverter;
 
@@ -13,17 +14,11 @@ import com.trivadis.bigdata.streamsimulator.input.StringArrayToMapConverter;
  *
  * @author Markus Zehnder
  */
-public class RowSetToMapConverter implements Converter<RowSet, Map<String, String>> {
-
-    private final StringArrayToMapConverter converter;
-
-    public RowSetToMapConverter(ColumnNameProvider<?> columnNameProvider) {
-        this.converter = new StringArrayToMapConverter(columnNameProvider);
-    }
+public class RowSetToMapConverter extends ColumnNameAwareConverter<RowSet, Map<String, String>> {
 
     @Override
     public Map<String, String> convert(RowSet rs) {
-        return converter.convert(rs.getCurrentRow());
+        return new StringArrayToMapConverter(columnNameProvider).convert(rs.getCurrentRow());
     }
 
 }

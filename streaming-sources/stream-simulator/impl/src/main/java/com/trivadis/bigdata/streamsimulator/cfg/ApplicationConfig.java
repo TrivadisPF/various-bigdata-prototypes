@@ -1,10 +1,11 @@
 package com.trivadis.bigdata.streamsimulator.cfg;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Collections;
+import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.avro.Schema;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.Lifecycle;
@@ -25,11 +26,23 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.handler.annotation.Header;
 
 import com.trivadis.bigdata.streamsimulator.cfg.ApplicationProperties.Speedup;
+import com.trivadis.bigdata.streamsimulator.cfg.KafkaProperties.Avro;
+import com.trivadis.bigdata.streamsimulator.input.ColumnNameAwareConverter;
+import com.trivadis.bigdata.streamsimulator.input.StringArrayToGenericAvroConverter;
+import com.trivadis.bigdata.streamsimulator.input.StringArrayToMapConverter;
 import com.trivadis.bigdata.streamsimulator.input.csv.CsvFileMessageSplitter;
 import com.trivadis.bigdata.streamsimulator.input.excel.ExcelFileMessageSplitter;
+import com.trivadis.bigdata.streamsimulator.input.excel.RowSet;
+import com.trivadis.bigdata.streamsimulator.input.excel.RowSetToMapConverter;
 import com.trivadis.bigdata.streamsimulator.msg.MessageDelayer;
+import com.trivadis.bigdata.streamsimulator.transform.AvroGenericMsgDelayHeaderProvider;
 import com.trivadis.bigdata.streamsimulator.transform.MapMsgDelayHeaderProvider;
 import com.trivadis.bigdata.streamsimulator.transform.TransformDates;
+
+import io.confluent.kafka.schemaregistry.client.CachedSchemaRegistryClient;
+import io.confluent.kafka.schemaregistry.client.SchemaMetadata;
+import io.confluent.kafka.schemaregistry.client.rest.exceptions.RestClientException;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Common application configuration of message channels and flows.
@@ -37,12 +50,11 @@ import com.trivadis.bigdata.streamsimulator.transform.TransformDates;
  * @author Markus Zehnder
  */
 @Configuration
+@Slf4j
 public class ApplicationConfig {
-    private static final Logger logger = LoggerFactory.getLogger(ApplicationConfig.class);
 
     public static final String FILETYPE_EXCEL = "XSL";
     public static final String FILETYPE_CSV = "CSV";
-
 
     /**
      * Unfortunately we still have to use String identifiers for channel identifications, e.g. in @Gateway annotations,
@@ -61,6 +73,9 @@ public class ApplicationConfig {
 
     @Autowired
     private ApplicationProperties cfg;
+
+    @Autowired
+    private KafkaProperties kafkaCfg;
 
     @Autowired
     private ApplicationContext applicationContext;
@@ -157,7 +172,8 @@ public class ApplicationConfig {
 
     public HeaderValueRouter inputFileTypeRouter() {
         HeaderValueRouter router = new HeaderValueRouter(HEADER_FILETYPE);
-        router.setChannelMapping(FILETYPE_CSV, CSV_INPUT_CHANNEL_NAME); // too bad channel can only be configured by name...
+        router.setChannelMapping(FILETYPE_CSV, CSV_INPUT_CHANNEL_NAME); // too bad channel can only be configured by
+                                                                        // name...
         router.setChannelMapping(FILETYPE_EXCEL, XSL_INPUT_CHANNEL_NAME);
         return router;
     }
@@ -176,18 +192,77 @@ public class ApplicationConfig {
                 .get();
     }
 
-    public CsvFileMessageSplitter csvFileMessageSplitter(long referenceTimestamp, Speedup speedup) {
-        MapMsgDelayHeaderProvider headerProvider = speedup.isEnabled()
-                ? new MapMsgDelayHeaderProvider(referenceTimestamp, speedup)
-                : null;
-        return new CsvFileMessageSplitter(cfg.getSource().getCsv(), headerProvider);
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    public CsvFileMessageSplitter<?> csvFileMessageSplitter(long referenceTimestamp, Speedup speedup) {
+
+        Avro avroCfg = kafkaCfg.getAvro();
+        if (avroCfg.isEnabled()) {
+            // FIXME push schema initialization into message splitter when we know the input file!
+            Schema schema = getAvroSchema();
+
+            StringArrayToGenericAvroConverter messageConverter = new StringArrayToGenericAvroConverter(schema);
+
+            AvroGenericMsgDelayHeaderProvider headerProvider = speedup.isEnabled()
+                    ? new AvroGenericMsgDelayHeaderProvider(referenceTimestamp, speedup)
+                    : null;
+            return new CsvFileMessageSplitter(cfg.getSource().getCsv(), messageConverter, headerProvider);
+        } else {
+            StringArrayToMapConverter messageConverter = new StringArrayToMapConverter();
+
+            MapMsgDelayHeaderProvider headerProvider = speedup.isEnabled()
+                    ? new MapMsgDelayHeaderProvider(referenceTimestamp, speedup)
+                    : null;
+            return new CsvFileMessageSplitter(cfg.getSource().getCsv(), messageConverter, headerProvider);
+        }
     }
 
-    public ExcelFileMessageSplitter excelFileMessageSplitter(long referenceTimestamp, Speedup speedup) {
+    public ExcelFileMessageSplitter<?> excelFileMessageSplitter(long referenceTimestamp, Speedup speedup) {
+        // FIXME add Excel to Avro support
+        Avro avroCfg = kafkaCfg.getAvro();
+        if (avroCfg.isEnabled()) {
+            // FIXME push schema initialization into message splitter when we know the input file!
+            Schema schema = getAvroSchema();
+
+            StringArrayToGenericAvroConverter messageConverter = new StringArrayToGenericAvroConverter(schema);
+
+            AvroGenericMsgDelayHeaderProvider headerProvider = speedup.isEnabled()
+                    ? new AvroGenericMsgDelayHeaderProvider(referenceTimestamp, speedup)
+                    : null;
+            return new ExcelFileMessageSplitter(cfg.getSource().getExcel(), messageConverter, headerProvider);
+        } else {
+            ColumnNameAwareConverter<RowSet, Map<String, String>> messageConverter = new RowSetToMapConverter();
+
         MapMsgDelayHeaderProvider headerProvider = speedup.isEnabled()
                 ? new MapMsgDelayHeaderProvider(referenceTimestamp, speedup)
                 : null;
-        return new ExcelFileMessageSplitter(cfg.getSource().getExcel(), headerProvider);
+        return new ExcelFileMessageSplitter(cfg.getSource().getExcel(), messageConverter, headerProvider);
+        }
+    }
+
+    public Schema getAvroSchema() {
+        Avro avroCfg = kafkaCfg.getAvro();
+        // FIXME hard coded subject for testing only!
+        // Implement subject provider (e.g. based on file name conventions or by cfg property)...
+        String subject = "nyc_green_taxi_trip_data-value";
+
+        try {
+            Schema.Parser parser = new Schema.Parser();
+
+            if (avroCfg.isSchemaRegistry()) {
+                log.info("Downloading latest Avro metadata for {} from {}.", subject, avroCfg.getSchemaRegistryUrls());
+                CachedSchemaRegistryClient client = new CachedSchemaRegistryClient(
+                        avroCfg.getSchemaRegistryUrls(), avroCfg.getIdentityMapCapacity());
+
+                SchemaMetadata schemaMetadata = client.getLatestSchemaMetadata(subject);
+                return parser.parse(schemaMetadata.getSchema());
+            } else {
+                subject = "/projects/personal/github/various-bigdata-prototypes/streaming-sources/stream-simulator/impl/data/nyc_green_taxi_tripdata.avsc";
+                return new Schema.Parser().parse(new File(subject));
+            }
+        } catch (RestClientException | IOException e) {
+            throw new RuntimeException(
+                    String.format("Error downloading Avro metadata for %s from %s.", subject, avroCfg.getSchemaRegistryUrls()), e);
+        }
     }
 
     @Bean
@@ -226,7 +301,7 @@ public class ApplicationConfig {
             return builder;
         }
 
-        logger.info("Enabled throttling with max: {} msg / {} ms", cfg.getThrottling().getMaxMessagesPerPoll(),
+        log.info("Enabled throttling with max: {} msg / {} ms", cfg.getThrottling().getMaxMessagesPerPoll(),
                 cfg.getThrottling().getFixedDelay());
 
         return builder

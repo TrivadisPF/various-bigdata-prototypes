@@ -14,6 +14,9 @@ import org.springframework.stereotype.Component;
 import com.trivadis.bigdata.streamsimulator.input.csv.CsvProperties;
 import com.trivadis.bigdata.streamsimulator.input.excel.ExcelProperties;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * Application specific configuration properties
  * 
@@ -21,6 +24,8 @@ import com.trivadis.bigdata.streamsimulator.input.excel.ExcelProperties;
  */
 @Component
 @ConfigurationProperties(prefix = "simulator")
+@Getter
+@Setter
 public class ApplicationProperties {
     private File inputDirectory;
     private LocalDateTime referenceDate;
@@ -29,36 +34,16 @@ public class ApplicationProperties {
     private Throttling throttling;
     private Source source;
 
+    @Getter
+    @Setter
     public static class AdjustDates {
         private boolean enabled = false;
         private String dateFieldNameRegex = "timestamp";
         private String dateFieldPattern;
-
-        public boolean isEnabled() {
-            return enabled;
-        }
-
-        public void setEnabled(boolean enabled) {
-            this.enabled = enabled;
-        }
-
-        public String getDateFieldNameRegex() {
-            return dateFieldNameRegex;
-        }
-
-        public void setDateFieldNameRegex(String dateFieldNameRegex) {
-            this.dateFieldNameRegex = dateFieldNameRegex;
-        }
-
-        public String getDateFieldPattern() {
-            return dateFieldPattern;
-        }
-
-        public void setDateFieldPattern(String dateFieldPattern) {
-            this.dateFieldPattern = dateFieldPattern;
-        }
     }
 
+    @Getter
+    @Setter
     public static class Speedup {
         private boolean enabled = false;
         private float factor = 1f;
@@ -66,149 +51,21 @@ public class ApplicationProperties {
         private String referenceFieldName;
         private String referenceFieldNamePattern;
         private int maxDelayedMessages = 1000;
-
-        public boolean isEnabled() {
-            return enabled;
-        }
-
-        public void setEnabled(boolean enabled) {
-            this.enabled = enabled;
-        }
-
-        public float getFactor() {
-            return factor;
-        }
-
-        public void setFactor(float factor) {
-            this.factor = factor;
-        }
-
-        public boolean isSimpleMode() {
-            return simpleMode;
-        }
-
-        public void setSimpleMode(boolean simpleMode) {
-            this.simpleMode = simpleMode;
-        }
-
-        public String getReferenceFieldName() {
-            return referenceFieldName;
-        }
-
-        public void setReferenceFieldName(String referenceFieldName) {
-            this.referenceFieldName = referenceFieldName;
-        }
-
-        public String getReferenceFieldNamePattern() {
-            return referenceFieldNamePattern;
-        }
-
-        public void setReferenceFieldNamePattern(String referenceFieldNamePattern) {
-            this.referenceFieldNamePattern = referenceFieldNamePattern;
-        }
-
-        public int getMaxDelayedMessages() {
-            return maxDelayedMessages;
-        }
-
-        public void setMaxDelayedMessages(int count) {
-            this.maxDelayedMessages = count;
-        }
     }
 
+    @Getter
+    @Setter
     public static class Throttling {
         private boolean enabled = false;
         private long fixedDelay = 1000;
         private int maxMessagesPerPoll = 1;
-
-        public boolean isEnabled() {
-            return enabled;
-        }
-
-        public void setEnabled(boolean enabled) {
-            this.enabled = enabled;
-        }
-
-        public long getFixedDelay() {
-            return fixedDelay;
-        }
-
-        public void setFixedDelay(long fixedDelay) {
-            this.fixedDelay = fixedDelay;
-        }
-
-        public int getMaxMessagesPerPoll() {
-            return maxMessagesPerPoll;
-        }
-
-        public void setMaxMessagesPerPoll(int maxMessagesPerPoll) {
-            this.maxMessagesPerPoll = maxMessagesPerPoll;
-        }
     }
 
+    @Getter
+    @Setter
     public static class Source {
         private CsvProperties csv = new CsvProperties();
         private ExcelProperties excel = new ExcelProperties();
-
-        public CsvProperties getCsv() {
-            return csv;
-        }
-
-        public void setCsv(CsvProperties csv) {
-            this.csv = csv;
-        }
-
-        public ExcelProperties getExcel() {
-            return excel;
-        }
-
-        public void setExcel(ExcelProperties excel) {
-            this.excel = excel;
-        }
-    }
-
-    public Source getSource() {
-        return source;
-    }
-
-    public void setSource(Source source) {
-        this.source = source;
-    }
-
-    public File getInputDirectory() {
-        return inputDirectory;
-    }
-
-    public void setInputDirectory(File inputDirectory) {
-        this.inputDirectory = inputDirectory;
-    }
-
-    public AdjustDates getAdjustDates() {
-        return adjustDates;
-    }
-
-    public void setAdjustDates(AdjustDates adjustDates) {
-        this.adjustDates = adjustDates;
-    }
-
-    public Speedup getSpeedup() {
-        return speedup;
-    }
-
-    public void setSpeedup(Speedup speedup) {
-        this.speedup = speedup;
-    }
-
-    public Throttling getThrottling() {
-        return throttling;
-    }
-
-    public void setThrottling(Throttling throttling) {
-        this.throttling = throttling;
-    }
-
-    public LocalDateTime getReferenceDate() {
-        return referenceDate;
     }
 
     public void setReferenceDate(String referenceDate) {
