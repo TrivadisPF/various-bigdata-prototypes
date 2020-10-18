@@ -5,7 +5,7 @@ This project documents the implementation of the backup of Kafka topics.
 ## Implementation Decisions
 
   * Kafka Connect to be used for the restore as well
-    * this will automatically help in parallelization of the restore
+    * this will automatically help in parallelisation of the restore
     * maybe a bit harder to use upon restore due to the fact that is in connect (plain java app would be simpler)
   * Kafka Connect should be used for the backup 
     * this is the most natural choice in the Kafka ecosystem for constantly writing out data from topics
