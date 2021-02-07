@@ -1,16 +1,11 @@
 package com.hortonworks.solution;
 
 import com.hortonworks.simulator.impl.domain.transport.MobileEyeEvent;
-import com.hortonworks.simulator.impl.domain.transport.Truck;
 import com.microsoft.azure.sdk.iot.device.*;
 import org.apache.log4j.Logger;
-import org.eclipse.paho.client.mqttv3.MqttClient;
-import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
-import org.eclipse.paho.client.mqttv3.MqttException;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
-
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.UUID;
 
 public class AzureIoTHubSensorEventCollector extends AbstractSensorEventCollector {
 
@@ -18,9 +13,9 @@ public class AzureIoTHubSensorEventCollector extends AbstractSensorEventCollecto
 	private static IotHubClientProtocol protocol = IotHubClientProtocol.MQTT;
 	private static DeviceClient client;
 
-	private MqttClient sampleClient = null;
+	//private MqttClient sampleClient = null;
 	private static final String TOPIC = "truck";
-	private int qos = 2;
+	//private int qos = 2;
 	private String broker = "tcp://" + Lab.host + ":" + ((Lab.port == null) ? "1883" : Lab.port);
 	private String clientId = "TrucksProducer";
 
@@ -33,7 +28,9 @@ public class AzureIoTHubSensorEventCollector extends AbstractSensorEventCollecto
 	}
 
 	public AzureIoTHubSensorEventCollector() throws IOException, URISyntaxException {
-		String connString = "HostName=" + Lab.host + ";DeviceId=" + Lab.deviceId +  ";SharedAccessKey=" + Lab.accessKey; //Lab.connString;
+		String connString = "HostName=" + Lab.host + ";DeviceId=" + Lab.deviceId +  ";SharedAccessKey=" + Lab.accessKey;
+
+		System.out.println(connString);
 
 		// Connect to the IoT hub.
 		client = new DeviceClient(connString, protocol);
@@ -66,11 +63,12 @@ public class AzureIoTHubSensorEventCollector extends AbstractSensorEventCollecto
 				//msg.setProperty("truckId", (currentTemperature > 30) ? "true" : "false");
 
 				Object lockobj = new Object();
+				msg.setMessageId(UUID.randomUUID().toString());
+				msg.setProperty("vehicleId", String.valueOf(originalEvent.getTruck().getTruckId()));
 
 				// Send the message.
 				EventCallback callback = new EventCallback();
 				client.sendEventAsync(msg, callback, lockobj);
-
 				synchronized (lockobj) {
 					try {
 						lockobj.wait();

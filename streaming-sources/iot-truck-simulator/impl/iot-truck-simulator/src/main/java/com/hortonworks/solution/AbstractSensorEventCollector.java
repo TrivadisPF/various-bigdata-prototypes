@@ -38,7 +38,7 @@ public abstract class AbstractSensorEventCollector extends UntypedActor {
 		        eventToPass = mee.toCSV(MobileEyeEvent.EVENT_KIND_BEHAVIOUR, Lab.timeResolution);
 		    }
 			
-			Thread.sleep((long)(Math.random() * 100));
+			Thread.sleep((long)(Math.random() * Lab.delay));
 	
 			sendMessage(getTopicName(MobileEyeEvent.EVENT_KIND_BEHAVIOUR, mee), mee, eventToPass);
 	

@@ -3,6 +3,7 @@ package com.hortonworks.simulator.impl.domain.transport;
 import com.hortonworks.simulator.datagenerator.DataGeneratorUtils;
 import com.hortonworks.simulator.impl.domain.transport.route.Route;
 import com.hortonworks.simulator.impl.domain.transport.route.TruckRoutesParser;
+import com.hortonworks.solution.Lab;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ public class TruckConfiguration {
 	private static Logger LOGGER = Logger.getLogger(TruckConfiguration.class);
 
 	public static final long END_ROUTE_AFTER_METERS = 120000; // 75 miles
-	private static final int TRUCK_FLEET_SIZE=100;	
+	private static final int TRUCK_FLEET_SIZE= Lab.fleetSize;
 	private static final int TRUCK_ID_START = 10;
 	public static final int MAX_ROUTE_TRAVERSAL_COUNT = 10;
 	

@@ -52,11 +52,20 @@ public class MobileEyeEvent extends Event {
 		Integer timeFactor = (timeResoultion.equals(Lab.TIME_RESOLUTION_S)) ? 1 : 1000;
 		String result = null;
 
+		String latLong = null;
+		String system = "";
+		if (Lab.eventSchema.equals("1")) {
+			latLong = location.getLatitude() + "," + location.getLongitude();
+		} else if (Lab.eventSchema.equals("2")) {
+			system = "SystemB" + ",";
+			latLong = location.getLatitude() + ":" + location.getLongitude();
+		}
+
 		if (eventKind.equals(EVENT_KIND_BEHAVIOUR_AND_POSITION)) {
-			result = truck.toCSV(timeFactor) + eventType.toCSV() + ","
-				+ location.getLatitude() + "," + location.getLongitude() + "," + correlationId;
+			result = system + truck.toCSV(timeFactor) + eventType.toCSV() + ","
+				+ latLong + "," + correlationId;
 		} else if (eventKind.equals(EVENT_KIND_POSITION)){
-			result = new Date().getTime() * timeFactor + "," + truck.getTruckId() + "," + location.getLatitude() + "," + location.getLongitude();
+			result = new Date().getTime() * timeFactor + "," + truck.getTruckId() + "," + latLong;
 		} else if (eventKind.equals(EVENT_KIND_BEHAVIOUR)){
 			result = new Date().getTime() * timeFactor + "," + truck.getTruckId() + eventType.toCSV() + "," + correlationId;
 		}
@@ -68,6 +77,9 @@ public class MobileEyeEvent extends Event {
 
 		StringBuffer msg = new StringBuffer();
 		msg.append("{");
+		if (Lab.eventSchema.equals("2")) {
+			msg.append("\"system\":" + "SystemB");
+		}
 		msg.append("\"timestamp\":" + new Date().getTime() * timeFactor);
 		msg.append(",");
 		msg.append("\"truckId\":" + truck.getTruckId());
@@ -82,10 +94,16 @@ public class MobileEyeEvent extends Event {
 			msg.append("\"correlationId\":\"" + correlationId + "\"");
 		}
 		if (eventKind.equals(EVENT_KIND_BEHAVIOUR_AND_POSITION) || eventKind.equals(EVENT_KIND_POSITION)) {
-			msg.append(",");
-			msg.append("\"latitude\":" + location.getLatitude());
-			msg.append(",");
-			msg.append("\"longitude\":" + location.getLongitude());
+			if (Lab.eventSchema.equals("1")) {
+				msg.append(",");
+				msg.append("\"latitude\":" + location.getLatitude());
+				msg.append(",");
+				msg.append("\"longitude\":" + location.getLongitude());
+			} else if (Lab.eventSchema.equals("2")) {
+				msg.append(",");
+				msg.append("\"latLong\":" + location.getLatitude() + ":" + location.getLongitude());
+			}
+
 		}
 
 		msg.append("}");

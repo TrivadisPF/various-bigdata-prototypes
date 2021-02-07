@@ -1,10 +1,12 @@
 package com.hortonworks.solution;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.Properties;
+import java.util.*;
+import java.util.stream.Collectors;
 
+import com.google.common.collect.ImmutableList;
+import com.hortonworks.labutils.RangeExpander;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,7 +43,27 @@ public class Lab {
 	public static final String MESSAGE_TYPE_SHORT_FLAG = "-mt";
 	public static final String MESSAGE_TYPE_LONG_FLAG = "--messageType";
 
-	
+	public static final String DELAY_SHORT_FLAG = "-d";
+	public static final String DELAY_LONG_FLAG = "--delay";
+
+	public static final String FLEET_SIZE_SHORT_FLAG = "-fs";
+	public static final String FLEET_SIZE_LONG_FLAG = "--fleetSize";
+
+	public static final String VEHICLE_FILTER_SHORT_FLAG = "-vf";
+	public static final String VEHICLE_FILTER_LONG_FLAG = "--vehicleFilter";
+
+	public static final String FILE_PER_VEHICLE_SHORT_FLAG = "-fpv";
+	public static final String FILE_PER_VEHICLE_LONG_FLAG = "--filePerVehicle";
+
+	public static final String DEVICE_ID_SHORT_FLAG = "-did";
+	public static final String DEVICE_ID_LONG_FLAG = "--deviceId";
+
+	public static final String AZ_ACCESS_KEY_SHORT_FLAG = "-ak";
+	public static final String AZ_ACCESS_KEY_LONG_FLAG = "--accessKey";
+
+	public static final String EVENT_SCHEMA_SHORT_FLAG = "-es";
+	public static final String EVENT_SCHEMA_LONG_FLAG = "--eventSchema";
+
 	public static final String HELP_SHORT_FLAG_1 = "-?";
 	public static final String HELP_LONG_FLAG = "--help";
 
@@ -52,6 +74,8 @@ public class Lab {
 	public static final String KAFKA = "kafka";
 	public static final String MQTT = "mqtt";
 	public static final String JMS = "jms";
+	public static final String RABBITMQ = "rabbitmq";
+	public static final String AZURE_IOT_HUB = "az-iothub";
 
 	public static final String CSV = "csv";
 	public static final String JSON = "json";
@@ -73,6 +97,13 @@ public class Lab {
 	public static String mode = COMBINE;
 	public static String timeResolution = TIME_RESOLUTION_S;
 	public static String messageType = TEXT;
+	public static Integer delay;
+	public static Integer fleetSize;
+	public static List<Integer> vehicleFilters = null;
+	public static boolean filePerTruck;
+	public static String deviceId;
+	public static String accessKey;
+	public static String eventSchema;
 	
 	static {
 		try {
@@ -84,6 +115,16 @@ public class Lab {
 		}
 	}
 
+	protected static List<Integer> toListOfInts(String value) {
+		String valueNoWS = StringUtils.deleteWhitespace(value);
+		// expand ranges
+		RangeExpander re = new RangeExpander(valueNoWS);
+
+		// add to list
+		List<Integer> ints = ImmutableList.copyOf((Iterator<? extends Integer>) re);
+		return ints;
+	}
+
 	public static void main(String args[]) {
 		String sink = KAFKA;
 //		String format = CSV;
@@ -92,6 +133,12 @@ public class Lab {
 
 		long iterations = 1;
 		String outputFile = null;
+
+		// defaults
+		filePerTruck = false;
+		eventSchema = "1";
+		delay = 100;
+		fleetSize = 100;
 
 		Iterator<String> argv = Arrays.asList(args).iterator();
 		while (argv.hasNext()) {
@@ -131,7 +178,33 @@ public class Lab {
 			case MESSAGE_TYPE_LONG_FLAG:
 				messageType = null;
 				messageType = nextArg(argv, flag).toLowerCase();
-				break;				
+				break;
+			case FLEET_SIZE_SHORT_FLAG:
+			case FLEET_SIZE_LONG_FLAG:
+				fleetSize = null;
+				fleetSize = Integer.valueOf(nextArg(argv, flag).toLowerCase());
+				break;
+			case VEHICLE_FILTER_SHORT_FLAG:
+			case VEHICLE_FILTER_LONG_FLAG:
+				vehicleFilters = new ArrayList<Integer>();
+				vehicleFilters = toListOfInts(nextArg(argv, flag).toLowerCase());
+				break;
+			case DEVICE_ID_SHORT_FLAG:
+			case DEVICE_ID_LONG_FLAG:
+				deviceId = nextArg(argv, flag).toLowerCase();
+				break;
+			case AZ_ACCESS_KEY_SHORT_FLAG:
+			case AZ_ACCESS_KEY_LONG_FLAG:
+				accessKey = nextArg(argv, flag);
+				break;
+			case FILE_PER_VEHICLE_SHORT_FLAG:
+			case FILE_PER_VEHICLE_LONG_FLAG:
+				filePerTruck = true;
+				break;
+			case EVENT_SCHEMA_SHORT_FLAG:
+			case EVENT_SCHEMA_LONG_FLAG:
+				eventSchema = nextArg(argv, flag).toLowerCase();
+				break;
 			case HELP_SHORT_FLAG_1:
 			case HELP_LONG_FLAG:
 				usage();
@@ -151,10 +224,14 @@ public class Lab {
 			sensorEventsParam.setEventCollectorClassName("com.hortonworks.solution.MQTTSensorEventCollector");
 		} else if (sink.equals(JMS)) {
 			sensorEventsParam.setEventCollectorClassName("com.hortonworks.solution.ActiveMQSensorEventCollector");
+		} else if (sink.equals(RABBITMQ)) {
+			sensorEventsParam.setEventCollectorClassName("com.hortonworks.solution.RabbitMQSensorEventCollector");
+		} else if (sink.equals(AZURE_IOT_HUB)) {
+			sensorEventsParam.setEventCollectorClassName("com.hortonworks.solution.AzureIoTHubSensorEventCollector");
 		} else if (sink.equals(STDOUT)) {
 			sensorEventsParam.setEventCollectorClassName("com.hortonworks.solution.StdOutSensorEventCollector");
 		} else {
-			throw new IllegalArgumentException("sink needs to be one of KAFKA, MQTT, JMS or STDOUT, but was " + sink);
+			throw new IllegalArgumentException("sink needs to be one of KAFKA, MQTT, JMS, RABBITMQ, AZ-IOTHUB or STDOUT, but was " + sink);
 		}
 		sensorEventsParam.setNumberOfEvents(1000);
 		sensorEventsParam.setDelayBetweenEvents(4000);
