@@ -16,8 +16,8 @@ public class AzureIoTHubSensorEventCollector extends AbstractSensorEventCollecto
 	//private MqttClient sampleClient = null;
 	private static final String TOPIC = "truck";
 	//private int qos = 2;
-	private String broker = "tcp://" + Lab.host + ":" + ((Lab.port == null) ? "1883" : Lab.port);
-	private String clientId = "TrucksProducer";
+	//private String broker = "tcp://" + Lab.host + ":" + ((Lab.port == null) ? "1883" : Lab.port);
+	//private String clientId = "TrucksProducer";
 
 	private Logger logger = Logger.getLogger(this.getClass());
 
