@@ -26,12 +26,8 @@ public class KafkaSensorEventCollector extends AbstractSensorEventCollector {
 		props.put("bootstrap.servers", Lab.host + ":" + Lab.port);
 		props.put("acks", "all");
 		props.put("retries", 0);
-		props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-		if (Lab.format.equals(Lab.AVRO)) {
-			props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-		} else{
-			props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-		}
+	    props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+	    props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");		
 
 		try {
 			producer = new KafkaProducer<String, String>(props);
@@ -64,17 +60,20 @@ public class KafkaSensorEventCollector extends AbstractSensorEventCollector {
 
 	@Override
 	protected void sendMessage(String topicName, MobileEyeEvent originalEvent, Object message) {
-		String truckId = String.valueOf(originalEvent.getTruck().getTruckId());
-		
-		ProducerRecord<String, String> record = new ProducerRecord<String, String>(topicName, truckId, (String)message);
+		if (Lab.vehicleFilters != null && Lab.vehicleFilters.contains(originalEvent.getTruck().getTruckId())
+				|| Lab.vehicleFilters == null) {
+			String truckId = String.valueOf(originalEvent.getTruck().getTruckId());
 
-		if (producer != null) {
-			try {
-				Future<RecordMetadata> future = producer.send(record);
-				RecordMetadata metadata = future.get();
-			} catch (Exception e) {
-				System.err.println(e.getMessage());
-				e.printStackTrace();
+			ProducerRecord<String, String> record = new ProducerRecord<String, String>(topicName, truckId, (String) message);
+
+			if (producer != null) {
+				try {
+					Future<RecordMetadata> future = producer.send(record);
+					RecordMetadata metadata = future.get();
+				} catch (Exception e) {
+					System.err.println(e.getMessage());
+					e.printStackTrace();
+				}
 			}
 		}
 	}

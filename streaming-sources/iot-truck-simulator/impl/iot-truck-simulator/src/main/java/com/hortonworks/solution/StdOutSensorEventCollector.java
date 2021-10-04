@@ -22,7 +22,10 @@ public class StdOutSensorEventCollector extends AbstractSensorEventCollector {
 
 	@Override
 	protected void sendMessage(String topicName, MobileEyeEvent originalEvent, Object message) {
-		System.out.println(message);
+		if (Lab.vehicleFilters != null && Lab.vehicleFilters.contains(originalEvent.getTruck().getTruckId())
+				|| Lab.vehicleFilters == null) {
+			System.out.println(message);
+		}
 	}
 
 	@Override

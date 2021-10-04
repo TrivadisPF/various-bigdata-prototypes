@@ -88,51 +88,54 @@ public class ActiveMQSensorEventCollector extends AbstractSensorEventCollector {
 
 	@Override
 	protected void sendMessage(String topicName, MobileEyeEvent originalEvent, Object message) {
-		String truckId = String.valueOf(originalEvent.getTruck().getTruckId());
+		if (Lab.vehicleFilters != null && Lab.vehicleFilters.contains(originalEvent.getTruck().getTruckId())
+				|| Lab.vehicleFilters == null) {
+			String truckId = String.valueOf(originalEvent.getTruck().getTruckId());
 
-		if (Lab.messageType.equals(Lab.TEXT)) {
-	        TextMessage textMessage;
-			try {
-				textMessage = session.createTextMessage((String)message);
-				textMessage.setStringProperty("truckId", truckId);
-				
-				if (producer != null) {
-					producer.send(textMessage);
-				}
-	
-			} catch (JMSException e) {
-	        	System.err.println(e.getMessage());
-				e.printStackTrace();
-			}
-		}
-		
-		if (Lab.messageType.equals(Lab.MAP)) {
-			MapMessage mapMessage;
-			try {
-				mapMessage = session.createMapMessage();
-				mapMessage.setString("message", (String)message);
-				
-				if (producer != null) {
-					producer.send(mapMessage);
-				}
-			} catch (JMSException e) {
-	        	System.err.println(e.getMessage());
-				e.printStackTrace();
-			}
-		}
+			if (Lab.messageType.equals(Lab.TEXT)) {
+				TextMessage textMessage;
+				try {
+					textMessage = session.createTextMessage((String) message);
+					textMessage.setStringProperty("truckId", truckId);
 
-		if (Lab.messageType.equals(Lab.BYTES)) {
-			BytesMessage bytesMessage;
-			try {
-				bytesMessage = session.createBytesMessage();
-				bytesMessage.writeBytes(((String)message).getBytes());
-				
-				if (producer != null) {
-					producer.send(bytesMessage);
+					if (producer != null) {
+						producer.send(textMessage);
+					}
+
+				} catch (JMSException e) {
+					System.err.println(e.getMessage());
+					e.printStackTrace();
 				}
-			} catch (JMSException e) {
-	        	System.err.println(e.getMessage());
-				e.printStackTrace();
+			}
+
+			if (Lab.messageType.equals(Lab.MAP)) {
+				MapMessage mapMessage;
+				try {
+					mapMessage = session.createMapMessage();
+					mapMessage.setString("message", (String) message);
+
+					if (producer != null) {
+						producer.send(mapMessage);
+					}
+				} catch (JMSException e) {
+					System.err.println(e.getMessage());
+					e.printStackTrace();
+				}
+			}
+
+			if (Lab.messageType.equals(Lab.BYTES)) {
+				BytesMessage bytesMessage;
+				try {
+					bytesMessage = session.createBytesMessage();
+					bytesMessage.writeBytes(((String) message).getBytes());
+
+					if (producer != null) {
+						producer.send(bytesMessage);
+					}
+				} catch (JMSException e) {
+					System.err.println(e.getMessage());
+					e.printStackTrace();
+				}
 			}
 		}
 		

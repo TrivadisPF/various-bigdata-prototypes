@@ -10,6 +10,8 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import com.hortonworks.simulator.impl.domain.transport.MobileEyeEvent;
 import com.hortonworks.simulator.impl.domain.transport.Truck;
 
+import javax.net.ssl.SSLSocketFactory;
+
 public class MQTTSensorEventCollector extends AbstractSensorEventCollector {
 
 	private MqttClient sampleClient = null;
@@ -26,6 +28,7 @@ public class MQTTSensorEventCollector extends AbstractSensorEventCollector {
 		connOpts.setCleanSession(true);
 		connOpts.setPassword("admin".toCharArray());
 		connOpts.setUserName("admin");
+
 		System.out.println("Connecting to MQTT broker: " + broker);
 		sampleClient.connect(connOpts);
 
@@ -51,15 +54,18 @@ public class MQTTSensorEventCollector extends AbstractSensorEventCollector {
 	
 	@Override
 	protected void sendMessage(String topicName, MobileEyeEvent originalEvent, Object message) {
-		String eventToPass = (String)message;
-		if (sampleClient != null) {
+		if (Lab.vehicleFilters != null && Lab.vehicleFilters.contains(originalEvent.getTruck().getTruckId())
+				|| Lab.vehicleFilters == null) {
+			String eventToPass = (String) message;
+			if (sampleClient != null) {
 //			System.out.println("Publishing message to MQTT: " + eventToPass);
-			MqttMessage mqttMessage = new MqttMessage(eventToPass.getBytes());
-			mqttMessage.setQos(qos);
-			try {
-				sampleClient.publish(topicName, mqttMessage);
-			} catch (MqttException e) {
-				logger.error("Error sending event[" + eventToPass + "] to MQTT topic", e);
+				MqttMessage mqttMessage = new MqttMessage(eventToPass.getBytes());
+				mqttMessage.setQos(qos);
+				try {
+					sampleClient.publish(topicName, mqttMessage);
+				} catch (MqttException e) {
+					logger.error("Error sending event[" + eventToPass + "] to MQTT topic", e);
+				}
 			}
 		}
 	}

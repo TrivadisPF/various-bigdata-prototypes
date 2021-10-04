@@ -31,7 +31,7 @@ public class DriverStaticList {
 		DRIVER_LIST.add(new Driver(lastDriverId++, "Grant Liu", 100));
 		DRIVER_LIST.add(new Driver(lastDriverId++, "Ajay Singh", 100));
 		DRIVER_LIST.add(new Driver(lastDriverId++, "Chris Harris", 100));
-		DRIVER_LIST.add(new Driver(lastDriverId++, "Jeff Markham", 100));
+		DRIVER_LIST.add(new Driver(lastDriverId++, "Jeff Markham", 30));
 		DRIVER_LIST.add(new Driver(lastDriverId++, "Nadeem Asghar", 100));
 		DRIVER_LIST.add(new Driver(lastDriverId++, "Adam Diaz", 100));
 		DRIVER_LIST.add(new Driver(lastDriverId++, "Don Hilborn", 100));
@@ -41,7 +41,7 @@ public class DriverStaticList {
 		DRIVER_LIST.add(new Driver(lastDriverId++, "Olivier Renault", 100));
 		DRIVER_LIST.add(new Driver(lastDriverId++, "Teddy Choi", 100));
 		DRIVER_LIST.add(new Driver(lastDriverId++, "Dan Rice", 100));
-		DRIVER_LIST.add(new Driver(lastDriverId++, "Rommel Garcia", 100));
+		DRIVER_LIST.add(new Driver(lastDriverId++, "Rommel Garcia", 30));
 		DRIVER_LIST.add(new Driver(lastDriverId++, "Ryan Templeton", 100));
 		DRIVER_LIST.add(new Driver(lastDriverId++, "Sridhara Sabbella", 80));
 		DRIVER_LIST.add(new Driver(lastDriverId++, "Frank Romano", 100));
