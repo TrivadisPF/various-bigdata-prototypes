@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import com.google.common.collect.ImmutableList;
 import com.hortonworks.labutils.RangeExpander;
+import com.hortonworks.simulator.impl.domain.transport.MobileEyeEvent;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,14 +44,14 @@ public class Lab {
 	public static final String MESSAGE_TYPE_SHORT_FLAG = "-mt";
 	public static final String MESSAGE_TYPE_LONG_FLAG = "--messageType";
 
-	public static final String DELAY_SHORT_FLAG = "-d";
-	public static final String DELAY_LONG_FLAG = "--delay";
-
 	public static final String FLEET_SIZE_SHORT_FLAG = "-fs";
 	public static final String FLEET_SIZE_LONG_FLAG = "--fleetSize";
 
 	public static final String VEHICLE_FILTER_SHORT_FLAG = "-vf";
 	public static final String VEHICLE_FILTER_LONG_FLAG = "--vehicleFilter";
+
+	public static final String DELAY_SHORT_FLAG = "-d";
+	public static final String DELAY_LONG_FLAG = "--delay";
 
 	public static final String FILE_PER_VEHICLE_SHORT_FLAG = "-fpv";
 	public static final String FILE_PER_VEHICLE_LONG_FLAG = "--filePerVehicle";
@@ -71,6 +72,7 @@ public class Lab {
 	public static final boolean COMPACT = true;
 
 	public static final String STDOUT = "stdout";
+	public static final String FILE = "file";
 	public static final String KAFKA = "kafka";
 	public static final String MQTT = "mqtt";
 	public static final String JMS = "jms";
@@ -97,14 +99,17 @@ public class Lab {
 	public static String mode = COMBINE;
 	public static String timeResolution = TIME_RESOLUTION_S;
 	public static String messageType = TEXT;
+	public static int eventSchema = MobileEyeEvent.EVENT_SCHEMA_1;
+	public static int truckFleetSize = 100;
+	public static int delayBetweenEventsMs = 4000;
+
 	public static Integer delay;
 	public static Integer fleetSize;
 	public static List<Integer> vehicleFilters = null;
-	public static boolean filePerTruck;
+	public static boolean filePerTruck = false;
 	public static String deviceId;
 	public static String accessKey;
-	public static String eventSchema;
-	
+
 	static {
 		try {
 			propertyParser = new PropertyParser("default.properties");
@@ -113,6 +118,34 @@ public class Lab {
 			// LOG.error("Unable to load property file: " +
 			// Launcher.class.getResource("/default.properties").getPath());
 		}
+	}
+
+	private static List<Integer> expand(String s)
+	{
+		List<Integer> ints = new ArrayList<>();
+		String p = s;
+		String[] arr = p.split("\\-");
+		String k = "";
+		for (int i = 0; i < arr.length; i++) {
+			if (i != arr.length - 1) {
+				String[] arr1 = arr[i].split(", ");
+				String[] arr2 = arr[i + 1].split(", ");
+				int a = Integer.parseInt(arr1[arr1.length - 1]);
+				int b = Integer.parseInt(arr2[0]);
+				for (int j = a + 1; j < b; j++) {
+					arr[i] = arr[i] + ", " + j;
+				}
+			}
+			if (k != "")
+				k = k + ", " + arr[i];
+			else
+				k = k + arr[i];
+		}
+		String[] karr = k.split(",");
+		for (int i = 0; i<karr.length; i++) {
+			ints.add(Integer.valueOf(karr[i].trim()));
+		}
+		return ints;
 	}
 
 	protected static List<Integer> toListOfInts(String value) {
@@ -133,12 +166,6 @@ public class Lab {
 
 		long iterations = 1;
 		String outputFile = null;
-
-		// defaults
-		filePerTruck = false;
-		eventSchema = "1";
-		delay = 100;
-		fleetSize = 100;
 
 		Iterator<String> argv = Arrays.asList(args).iterator();
 		while (argv.hasNext()) {
@@ -189,6 +216,11 @@ public class Lab {
 				vehicleFilters = new ArrayList<Integer>();
 				vehicleFilters = toListOfInts(nextArg(argv, flag).toLowerCase());
 				break;
+			case DELAY_SHORT_FLAG:
+			case DELAY_LONG_FLAG:
+				String delayBetweenEventsMsString = nextArg(argv, flag).trim();
+				delayBetweenEventsMs = Integer.valueOf(delayBetweenEventsMsString);
+				break;
 			case DEVICE_ID_SHORT_FLAG:
 			case DEVICE_ID_LONG_FLAG:
 				deviceId = nextArg(argv, flag).toLowerCase();
@@ -203,7 +235,7 @@ public class Lab {
 				break;
 			case EVENT_SCHEMA_SHORT_FLAG:
 			case EVENT_SCHEMA_LONG_FLAG:
-				eventSchema = nextArg(argv, flag).toLowerCase();
+				eventSchema = Integer.valueOf(nextArg(argv, flag).trim());
 				break;
 			case HELP_SHORT_FLAG_1:
 			case HELP_LONG_FLAG:
@@ -230,11 +262,13 @@ public class Lab {
 			sensorEventsParam.setEventCollectorClassName("com.hortonworks.solution.AzureIoTHubSensorEventCollector");
 		} else if (sink.equals(STDOUT)) {
 			sensorEventsParam.setEventCollectorClassName("com.hortonworks.solution.StdOutSensorEventCollector");
+		} else if (sink.equals(FILE)) {
+			sensorEventsParam.setEventCollectorClassName("com.hortonworks.solution.FileSensorEventCollector");
 		} else {
-			throw new IllegalArgumentException("sink needs to be one of KAFKA, MQTT, JMS, RABBITMQ, AZ-IOTHUB or STDOUT, but was " + sink);
+			throw new IllegalArgumentException("sink needs to be one of KAFKA, MQTT, JMS, RABBITMQ, AZ-IOTHUB, FILE or STDOUT, but was " + sink);
 		}
 		sensorEventsParam.setNumberOfEvents(1000);
-		sensorEventsParam.setDelayBetweenEvents(4000);
+		sensorEventsParam.setDelayBetweenEvents(delayBetweenEventsMs);
 		System.out.println(Lab.class.getResource("/" + "routes/midwest").getPath());
 		sensorEventsParam.setRouteDirectory(Lab.class.getResource("/" + "routes/midwest").getPath());
 //		sensorEventsParam.setRouteDirectory("/Users/gus/workspace/git/gschmutz/various-demos/iot-truck-simulator/src/main/resources/routes/midwest");

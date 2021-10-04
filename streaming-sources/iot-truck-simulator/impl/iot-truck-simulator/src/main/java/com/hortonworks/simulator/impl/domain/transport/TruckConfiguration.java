@@ -4,6 +4,7 @@ import com.hortonworks.simulator.datagenerator.DataGeneratorUtils;
 import com.hortonworks.simulator.impl.domain.transport.route.Route;
 import com.hortonworks.simulator.impl.domain.transport.route.TruckRoutesParser;
 import com.hortonworks.solution.Lab;
+
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -17,40 +18,40 @@ public class TruckConfiguration {
 	private static Logger LOGGER = Logger.getLogger(TruckConfiguration.class);
 
 	public static final long END_ROUTE_AFTER_METERS = 120000; // 75 miles
-	private static final int TRUCK_FLEET_SIZE= Lab.fleetSize;
+	private static int TRUCK_FLEET_SIZE = Lab.truckFleetSize;
 	private static final int TRUCK_ID_START = 10;
 	public static final int MAX_ROUTE_TRAVERSAL_COUNT = 10;
-	
+
 	private static Map<Integer, Driver> drivers;
 	public static ConcurrentLinkedQueue<Integer> freeTruckPool = null;
 	public static ConcurrentLinkedQueue<Route> freeRoutePool = null;
 	private static List<Integer> trucksOnRoad = new ArrayList<Integer>();
-	
 
-	public static void initialize(String routeDirectoryLocation) {
+
+	public static void initialize(String routeDirectoryLocation, int truckFleetSize) {
 		drivers = new HashMap<Integer, Driver>();
 		trucksOnRoad = new ArrayList<Integer>();
 		DriverStaticList.reset();
 		freeTruckPool = new ConcurrentLinkedQueue<Integer>();
 		freeRoutePool = new ConcurrentLinkedQueue<Route>();
-		
+
 		parseRoutes(routeDirectoryLocation);
-		
+
 		configureInitialDrivers();
-		
+
 		//int numberOfTruckInstances = calculateOptimalNumberOfTruckInstances();
-		
+
 		//return numberOfTruckInstances;
-		
+
 	}
-	
+
 	private static void configureInitialDrivers() {
 		Route route1 = getAvailableRoute();
 		Route route2 = getAvailableRoute();
-	
+
 		Driver riskyDriver = DriverStaticList.getRiskyDriver();
 		riskyDriver.provideRoute(route1);
-		
+
 		Driver mostRiskyDriver = DriverStaticList.getMostRiskyDriver();
 		mostRiskyDriver.provideRoute(route2);
 	}
@@ -67,23 +68,23 @@ public class TruckConfiguration {
 	private synchronized static Route getAvailableRoute() {
 		return freeRoutePool.poll();
 	}
-	
+
 	public synchronized static int getNextTruckId() {
 		int nextTruckId = DataGeneratorUtils.getRandomIntBetween(TRUCK_ID_START,
-        TRUCK_ID_START + TRUCK_FLEET_SIZE, trucksOnRoad);
+				TRUCK_ID_START + TRUCK_FLEET_SIZE, trucksOnRoad);
 		trucksOnRoad.add(nextTruckId);
 		return nextTruckId;
-	}	
+	}
 
 	public synchronized static Driver getNextDriver() {
 		Driver nextDriver = DriverStaticList.next();
-		
+
 		//if driver has route, then it must be the risky drivers, so don't provide new route..
 		if(nextDriver.getRoute() == null) {
 			Route route = getAvailableRoute();
-			nextDriver.provideRoute(route);				
+			nextDriver.provideRoute(route);
 		}
-		
+
 		drivers.put(nextDriver.getDriverId(), nextDriver);
 		LOGGER.debug("Next Driver: " + nextDriver.toString());
 		return nextDriver;
@@ -93,7 +94,7 @@ public class TruckConfiguration {
 		int value = (int) (freeRoutePool.size() * .99);
 		LOGGER.info("For " + freeRoutePool.size() + ", the optimal Number of Truck Instances  are: " + value );
 		return value;
-		
+
 	}
 
 
