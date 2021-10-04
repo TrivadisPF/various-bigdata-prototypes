@@ -44,6 +44,12 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.apache.avro</groupId>
+			<artifactId>avro</artifactId>
+			<version>1.10.1</version>
+		</dependency>
+
+		<dependency>
 			<groupId>com.microsoft.azure.sdk.iot</groupId>
 			<artifactId>iot-device-client</artifactId>
 			<version>1.29.0</version>
@@ -227,7 +233,7 @@
 				<version>1.0.0</version>
 				<configuration>
 					<from>
-						<image>openjdk:8-jre-alpine</image>
+						<image>openjdk:11.0-jre</image>
 					</from>
 					<to>
             			<image>registry.hub.docker.com/trivadis/iot-truck-simulator</image>

@@ -26,8 +26,12 @@ public class KafkaSensorEventCollector extends AbstractSensorEventCollector {
 		props.put("bootstrap.servers", Lab.host + ":" + Lab.port);
 		props.put("acks", "all");
 		props.put("retries", 0);
-	    props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-	    props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");		
+		props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+		if (Lab.format.equals(Lab.AVRO)) {
+			props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+		} else{
+			props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+		}
 
 		try {
 			producer = new KafkaProducer<String, String>(props);

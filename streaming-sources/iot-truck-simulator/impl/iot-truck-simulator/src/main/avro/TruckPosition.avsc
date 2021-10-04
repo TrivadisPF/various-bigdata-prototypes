@@ -1,7 +1,7 @@
 {
   "type" : "record",
-  "namespace" : "com.trivadis.kafkaws.avro.v1",
-  "name" : "Notification",
+  "namespace" : "com.trivadis.iot.trucking.avro.v1",
+  "name" : "TruckPosition",
   "description" : "A simple Notification Event message",
   "fields" : [
         { "type" : ["long", "null"],
