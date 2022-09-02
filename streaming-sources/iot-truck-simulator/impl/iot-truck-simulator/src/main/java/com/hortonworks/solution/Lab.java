@@ -65,6 +65,9 @@ public class Lab {
 	public static final String EVENT_SCHEMA_SHORT_FLAG = "-es";
 	public static final String EVENT_SCHEMA_LONG_FLAG = "--eventSchema";
 
+	public static final String TOPIC_NAMES_SHORT_FLAG = "-topics";
+	public static final String TOPIC_NAMES_LONG_FLAG = "--topicNames";
+
 	public static final String HELP_SHORT_FLAG_1 = "-?";
 	public static final String HELP_LONG_FLAG = "--help";
 
@@ -100,6 +103,9 @@ public class Lab {
 	public static String timeResolution = TIME_RESOLUTION_S;
 	public static String messageType = TEXT;
 	public static int eventSchema = MobileEyeEvent.EVENT_SCHEMA_1;
+
+	public static String topicName = "truck_position,truck_driving_info";
+
 	public static int truckFleetSize = 100;
 	public static int delayBetweenEventsMs = 4000;
 
@@ -236,6 +242,10 @@ public class Lab {
 			case EVENT_SCHEMA_SHORT_FLAG:
 			case EVENT_SCHEMA_LONG_FLAG:
 				eventSchema = Integer.valueOf(nextArg(argv, flag).trim());
+				break;
+			case TOPIC_NAMES_SHORT_FLAG:
+			case TOPIC_NAMES_LONG_FLAG:
+				topicName = nextArg(argv, flag) + ",none";		// two topics can be specified, make sure that there is a spearator if only one topic is specified
 				break;
 			case HELP_SHORT_FLAG_1:
 			case HELP_LONG_FLAG:

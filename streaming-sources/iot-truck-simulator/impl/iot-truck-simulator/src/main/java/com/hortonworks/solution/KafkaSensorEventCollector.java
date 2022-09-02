@@ -10,11 +10,12 @@ import org.apache.kafka.clients.producer.RecordMetadata;
 import org.apache.log4j.Logger;
 
 import com.hortonworks.simulator.impl.domain.transport.MobileEyeEvent;
+import org.codehaus.plexus.util.StringUtils;
 
 public class KafkaSensorEventCollector extends AbstractSensorEventCollector {
 
-	static final String TOPIC_TRUCK_POSITION = "truck_position";
-	static final String TOPIC_TRUCK_DRIVING_INFO = "truck_driving_info";
+	static final String TOPIC_TRUCK_POSITION = StringUtils.split(Lab.topicName, ",")[0];
+	static final String TOPIC_TRUCK_DRIVING_INFO = StringUtils.split(Lab.topicName, ",")[1];
 	private Logger logger = Logger.getLogger(this.getClass());
 
 	Producer<String, String> producer = null;
