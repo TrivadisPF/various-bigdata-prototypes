@@ -29,6 +29,11 @@ public class Lab {
 	public static final String SINK_NAME_SHORT_FLAG = "-s";
 	public static final String SINK_NAME_LONG_FLAG = "--sink";
 
+	public static final String SECURITY_PROTOCOL_LONG_FLAG = "--securityProtocol";
+	public static final String SASL_MECHANISM_LONG_FLAG = "--saslMechanism";
+	public static final String SASL_USERNAME_LONG_FLAG = "--saslUsername";
+	public static final String SASL_PASSWORD_LONG_FLAG = "--saslPassword";
+
 	public static final String FORMAT_NAME_SHORT_FLAG = "-f";
 	public static final String FORMAT_NAME_LONG_FLAG = "--format";
 
@@ -97,6 +102,10 @@ public class Lab {
 	public static final String BYTES = "bytes";
 
 	public static String host = "";
+	public static String securityProtocol = "";
+	public static String saslMechanism = "";
+	public static String saslUsername = "";
+	public static String saslPassword = "";
 	public static String format = CSV;
 	public static String port = "";
 	public static String mode = COMBINE;
@@ -186,6 +195,18 @@ public class Lab {
 			case BROKER_HOST_LONG_FLAG:
 				host = null;
 				host = nextArg(argv, flag).toLowerCase();
+				break;
+			case SECURITY_PROTOCOL_LONG_FLAG:
+				securityProtocol = nextArg(argv, flag);
+				break;
+			case SASL_MECHANISM_LONG_FLAG:
+				saslMechanism = nextArg(argv, flag);
+				break;
+			case SASL_USERNAME_LONG_FLAG:
+				saslUsername = nextArg(argv, flag);
+				break;
+			case SASL_PASSWORD_LONG_FLAG:
+				saslPassword = nextArg(argv, flag);
 				break;
 			case FORMAT_NAME_SHORT_FLAG:
 			case FORMAT_NAME_LONG_FLAG:

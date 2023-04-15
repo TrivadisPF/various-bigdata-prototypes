@@ -25,6 +25,12 @@ public class KafkaSensorEventCollector extends AbstractSensorEventCollector {
 
 		Properties props = new Properties();
 		props.put("bootstrap.servers", Lab.host + ":" + Lab.port);
+		if (!StringUtils.isWhitespace(Lab.securityProtocol))
+			props.put("security.protocol", Lab.securityProtocol);
+		if (!StringUtils.isWhitespace(Lab.saslMechanism))
+			props.put("sasl.mechanism", Lab.saslMechanism);
+		if (!StringUtils.isWhitespace(Lab.saslUsername) && !StringUtils.isWhitespace(Lab.saslPassword))
+			props.put("sasl.jaas.config", "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"" + Lab.saslUsername + "\" password=\"" + Lab.saslPassword + "\";");
 		props.put("acks", "all");
 		props.put("retries", 0);
 	    props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
