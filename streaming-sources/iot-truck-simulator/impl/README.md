@@ -108,13 +108,18 @@ docker run --network platys-platform --rm trivadis/iot-truck-simulator '-s' 'KAF
 Write a all in on messages to Event Hub in JSON format
 
 ```bash
-docker run trivadis/iot-truck-simulator '-s' 'KAFKA' '-h' 'fzageventhub.servicebus.windows.net' '-p' '9093' '-f' 'JSON' '--securityProtocol' 'SASL_SSL' '--saslMechanism' 'PLAIN' '--saslUsername' '$ConnectionString' '--saslPassword' 'Endpoint=sb://fzageventhub.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=r2uc7l5CDAXw9Vmq390JPp1e2fJebnpqt+AEhH9M+o4='
+docker run trivadis/iot-truck-simulator \
+      '-s' 'KAFKA' '-h' 'fzageventhub.servicebus.windows.net' '-p' '9093' \
+      '-f' 'JSON' \
+      '--securityProtocol' 'SASL_SSL' \ 
+      '--saslMechanism' 'PLAIN' \
+      '--saslUsername' '$ConnectionString' \
+      '--saslPassword' 'Endpoint=sb://fzageventhub.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=r2uc7l5CDAXw9Vmq390JPp1e2fJebnpqt+AEhH9M+o4='
 ```
-
 
 Write a all in on messages to Event Hub in AVRO format
 
-```
+```bash
 docker run --rm trivadis/iot-truck-simulator  \
       '-s' 'KAFKA' '-h' 'fzageventhub.servicebus.windows.net' '-p' '9093'  \
       '-f' 'AVRO'  \
