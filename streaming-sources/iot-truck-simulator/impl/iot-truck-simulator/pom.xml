@@ -14,7 +14,7 @@
         <kafka.version>2.2.0</kafka.version>
         <activemq.version>5.7.0</activemq.version>
 		<rabbitmq.version>5.10.0</rabbitmq.version>
-      	<avro.version>1.8.2</avro.version>        
+      	<avro.version>1.11.1</avro.version>
         <akka.version>2.3.16</akka.version>
         <jpmml.version>1.0.22</jpmml.version>
         <commons.csv.version>1.2</commons.csv.version>
@@ -24,7 +24,7 @@
         <storm.hdfs.version>0.10.0.2.3.0.0-2557</storm.hdfs.version>
 		<javax.activation.version>1.2.0</javax.activation.version>
 		<jaxb.api.version>2.3.0</jaxb.api.version>
-
+		<confluent.version>7.3.0</confluent.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -43,10 +43,52 @@
     		<version>${kafka.version}</version>
 		</dependency>
 
+
+		<dependency>
+			<groupId>io.confluent</groupId>
+			<artifactId>kafka-avro-serializer</artifactId>
+			<version>${confluent.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.azure</groupId>
+			<artifactId>azure-core-serializer-avro-apache</artifactId>
+			<version>1.0.0-beta.21</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.microsoft.azure</groupId>
+			<artifactId>azure-schemaregistry-kafka-avro</artifactId>
+			<version>1.1.0-beta.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.azure</groupId>
+			<artifactId>azure-identity</artifactId>
+			<version>1.8.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.azure</groupId>
+			<artifactId>azure-core</artifactId>
+			<version>1.35.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>2.13.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.13.2.1</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.apache.avro</groupId>
 			<artifactId>avro</artifactId>
-			<version>1.10.1</version>
+			<version>${avro.version}</version>
 		</dependency>
 
 		<dependency>
@@ -155,6 +197,27 @@
         </dependency>
 
 	</dependencies>
+
+	<repositories>
+		<repository>
+			<id>github-releases</id>
+			<url>http://oss.sonatype.org/content/repositories/github-releases/</url>
+		</repository>
+		<repository>
+			<id>clojars.org</id>
+			<url>http://clojars.org/repo</url>
+		</repository>
+		<repository>
+			<id>confluent</id>
+			<url>https://packages.confluent.io/maven/</url>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>confluent</id>
+			<url>https://packages.confluent.io/maven/</url>
+		</pluginRepository>
+	</pluginRepositories>
 
 	<build>
 		<plugins>

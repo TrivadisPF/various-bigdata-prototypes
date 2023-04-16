@@ -7,6 +7,9 @@ import java.util.Date;
 import com.hortonworks.simulator.impl.domain.Event;
 import com.hortonworks.simulator.impl.domain.gps.Location;
 import com.hortonworks.solution.Lab;
+import com.trivadis.iot.trucking.avro.v1.TruckDrivingInfo;
+import com.trivadis.iot.trucking.avro.v1.TruckPosition;
+import com.trivadis.iot.trucking.avro.v1.TruckPositionAndDrivingInfo;
 
 public class MobileEyeEvent extends Event {
 	public final static Integer EVENT_KIND_BEHAVIOUR_AND_POSITION=1;
@@ -109,6 +112,41 @@ public class MobileEyeEvent extends Event {
 		return msg.toString();
 	}
 
+	private Object toAVRO1(Integer eventKind, String timeResoultion) {
+		Integer timeFactor = (timeResoultion.equals(Lab.TIME_RESOLUTION_S)) ? 1 : 1000;
+
+		if (eventKind.equals(EVENT_KIND_BEHAVIOUR_AND_POSITION)) {
+			TruckPositionAndDrivingInfo truckPosition = TruckPositionAndDrivingInfo.newBuilder()
+					.setTimestamp(new Date().getTime() * timeFactor)
+					.setTruckId(truck.getTruckId())
+					.setDriverId(truck.getDriver().getDriverId())
+					.setEventType(this.eventType.toString())
+					.setRouteId(truck.getDriver().getRoute().getRouteId())
+					.setLatitude(location.getLatitude())
+					.setLongitude(location.getLatitude())
+					.setCorrelationId(correlationId).build();
+
+			return truckPosition;
+		} else if (eventKind.equals(EVENT_KIND_POSITION)) {
+			TruckPosition truckPosition = TruckPosition.newBuilder()
+					.setTimestamp(new Date().getTime() * timeFactor)
+					.setTruckId(truck.getTruckId())
+					.setLatitude(location.getLatitude())
+					.setLongitude(location.getLatitude()).build();
+			return truckPosition;
+		} else if (eventKind.equals(EVENT_KIND_BEHAVIOUR)) {
+			TruckDrivingInfo truckDrivingInfo = TruckDrivingInfo.newBuilder()
+					.setTimestamp(new Date().getTime() * timeFactor)
+					.setTruckId(truck.getTruckId())
+					.setDriverId(truck.getDriver().getDriverId())
+					.setEventType(this.eventType.toString())
+					.setRouteId(truck.getDriver().getRoute().getRouteId())
+					.setCorrelationId(correlationId).build();
+			return truckDrivingInfo;
+		}
+		return null;
+	}
+
 	public MobileEyeEvent(long correlationId, Location location, MobileEyeEventTypeEnum eventType,
 			Truck truck) {
 		this.location = location;
@@ -153,6 +191,15 @@ public class MobileEyeEvent extends Event {
 			return toJSON1(eventKind, timeResoultion);
 		else if (eventSchema.equals(EVENT_SCHEMA_2) )
 			return toJSON2(eventKind, timeResoultion);
+		else
+			throw new RuntimeException("Invalid eventSchema: " + eventSchema);
+	}
+
+	public Object toAVRO(Integer eventSchema, Integer eventKind, String timeResoultion) {
+		if (eventSchema.equals(EVENT_SCHEMA_1) )
+			return toAVRO1(eventKind, timeResoultion);
+//		else if (eventSchema.equals(EVENT_SCHEMA_2) )
+//			return toAVRO2(eventKind, timeResoultion);
 		else
 			throw new RuntimeException("Invalid eventSchema: " + eventSchema);
 	}

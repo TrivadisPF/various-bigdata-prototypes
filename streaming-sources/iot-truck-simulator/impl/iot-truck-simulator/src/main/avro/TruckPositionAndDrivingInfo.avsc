@@ -13,10 +13,31 @@
     },
     {
       "type": [
-        "string",
+        "int",
         "null"
       ],
       "name": "truckId"
+    },
+    {
+      "type": [
+        "int",
+        "null"
+      ],
+      "name": "driverId"
+    },
+    {
+      "type": [
+        "int",
+        "null"
+      ],
+      "name": "routeId"
+    },
+    {
+      "type": [
+        "string",
+        "null"
+      ],
+      "name": "eventType"
     },
     {
       "type": [
@@ -34,28 +55,7 @@
     },
     {
       "type": [
-        "string",
-        "null"
-      ],
-      "name": "driverId"
-    },
-    {
-      "type": [
-        "string",
-        "null"
-      ],
-      "name": "routeId"
-    },
-    {
-      "type": [
-        "string",
-        "null"
-      ],
-      "name": "eventType"
-    },
-    {
-      "type": [
-        "string",
+        "long",
         "null"
       ],
       "name": "correlationId"

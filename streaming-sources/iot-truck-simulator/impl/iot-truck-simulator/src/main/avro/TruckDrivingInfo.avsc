@@ -7,19 +7,19 @@
         { "type" : ["long", "null"],
           "name" : "timestamp"
         },
-        { "type" : ["string", "null"],
+        { "type" : ["int", "null"],
           "name" : "truckId"
         },
-        { "type" : ["string", "null"],
+        { "type" : ["int", "null"],
           "name" : "driverId"
         },
-        { "type" : ["string", "null"],
+        { "type" : ["int", "null"],
           "name" : "routeId"
         },
         { "type" : ["string", "null"],
           "name" : "eventType"
         },
-        { "type" : ["string", "null"],
+        { "type" : ["long", "null"],
           "name" : "correlationId"
         }                                    
   ]

@@ -2,7 +2,6 @@ package com.hortonworks.solution;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import com.google.common.collect.ImmutableList;
 import com.hortonworks.labutils.RangeExpander;
@@ -36,6 +35,13 @@ public class Lab {
 
 	public static final String FORMAT_NAME_SHORT_FLAG = "-f";
 	public static final String FORMAT_NAME_LONG_FLAG = "--format";
+
+	public static final String SCHEMA_REGISTRY_KIND = "--schemaRegistryKind";
+	public static final String SCHEMA_REGISTRY_URL = "--schemaRegistryUrl";
+	public static final String AZURE_TENANT_ID = "--azTenantId";
+	public static final String AZURE_CLIENT_ID = "--azClientId";
+	public static final String AZURE_CLIENT_SECRET = "--azClientSecret";
+	public static final String AZURE_SCHEMA_GROUP = "--azSchemaGroup";
 
 	public static final String PORT_NAME_SHORT_FLAG = "-p";
 	public static final String PORT_NAME_LONG_FLAG = "--port";
@@ -90,7 +96,10 @@ public class Lab {
 	public static final String CSV = "csv";
 	public static final String JSON = "json";
 	public static final String AVRO = "avro";
-	
+
+	public static final String CONFLUENT = "confluent";
+	public static final String AZURE = "azure";
+
 	public static final String COMBINE = "combine";
 	public static final String SPLIT = "split";
 	
@@ -106,6 +115,14 @@ public class Lab {
 	public static String saslMechanism = "";
 	public static String saslUsername = "";
 	public static String saslPassword = "";
+	public static String schemaRegistryKind = CONFLUENT;
+	public static String schemaRegistryUrl = "";
+
+	public static String azureSchemaGroup = "";
+	public static String azureTenantId = "";
+	public static String azureClientId = "";
+	public static String azureClientSecret = "";
+
 	public static String format = CSV;
 	public static String port = "";
 	public static String mode = COMBINE;
@@ -207,6 +224,24 @@ public class Lab {
 				break;
 			case SASL_PASSWORD_LONG_FLAG:
 				saslPassword = nextArg(argv, flag);
+				break;
+			case SCHEMA_REGISTRY_KIND:
+				schemaRegistryKind = nextArg(argv, flag).toLowerCase();
+				break;
+			case SCHEMA_REGISTRY_URL:
+				schemaRegistryUrl = nextArg(argv, flag);
+				break;
+			case AZURE_TENANT_ID:
+				azureTenantId = nextArg(argv, flag);
+				break;
+			case AZURE_CLIENT_ID:
+				azureClientId = nextArg(argv, flag);
+				break;
+			case AZURE_CLIENT_SECRET:
+				azureClientSecret = nextArg(argv, flag);
+				break;
+			case AZURE_SCHEMA_GROUP:
+				azureSchemaGroup = nextArg(argv, flag);
 				break;
 			case FORMAT_NAME_SHORT_FLAG:
 			case FORMAT_NAME_LONG_FLAG:

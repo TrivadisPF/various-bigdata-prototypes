@@ -7,7 +7,7 @@
         { "type" : ["long", "null"],
           "name" : "timestamp"
         },
-        { "type" : ["string", "null"],
+        { "type" : ["int", "null"],
           "name" : "truckId"
         },
         { "type" : ["double", "null"],

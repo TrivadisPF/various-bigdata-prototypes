@@ -1,5 +1,6 @@
 package com.hortonworks.solution;
 
+import org.apache.avro.specific.SpecificRecord;
 import org.apache.kafka.clients.producer.ProducerRecord;
 
 import com.hortonworks.simulator.impl.domain.transport.MobileEyeEvent;
@@ -18,7 +19,8 @@ public abstract class AbstractSensorEventCollector extends UntypedActor {
 	@Override
 	public void onReceive(Object event) throws Exception {
 		MobileEyeEvent mee = (MobileEyeEvent) event;
-		String eventToPass = null;
+		//String eventToPass = null;
+		Object eventToPass = null;
 	
 		String truckId = String.valueOf(mee.getTruck().getTruckId());
 	
@@ -29,7 +31,9 @@ public abstract class AbstractSensorEventCollector extends UntypedActor {
 		        eventToPass = mee.toJSON(Lab.eventSchema, MobileEyeEvent.EVENT_KIND_BEHAVIOUR_AND_POSITION, Lab.timeResolution);
 		    } else if (Lab.format.equals(Lab.CSV)) {
 		        eventToPass = mee.toCSV(Lab.eventSchema, MobileEyeEvent.EVENT_KIND_BEHAVIOUR_AND_POSITION, Lab.timeResolution);
-		    }
+		    } else if (Lab.format.equals(Lab.AVRO)) {
+				eventToPass = mee.toAVRO(Lab.eventSchema, MobileEyeEvent.EVENT_KIND_BEHAVIOUR_AND_POSITION, Lab.timeResolution);
+			}
 			sendMessage(getTopicName(MobileEyeEvent.EVENT_KIND_BEHAVIOUR_AND_POSITION, mee), mee, eventToPass);
 		} else if (Lab.mode.equals(Lab.SPLIT)) {
 			if (Lab.format.equals(Lab.JSON)) {
