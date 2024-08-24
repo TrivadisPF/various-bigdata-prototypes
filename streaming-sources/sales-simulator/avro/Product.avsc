@@ -1,0 +1,72 @@
+{
+  "type": "record",
+  "name": "ProductEvent",
+  "namespace": "com.example",
+  "fields": [
+    {
+      "name": "event_time",
+      "type": "string",
+      "doc": "Timestamp of the event in YYYY-MM-DD HH:MM:SS.ssssss format"
+    },
+    {
+      "name": "product_id",
+      "type": "string",
+      "doc": "Unique identifier for the product"
+    },
+    {
+      "name": "category",
+      "type": "string",
+      "doc": "Category of the product"
+    },
+    {
+      "name": "item",
+      "type": "string",
+      "doc": "Name of the item"
+    },
+    {
+      "name": "size",
+      "type": "string",
+      "doc": "Size of the product"
+    },
+    {
+      "name": "cogs",
+      "type": "float",
+      "doc": "Cost of goods sold"
+    },
+    {
+      "name": "price",
+      "type": "float",
+      "doc": "Price of the product"
+    },
+    {
+      "name": "inventory_level",
+      "type": "int",
+      "doc": "Current inventory level"
+    },
+    {
+      "name": "contains_fruit",
+      "type": "boolean",
+      "doc": "Indicates whether the product contains fruit"
+    },
+    {
+      "name": "contains_veggies",
+      "type": "boolean",
+      "doc": "Indicates whether the product contains vegetables"
+    },
+    {
+      "name": "contains_nuts",
+      "type": "boolean",
+      "doc": "Indicates whether the product contains nuts"
+    },
+    {
+      "name": "contains_caffeine",
+      "type": "boolean",
+      "doc": "Indicates whether the product contains caffeine"
+    },
+    {
+      "name": "propensity_to_buy",
+      "type": "int",
+      "doc": "Propensity score predicting the likelihood of a purchase"
+    }
+  ]
+}

@@ -1,2 +1,4 @@
 confluent-kafka
+fastavro
+requests
 extended-configparser

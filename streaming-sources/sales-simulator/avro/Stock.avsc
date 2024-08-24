@@ -1,0 +1,32 @@
+{
+  "type": "record",
+  "name": "StockEvent",
+  "namespace": "com.example",
+  "fields": [
+    {
+      "name": "event_time",
+      "type": "string",
+      "doc": "Timestamp of the stock event in YYYY-MM-DD HH:MM:SS.ssssss format"
+    },
+    {
+      "name": "product_id",
+      "type": "string",
+      "doc": "Unique identifier for the product"
+    },
+    {
+      "name": "existing_level",
+      "type": "int",
+      "doc": "The current level of the product in stock"
+    },
+    {
+      "name": "stock_quantity",
+      "type": "int",
+      "doc": "The quantity of new stock added"
+    },
+    {
+      "name": "new_level",
+      "type": "int",
+      "doc": "The new stock level after the addition"
+    }
+  ]
+}

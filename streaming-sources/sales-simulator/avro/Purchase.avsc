@@ -1,0 +1,57 @@
+{
+  "type": "record",
+  "name": "PurchaseEvent",
+  "namespace": "com.example",
+  "fields": [
+    {
+      "name": "transaction_time",
+      "type": "string",
+      "doc": "Timestamp of the transaction in YYYY-MM-DD HH:MM:SS.ssssss format"
+    },
+    {
+      "name": "transaction_id",
+      "type": "string",
+      "doc": "Unique identifier for the transaction"
+    },
+    {
+      "name": "product_id",
+      "type": "string",
+      "doc": "Identifier for the purchased product"
+    },
+    {
+      "name": "price",
+      "type": "float",
+      "doc": "Price of the product at the time of purchase"
+    },
+    {
+      "name": "quantity",
+      "type": "int",
+      "doc": "Quantity of the product purchased"
+    },
+    {
+      "name": "is_member",
+      "type": "boolean",
+      "doc": "Indicates if the customer is a member"
+    },
+    {
+      "name": "member_discount",
+      "type": "float",
+      "doc": "Discount applied for members"
+    },
+    {
+      "name": "add_supplements",
+      "type": "boolean",
+      "doc": "Indicates if supplements were added to the purchase"
+    },
+    {
+      "name": "supplement_price",
+      "type": "float",
+      "doc": "Price of the added supplements"
+    },
+    {
+      "name": "total_purchase",
+      "type": "float",
+      "doc": "Total amount paid for the transaction"
+    }
+  ]
+}

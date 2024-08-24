@@ -7,10 +7,14 @@ import configparser
 import json
 import random
 import time
+import os
 from csv import reader
 from datetime import datetime
 
 from confluent_kafka import Producer
+from confluent_kafka.serialization import StringSerializer, SerializationContext, MessageField
+from confluent_kafka.schema_registry import SchemaRegistryClient
+from confluent_kafka.schema_registry.avro import AvroSerializer
 
 from config.kafka import get_configs
 from models.product import Product
@@ -27,6 +31,8 @@ config.read("configuration/configuration.ini")
 topic_products = config["KAFKA"]["topic_products"]
 topic_purchases = config["KAFKA"]["topic_purchases"]
 topic_inventories = config["KAFKA"]["topic_inventories"]
+
+message_format = config["KAFKA"]["message_format"]
 
 min_sale_freq = int(config["SALES"]["min_sale_freq"])
 max_sale_freq = int(config["SALES"]["max_sale_freq"])
@@ -48,6 +54,20 @@ restock_amount = int(config["INVENTORY"]["restock_amount"])
 products = []
 propensity_to_buy_range = []
 
+def avro_serializer(schema):
+    avro_serializer = None
+    configs, schema_registry_configs = get_configs()
+    
+    if message_format == "avro":
+        schema_registry_client = SchemaRegistryClient(schema_registry_configs)
+    
+        path = os.path.realpath(os.path.dirname(__file__))
+        with open(f"{path}/avro/{schema}.avsc") as f:
+            schema_str = f.read()
+        avro_serializer = AvroSerializer(schema_registry_client,
+                                         schema_str)
+    return avro_serializer
+
 def main():
     create_product_list()
     generate_sales()
@@ -55,6 +75,8 @@ def main():
 
 # create products and propensity_to_buy lists from CSV data file
 def create_product_list():
+    product_avro_serializer = avro_serializer("Product")
+    
     with open("data/products.csv", "r") as csv_file:
         next(csv_file)  # skip header row
         csv_reader = reader(csv_file)
@@ -77,13 +99,16 @@ def create_product_list():
             p[14],
         )
         products.append(new_product)
-        publish_to_kafka(topic_products, new_product)
+        print(product_avro_serializer)
+        publish_to_kafka(topic_products, new_product.product_id, new_product, avro_serializer = product_avro_serializer)
         propensity_to_buy_range.append(int(p[14]))
     propensity_to_buy_range.sort()
 
 
 # generate synthetic sale transactions
 def generate_sales():
+    purchases_avro_serializer = avro_serializer("Purchase")
+
     # common to all transactions
     range_min = propensity_to_buy_range[0]
     range_max = propensity_to_buy_range[-1]
@@ -120,7 +145,7 @@ def generate_sales():
                         add_supplement,
                         supplement_price,
                     )
-                    publish_to_kafka(topic_purchases, new_purchase)
+                    publish_to_kafka(topic_purchases,new_purchase.product_id, new_purchase, avro_serializer=purchases_avro_serializer)
                     p.inventory_level = p.inventory_level - quantity
                     if p.inventory_level <= min_inventory:
                         restock_item(p.product_id)
@@ -130,6 +155,8 @@ def generate_sales():
 
 # restock inventories
 def restock_item(product_id):
+    stock_avro_serializer = avro_serializer("Stock")
+
     for p in products:
         if p.product_id == product_id:
             new_level = p.inventory_level + restock_amount
@@ -141,20 +168,25 @@ def restock_item(product_id):
                 new_level,
             )
             p.inventory_level = new_level  # update existing product item
-            publish_to_kafka(topic_inventories, new_inventory)
+            publish_to_kafka(topic_inventories, new_inventory.product_id, new_inventory, avro_serializer=stock_avro_serializer)
             break
 
 
 # serialize object to json and publish message to kafka topic
-def publish_to_kafka(topic, message):
-    configs = get_configs()
+def publish_to_kafka(topic, key, message, avro_serializer = None):
+    configs, schema_registry_configs = get_configs()
 
     producer = Producer(configs)
     
-    json_message = json.dumps(message.__dict__).encode("utf-8")
-    
-    producer.produce(topic, value=json_message)
-    print("Topic: {0}, Value: {1}".format(topic, message))
+    #string_serializer = StringSerializer('utf_8')
+
+    if avro_serializer is None:
+        json_message = json.dumps(message.__dict__).encode("utf-8")
+        producer.produce(topic, key=key, value=json_message)
+    else:    
+        print ("Avro Serializer is not none")
+        producer.produce(topic, key=key, value=avro_serializer(message.__dict__, SerializationContext(topic, MessageField.VALUE)))
+    print("Topic: {0}, Key: {1}, Value: {2}".format(topic, key, message))
     
     producer.flush()
 

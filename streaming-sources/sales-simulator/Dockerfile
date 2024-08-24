@@ -14,6 +14,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 ENV KAFKA_BOOTSTRAP_SERVERS=localhost:9092
+ENV KAFKA_SCHEMA_REGISTRY_URL=http://localhost:8081
+ENV KAFKA_SERIALIZATION=json
 ENV KAFKA_TOPIC_PRODUCTS=demo.products
 ENV KAFKA_TOPIC_PURCHASES=demo.purchases
 ENV KAFKA_TOPIC_INVENTORIES=demo.inventories
