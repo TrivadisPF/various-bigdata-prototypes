@@ -10,7 +10,7 @@ import time
 from csv import reader
 from datetime import datetime
 
-from kafka import KafkaProducer
+from confluent_kafka import Producer
 
 from config.kafka import get_configs
 from models.product import Product
@@ -149,12 +149,14 @@ def restock_item(product_id):
 def publish_to_kafka(topic, message):
     configs = get_configs()
 
-    producer = KafkaProducer(
-        value_serializer=lambda v: json.dumps(vars(v)).encode("utf-8"),
-        **configs,
-    )
-    producer.send(topic, value=message)
+    producer = Producer(configs)
+    
+    json_message = json.dumps(message.__dict__).encode("utf-8")
+    
+    producer.produce(topic, value=json_message)
     print("Topic: {0}, Value: {1}".format(topic, message))
+    
+    producer.flush()
 
 
 # convert uppercase boolean values from CSV file to Python

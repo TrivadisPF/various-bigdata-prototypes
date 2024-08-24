@@ -12,13 +12,13 @@ def get_configs():
     sasl_username = config["KAFKA"]["sasl_username"]
     sasl_password = config["KAFKA"]["sasl_password"]
 
-    configs = {"bootstrap_servers": bootstrap_servers}
+    configs = {"bootstrap.servers": bootstrap_servers}
 
     if auth_method == "sasl_scram":
-        configs["security_protocol"] = "SASL_SSL"
-        configs["sasl_mechanism"] = "SCRAM-SHA-512"
-        configs["sasl_plain_username"] = sasl_username
-        configs["sasl_plain_password"] = sasl_password
+        configs["security.protocol"] = "SASL_SSL"
+        configs["sasl.mechanism"] = "SCRAM-SHA-512"
+        configs["sasl.username"] = sasl_username
+        configs["sasl.password"] = sasl_password
 
     print("configs: {0}".format(str(configs)))
 
